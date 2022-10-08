@@ -1,9 +1,7 @@
+import { LoggedOutRouter } from './routers/logged-out-router'
+
 function App() {
-  return (
-    <div>
-      <h1 className="text-2xl">Hello Tailwind!</h1>
-    </div>
-  )
+  return <LoggedOutRouter />
 }
 
 export default App
