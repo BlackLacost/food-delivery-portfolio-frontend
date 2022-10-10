@@ -1,6 +1,8 @@
 import { gql, useMutation } from '@apollo/client'
+import { Helmet } from 'react-helmet'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { isLoggedInVar } from '../apollo'
 import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import {
@@ -37,6 +39,7 @@ export const Login = () => {
       } = data
       if (ok) {
         console.log(token)
+        isLoggedInVar(true)
       }
     },
   })
@@ -48,6 +51,9 @@ export const Login = () => {
   }
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
+      <Helmet>
+        <title>Login | Uber Eats</title>
+      </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <img src={logo} alt="Logo" className="mb-10 w-60" />
         <div className="w-full text-left text-3xl font-medium">
@@ -58,7 +64,11 @@ export const Login = () => {
           className="m-5 grid w-full gap-3 text-left"
         >
           <input
-            {...register('email', { required: 'Email is required' })}
+            {...register('email', {
+              required: 'Email is required',
+              pattern:
+                /([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?(\.[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?)+/,
+            })}
             type="email"
             placeholder="Email"
             className="input"
