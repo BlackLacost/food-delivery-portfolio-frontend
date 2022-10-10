@@ -1,11 +1,14 @@
 import { gql, useMutation } from '@apollo/client'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import {
   LoginInput,
   LoginMutation,
   LoginMutationVariables,
 } from '../gql/graphql'
+import logo from '../images/logo.svg'
 
 const LOGIN_MUTATION = gql`
   mutation Login($loginInput: LoginInput!) {
@@ -21,8 +24,8 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<LoginInput>()
+    formState: { errors, isValid },
+  } = useForm<LoginInput>({ mode: 'onChange' })
 
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
@@ -39,15 +42,20 @@ export const Login = () => {
   })
 
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
-    loginMutation({ variables: { loginInput: data } })
+    if (!loading) {
+      loginMutation({ variables: { loginInput: data } })
+    }
   }
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-800">
-      <div className="w-full max-w-lg rounded-lg bg-white pt-5 pb-7 text-center">
-        <h3 className="text-2xl text-gray-800">Log In</h3>
+    <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
+      <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
+        <img src={logo} alt="Logo" className="mb-10 w-60" />
+        <div className="w-full text-left text-3xl font-medium">
+          Welcome back
+        </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-5 grid gap-3 px-5 text-left"
+          className="m-5 grid w-full gap-3 text-left"
         >
           <input
             {...register('email', { required: 'Email is required' })}
@@ -65,7 +73,7 @@ export const Login = () => {
             })}
             type="password"
             placeholder="Password"
-            className="input"
+            className="input transi"
           />
           {errors.password?.message && (
             <FormError>{errors.password.message}</FormError>
@@ -74,13 +82,19 @@ export const Login = () => {
             <FormError>Password must be more than 2 chars</FormError>
           )}
 
-          <button className="btn" type="submit" disabled={loading}>
-            {loading ? 'Loading...' : 'Log In'}
-          </button>
+          <Button canClick={isValid} loading={loading}>
+            Log In
+          </Button>
           {loginMutationResult?.login.error && (
             <FormError>{loginMutationResult.login.error}</FormError>
           )}
         </form>
+        <div>
+          New to Uber?{' '}
+          <Link to="/create-account" className="text-lime-600 hover:underline">
+            Create an Account
+          </Link>
+        </div>
       </div>
     </div>
   )
