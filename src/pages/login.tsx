@@ -8,8 +8,8 @@ import {
 } from '../gql/graphql'
 
 const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
+  mutation Login($loginInput: LoginInput!) {
+    login(input: $loginInput) {
       ok
       error
       token
@@ -24,16 +24,23 @@ export const Login = () => {
     formState: { errors },
   } = useForm<LoginInput>()
 
-  const [loginMutation, { data }] = useMutation<
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
     LoginMutationVariables
-  >(LOGIN_MUTATION)
+  >(LOGIN_MUTATION, {
+    onCompleted: (data) => {
+      const {
+        login: { ok, token },
+      } = data
+      if (ok) {
+        console.log(token)
+      }
+    },
+  })
 
   const onSubmit: SubmitHandler<LoginInput> = (data) => {
-    const { email, password } = data
-    loginMutation({ variables: { email, password } })
+    loginMutation({ variables: { loginInput: data } })
   }
-  console.log(data?.login.token)
   return (
     <div className="flex h-screen items-center justify-center bg-gray-800">
       <div className="w-full max-w-lg rounded-lg bg-white pt-5 pb-7 text-center">
@@ -67,9 +74,12 @@ export const Login = () => {
             <FormError>Password must be more than 2 chars</FormError>
           )}
 
-          <button className="btn" type="submit">
-            Log In
+          <button className="btn" type="submit" disabled={loading}>
+            {loading ? 'Loading...' : 'Log In'}
           </button>
+          {loginMutationResult?.login.error && (
+            <FormError>{loginMutationResult.login.error}</FormError>
+          )}
         </form>
       </div>
     </div>

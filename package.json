@@ -20,11 +20,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "BROWSER=none react-scripts start",
+    "codegen": "graphql-codegen --config codegen.ts --watch",
+    "start": "npm run codegen & BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "codegen": "graphql-codegen --config codegen.ts --watch"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
