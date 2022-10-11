@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   VerifyEmailMutation,
@@ -55,6 +56,9 @@ export const ConfirmEmail = () => {
 
   return (
     <div className="mt-52 flex flex-col items-center">
+      <Helmet>
+        <title>Verify Email | Uber Eats</title>
+      </Helmet>
       <h1 className="mb-2 text-lg font-semibold">Confirming email...</h1>
       <p className="text-sm text-gray-700">
         Please wait, don't close this page.

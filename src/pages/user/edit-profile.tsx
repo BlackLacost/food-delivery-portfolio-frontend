@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../../components/button'
 import { H1 } from '../../components/h1'
@@ -90,6 +91,9 @@ export const EditProfile = () => {
 
   return (
     <div className="mt-52 flex flex-col items-center justify-center px-5">
+      <Helmet>
+        <title>Edit Profile | Uber Eats</title>
+      </Helmet>
       <H1 className="">Edit Profile</H1>
       <form
         onSubmit={handleSubmit(onSubmit)}
