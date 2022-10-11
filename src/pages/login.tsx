@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
+import { Logo } from '../components/logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import {
   LoginInput,
   LoginMutation,
   LoginMutationVariables,
 } from '../gql/graphql'
-import logo from '../images/logo.svg'
 
 const LOGIN_MUTATION = gql`
   mutation Login($loginInput: LoginInput!) {
@@ -57,7 +57,7 @@ export const Login = () => {
         <title>Login | Uber Eats</title>
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
-        <img src={logo} alt="Logo" className="mb-10 w-60" />
+        <Logo className="mb-10 w-60" />
         <div className="w-full text-left text-3xl font-medium">
           Welcome back
         </div>

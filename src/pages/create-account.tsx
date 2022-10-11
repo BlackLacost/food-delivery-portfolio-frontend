@@ -4,13 +4,13 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
+import { Logo } from '../components/logo'
 import {
   CreateAccountInput,
   CreateAccountMutation,
   CreateAccountMutationVariables,
   UserRole,
 } from '../gql/graphql'
-import logo from '../images/logo.svg'
 
 const CREATE_ACCOUNT_MUTATION = gql`
   mutation CreateAccount($createAccountInput: CreateAccountInput!) {
@@ -61,7 +61,7 @@ export const CreateAccount = () => {
         <title>Create Account | Uber Eats</title>
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
-        <img src={logo} alt="Logo" className="mb-10 w-60" />
+        <Logo className="mb-10 w-60" />
         <div className="w-full text-left text-3xl font-medium">
           Let's get started
         </div>

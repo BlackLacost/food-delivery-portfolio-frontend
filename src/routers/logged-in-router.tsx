@@ -1,28 +1,24 @@
-import { gql, useQuery } from '@apollo/client'
 import {
   BrowserRouter as Router,
   Navigate,
   Route,
   Routes,
 } from 'react-router-dom'
-import { MeQuery, UserRole } from '../gql/graphql'
+import { Layout } from '../components/layout'
+import { UserRole } from '../gql/graphql'
+import { useMe } from '../hooks/useMe'
 import { Restaurants } from '../pages/client/restaurants'
 
-const ClientRoutes = [<Route path="/" element={<Restaurants />} />]
-
-const ME_QUERY = gql`
-  query Me {
-    me {
-      id
-      email
-      role
-      verified
-    }
-  }
-`
+const ClientRoutes = () => {
+  return (
+    <>
+      <Route index element={<Restaurants />} />
+    </>
+  )
+}
 
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useQuery<MeQuery>(ME_QUERY)
+  const { data, loading, error } = useMe()
 
   if (!data || loading || error) {
     return (
@@ -31,12 +27,13 @@ export const LoggedInRouter = () => {
       </div>
     )
   }
-  console.log(data.me.role)
   return (
     <Router>
       <Routes>
-        {data.me.role === UserRole.Client && ClientRoutes}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/" element={<Layout />}>
+          {data.me.role === UserRole.Client && ClientRoutes()}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Route>
       </Routes>
     </Router>
   )
