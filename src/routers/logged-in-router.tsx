@@ -1,6 +1,14 @@
 import { gql, useQuery } from '@apollo/client'
-import { isLoggedInVar } from '../apollo'
-import { MeQuery } from '../gql/graphql'
+import {
+  BrowserRouter as Router,
+  Navigate,
+  Route,
+  Routes,
+} from 'react-router-dom'
+import { MeQuery, UserRole } from '../gql/graphql'
+import { Restaurants } from '../pages/client/restaurants'
+
+const ClientRoutes = [<Route path="/" element={<Restaurants />} />]
 
 const ME_QUERY = gql`
   query Me {
@@ -15,7 +23,6 @@ const ME_QUERY = gql`
 
 export const LoggedInRouter = () => {
   const { data, loading, error } = useQuery<MeQuery>(ME_QUERY)
-  const onClick = () => isLoggedInVar(false)
 
   if (!data || loading || error) {
     return (
@@ -24,10 +31,13 @@ export const LoggedInRouter = () => {
       </div>
     )
   }
+  console.log(data.me.role)
   return (
-    <div>
-      <h1>{data?.me.email}</h1>
-      <button onClick={onClick}>Log Out</button>
-    </div>
+    <Router>
+      <Routes>
+        {data.me.role === UserRole.Client && ClientRoutes}
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
   )
 }
