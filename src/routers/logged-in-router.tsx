@@ -1,18 +1,16 @@
-import {
-  BrowserRouter as Router,
-  Navigate,
-  Route,
-  Routes,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/layout'
 import { UserRole } from '../gql/graphql'
 import { useMe } from '../hooks/useMe'
+import { NotFound } from '../pages/404'
 import { Restaurants } from '../pages/client/restaurants'
+import { ConfirmEmail } from '../pages/user/confirm-email'
 
 const ClientRoutes = () => {
   return (
     <>
       <Route index element={<Restaurants />} />
+      <Route path="confirm" element={<ConfirmEmail />} />
     </>
   )
 }
@@ -32,8 +30,8 @@ export const LoggedInRouter = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           {data.me.role === UserRole.Client && ClientRoutes()}
-          <Route path="*" element={<Navigate to="/" />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   )
