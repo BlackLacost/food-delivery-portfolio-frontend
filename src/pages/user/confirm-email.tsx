@@ -1,4 +1,4 @@
-import { gql, useApolloClient, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
@@ -17,19 +17,18 @@ const VERIFY_EMAIL_MUTATION = gql`
 `
 
 export const ConfirmEmail = () => {
+  // const { data: userData, refetch: refetchMe } = useMe()
   const { data: userData } = useMe()
   const navigate = useNavigate()
-  const client = useApolloClient()
   const [verifyEmail] = useMutation<
     VerifyEmailMutation,
     VerifyEmailMutationVariables
   >(VERIFY_EMAIL_MUTATION, {
-    onCompleted: (data) => {
-      const {
-        verifyEmail: { ok },
-      } = data
+    update: async (cache, result) => {
+      const ok = result.data?.verifyEmail.ok
       if (ok && userData) {
-        client.writeFragment({
+        // await refetchMe()
+        cache.writeFragment({
           id: `User:${userData.me.id}`,
           fragment: gql`
             fragment VerifiedUser on User {

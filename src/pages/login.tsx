@@ -1,4 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
+import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -7,6 +8,7 @@ import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import { Logo } from '../components/logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
+import { LoginForm } from '../form.validators'
 import {
   LoginInput,
   LoginMutation,
@@ -28,7 +30,10 @@ export const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginInput>({ mode: 'onChange' })
+  } = useForm<LoginInput>({
+    mode: 'onChange',
+    resolver: classValidatorResolver(LoginForm),
+  })
 
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     LoginMutation,
@@ -66,11 +71,7 @@ export const Login = () => {
           className="m-5 grid w-full gap-3 text-left"
         >
           <input
-            {...register('email', {
-              required: 'Email is required',
-              pattern:
-                /([-!#-'*+/-9=?A-Z^-~]+(\.[-!#-'*+/-9=?A-Z^-~]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?(\.[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?)+/,
-            })}
+            {...register('email')}
             type="email"
             placeholder="Email"
             className="input"
@@ -79,13 +80,10 @@ export const Login = () => {
             <FormError>{errors.email.message}</FormError>
           )}
           <input
-            {...register('password', {
-              required: 'Password is required',
-              minLength: 3,
-            })}
+            {...register('password')}
             type="password"
             placeholder="Password"
-            className="input transi"
+            className="input"
           />
           {errors.password?.message && (
             <FormError>{errors.password.message}</FormError>

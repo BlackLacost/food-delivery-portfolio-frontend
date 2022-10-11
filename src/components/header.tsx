@@ -5,7 +5,6 @@ import { Logo } from './logo'
 
 export const Header = () => {
   const { data } = useMe()
-  console.log(data)
   return (
     <>
       {!data?.me.verified && (
@@ -15,8 +14,10 @@ export const Header = () => {
       )}
       <header className="py-4">
         <div className="mx-5 flex max-w-screen-xl items-center justify-between xl:mx-auto">
-          <Logo className="w-52" />
-          <Link to="/profile">
+          <Link to="/">
+            <Logo className="w-52" />
+          </Link>
+          <Link to="/edit-profile">
             <FaUserAlt size={30} />
           </Link>
         </div>

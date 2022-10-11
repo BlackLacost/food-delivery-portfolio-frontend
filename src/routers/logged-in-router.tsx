@@ -5,12 +5,14 @@ import { useMe } from '../hooks/useMe'
 import { NotFound } from '../pages/404'
 import { Restaurants } from '../pages/client/restaurants'
 import { ConfirmEmail } from '../pages/user/confirm-email'
+import { EditProfile } from '../pages/user/edit-profile'
 
 const ClientRoutes = () => {
   return (
     <>
       <Route index element={<Restaurants />} />
       <Route path="confirm" element={<ConfirmEmail />} />
+      <Route path="edit-profile" element={<EditProfile />} />
     </>
   )
 }
