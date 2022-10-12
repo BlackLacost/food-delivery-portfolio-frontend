@@ -53,6 +53,7 @@
     "@graphql-codegen/cli": "2.13.5",
     "@graphql-codegen/client-preset": "1.0.5",
     "@graphql-codegen/introspection": "2.2.1",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/react-helmet-async": "^1.0.3",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.17",

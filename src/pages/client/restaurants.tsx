@@ -12,18 +12,34 @@ export const Restaurants = () => {
         />
       </form>
       {!loading && (
-        <div className="mx-5 mt-8 max-w-screen-xl xl:mx-auto">
-          <div className="flex justify-center space-x-5">
+        <div className="mx-5 max-w-screen-xl xl:mx-auto">
+          <div className="my-6 flex justify-center space-x-5">
             {data?.allCategories.categories?.map((category) => (
-              <div
-                key={category.id}
-                className="flex h-16 w-16 flex-col rounded-full hover:bg-gray-200"
-              >
+              <div key={category.id} className="group flex flex-col">
                 {category.coverImage && (
-                  <img src={category.coverImage} alt={category.name} />
+                  <div className="h-16 w-16 rounded-full group-hover:bg-gray-200">
+                    <img src={category.coverImage} alt={category.name} />
+                  </div>
                 )}
                 <span className="text-center text-sm">{category.name}</span>
               </div>
+            ))}
+          </div>
+          <div className="my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
+            {data?.restaurants.results?.map((restaurant) => (
+              <article key={restaurant.id}>
+                <div className="aspect-w-16 aspect-h-9">
+                  <img
+                    className="object-cover"
+                    src={restaurant.coverImage}
+                    alt={restaurant.category?.name}
+                  />
+                </div>
+                <h2 className="text-xl">{restaurant.name}</h2>
+                <p className="border-t-2 border-gray-200">
+                  {restaurant.category?.name}
+                </p>
+              </article>
             ))}
           </div>
         </div>
