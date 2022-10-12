@@ -1,7 +1,20 @@
+import { MouseEvent, useState } from 'react'
+import { Restaurant } from '../../components/restaurant'
 import { useRestaurantsPage } from '../../hooks/useRestaurantsPage'
 
 export const Restaurants = () => {
-  const { data, loading } = useRestaurantsPage()
+  const [page, setPage] = useState(1)
+  const { data, loading } = useRestaurantsPage(page)
+
+  const onNextPage = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    setPage((v) => v + 1)
+  }
+  const onPrevPage = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    setPage((v) => v - 1)
+  }
+
   return (
     <div>
       <form className="w-hull flex items-center justify-center bg-gray-800 py-40">
@@ -27,20 +40,38 @@ export const Restaurants = () => {
           </div>
           <div className="my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
             {data?.restaurants.results?.map((restaurant) => (
-              <article key={restaurant.id}>
-                <div className="aspect-w-16 aspect-h-9">
-                  <img
-                    className="object-cover"
-                    src={restaurant.coverImage}
-                    alt={restaurant.category?.name}
-                  />
-                </div>
-                <h2 className="text-xl">{restaurant.name}</h2>
-                <p className="border-t-2 border-gray-200">
-                  {restaurant.category?.name}
-                </p>
-              </article>
+              <Restaurant
+                key={restaurant.id}
+                categoryName={restaurant.category?.name}
+                coverImage={restaurant.coverImage}
+                name={restaurant.name}
+              />
             ))}
+          </div>
+          <div className="grid-x-5 my-5 mx-auto grid max-w-xs grid-cols-3 items-center">
+            {page > 1 ? (
+              <button
+                onClick={onPrevPage}
+                className="rounded-full text-2xl focus:outline-none"
+              >
+                &larr;
+              </button>
+            ) : (
+              <div></div>
+            )}
+            <span className="text-center">
+              {page} of {data?.restaurants.totalPages}
+            </span>
+            {page !== data?.restaurants.totalPages ? (
+              <button
+                className="rounded-full text-2xl focus:outline-none"
+                onClick={onNextPage}
+              >
+                &rarr;
+              </button>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       )}
