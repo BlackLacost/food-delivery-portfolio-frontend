@@ -2,7 +2,7 @@ import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { MouseEvent, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Restaurant } from '../../components/restaurant'
 import { SearchTermForm } from '../../form.validators'
 import { useRestaurantsPage } from '../../hooks/useRestaurantsPage'
@@ -49,14 +49,16 @@ export const Restaurants = () => {
         <div className="mx-5 max-w-screen-xl xl:mx-auto">
           <div className="my-6 flex justify-center space-x-5">
             {data?.allCategories.categories?.map((category) => (
-              <div key={category.id} className="group flex flex-col">
-                {category.coverImage && (
-                  <div className="h-16 w-16 rounded-full group-hover:bg-gray-200">
-                    <img src={category.coverImage} alt={category.name} />
-                  </div>
-                )}
-                <span className="text-center text-sm">{category.name}</span>
-              </div>
+              <Link key={category.id} to={`/category/${category.slug}`}>
+                <div className="group flex flex-col">
+                  {category.coverImage && (
+                    <div className="h-16 w-16 rounded-full group-hover:bg-gray-200">
+                      <img src={category.coverImage} alt={category.name} />
+                    </div>
+                  )}
+                  <span className="text-center text-sm">{category.name}</span>
+                </div>
+              </Link>
             ))}
           </div>
           <div className="my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3">

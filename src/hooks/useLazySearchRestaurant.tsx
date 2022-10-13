@@ -1,4 +1,5 @@
 import { gql, useLazyQuery } from '@apollo/client'
+import { RESTAURANT_FRAGMENT } from '../fragments'
 import {
   SearchRestaurantQuery,
   SearchRestaurantQueryVariables,
@@ -12,17 +13,11 @@ const SEARCH_RESTAURANT_QUERY = gql`
       totalPages
       totalResults
       restaurants {
-        id
-        name
-        coverImage
-        address
-        isPromoted
-        category {
-          name
-        }
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `
 
 export const useLazySearchRestaurant = () => {
