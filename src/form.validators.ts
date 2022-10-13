@@ -37,3 +37,9 @@ export class CreateAccountForm implements CreateAccountInput {
   @IsEnum(UserRole)
   role: UserRole
 }
+
+export class SearchTermForm {
+  @IsString()
+  @Length(3)
+  searchTerm: string
+}

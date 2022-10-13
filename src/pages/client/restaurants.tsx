@@ -1,5 +1,10 @@
+import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { MouseEvent, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { Restaurant } from '../../components/restaurant'
+import { SearchTermForm } from '../../form.validators'
 import { useRestaurantsPage } from '../../hooks/useRestaurantsPage'
 
 export const Restaurants = () => {
@@ -15,13 +20,29 @@ export const Restaurants = () => {
     setPage((v) => v - 1)
   }
 
+  const { register, handleSubmit } = useForm<SearchTermForm>({
+    resolver: classValidatorResolver(SearchTermForm),
+  })
+  const navigate = useNavigate()
+
+  const onSubmit: SubmitHandler<SearchTermForm> = ({ searchTerm }) => {
+    navigate(`/search?term=${searchTerm}`)
+  }
+
   return (
     <div>
-      <form className="w-hull flex items-center justify-center bg-gray-800 py-40">
+      <Helmet>
+        <title>Home | Uber Eats</title>
+      </Helmet>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-hull flex items-center justify-center bg-gray-800 py-40"
+      >
         <input
+          {...register('searchTerm')}
           type="text"
           placeholder="Search restaurants..."
-          className="input w-3/12 rounded-md border-0"
+          className="input w-3/4 rounded-md border-0 md:w-5/12 lg:w-4/12"
         />
       </form>
       {!loading && (
