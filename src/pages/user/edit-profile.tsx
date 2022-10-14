@@ -1,29 +1,26 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../../components/button'
 import { H1 } from '../../components/h1'
 import { EditProfileForm } from '../../form.validators'
-import {
-  EditProfileInput,
-  EditProfileMutation,
-  EditProfileMutationVariables,
-} from '../../gql/graphql'
-import { useMe } from '../../hooks/useMe'
+import { graphql } from '../../gql'
+import { EditProfileInput } from '../../gql/graphql'
+import { Me } from '../../routers/logged-in-router'
 
-const EDIT_PROFILE_MUTATION = gql`
+const EditProfile = graphql(`
   mutation EditProfile($input: EditProfileInput!) {
     editProfile(input: $input) {
       ok
       error
     }
   }
-`
+`)
 
-export const EditProfile = () => {
+export const EditProfilePage = () => {
   // const { data: userData, refetch: refetchMe } = useMe()
-  const { data: userData } = useMe()
+  const { data: userData } = useQuery(Me)
 
   const {
     register,
@@ -38,10 +35,7 @@ export const EditProfile = () => {
     resolver: classValidatorResolver(EditProfileForm),
   })
 
-  const [editProfile, { loading }] = useMutation<
-    EditProfileMutation,
-    EditProfileMutationVariables
-  >(EDIT_PROFILE_MUTATION, {
+  const [editProfile, { loading }] = useMutation(EditProfile, {
     update: async (cache, result) => {
       const ok = result.data?.editProfile.ok
 

@@ -1,28 +1,42 @@
+import { useQuery } from '@apollo/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/layout'
+import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
-import { useMe } from '../hooks/useMe'
-import { NotFound } from '../pages/404'
-import Category from '../pages/client/category'
-import { Restaurants } from '../pages/client/restaurants'
-import { Search } from '../pages/client/search'
-import { ConfirmEmail } from '../pages/user/confirm-email'
-import { EditProfile } from '../pages/user/edit-profile'
+import { NotFoundPage } from '../pages/404'
+import CategoryPage from '../pages/client/category'
+import RestaurantPage from '../pages/client/restaurant'
+import { RestaurantsPage } from '../pages/client/restaurants'
+import { SearchPage } from '../pages/client/search'
+import { ConfirmEmailPage } from '../pages/user/confirm-email'
+import { EditProfilePage } from '../pages/user/edit-profile'
+
+export const Me = graphql(`
+  query Me {
+    me {
+      id
+      email
+      role
+      verified
+    }
+  }
+`)
 
 const ClientRoutes = () => {
   return (
     <>
-      <Route index element={<Restaurants />} />
-      <Route path="confirm" element={<ConfirmEmail />} />
-      <Route path="edit-profile" element={<EditProfile />} />
-      <Route path="search" element={<Search />} />
-      <Route path="category/:slug" element={<Category />} />
+      <Route index element={<RestaurantsPage />} />
+      <Route path="confirm" element={<ConfirmEmailPage />} />
+      <Route path="edit-profile" element={<EditProfilePage />} />
+      <Route path="search" element={<SearchPage />} />
+      <Route path="category/:slug" element={<CategoryPage />} />
+      <Route path="restaurant/:id" element={<RestaurantPage />} />
     </>
   )
 }
 
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useMe()
+  const { data, loading, error } = useQuery(Me)
 
   if (!data || loading || error) {
     return (
@@ -37,7 +51,7 @@ export const LoggedInRouter = () => {
         <Route path="/" element={<Layout />}>
           {data.me.role === UserRole.Client && ClientRoutes()}
         </Route>
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   )

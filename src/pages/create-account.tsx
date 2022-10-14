@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -7,29 +7,25 @@ import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import { Logo } from '../components/logo'
 import { CreateAccountForm } from '../form.validators'
-import {
-  CreateAccountInput,
-  CreateAccountMutation,
-  CreateAccountMutationVariables,
-  UserRole,
-} from '../gql/graphql'
+import { graphql } from '../gql'
+import { UserRole } from '../gql/graphql'
 
-const CREATE_ACCOUNT_MUTATION = gql`
+const CreateAccount = graphql(`
   mutation CreateAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
       ok
       error
     }
   }
-`
+`)
 
-export const CreateAccount = () => {
+export const CreateAccountPage = () => {
   const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<CreateAccountInput>({
+  } = useForm<CreateAccountForm>({
     mode: 'onChange',
     defaultValues: { role: UserRole.Client },
     resolver: classValidatorResolver(CreateAccountForm),
@@ -38,21 +34,18 @@ export const CreateAccount = () => {
   const [
     createAccountMutation,
     { data: createAccountMutationResult, loading },
-  ] = useMutation<CreateAccountMutation, CreateAccountMutationVariables>(
-    CREATE_ACCOUNT_MUTATION,
-    {
-      onCompleted: (data) => {
-        const {
-          createAccount: { ok, error },
-        } = data
-        if (ok) {
-          navigate('/')
-        }
-      },
-    }
-  )
+  ] = useMutation(CreateAccount, {
+    onCompleted: (data) => {
+      const {
+        createAccount: { ok, error },
+      } = data
+      if (ok) {
+        navigate('/')
+      }
+    },
+  })
 
-  const onSubmit: SubmitHandler<CreateAccountInput> = (data) => {
+  const onSubmit: SubmitHandler<CreateAccountForm> = (data) => {
     if (!loading) {
       createAccountMutation({ variables: { createAccountInput: data } })
     }

@@ -1,30 +1,24 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import {
-  VerifyEmailMutation,
-  VerifyEmailMutationVariables,
-} from '../../gql/graphql'
-import { useMe } from '../../hooks/useMe'
+import { graphql } from '../../gql'
+import { Me } from '../../routers/logged-in-router'
 
-const VERIFY_EMAIL_MUTATION = gql`
+const VerifyEmail = graphql(`
   mutation VerifyEmail($input: VerifyEmailInput!) {
     verifyEmail(input: $input) {
       ok
       error
     }
   }
-`
+`)
 
-export const ConfirmEmail = () => {
+export const ConfirmEmailPage = () => {
   // const { data: userData, refetch: refetchMe } = useMe()
-  const { data: userData } = useMe()
+  const { data: userData } = useQuery(Me)
   const navigate = useNavigate()
-  const [verifyEmail] = useMutation<
-    VerifyEmailMutation,
-    VerifyEmailMutationVariables
-  >(VERIFY_EMAIL_MUTATION, {
+  const [verifyEmail] = useMutation(VerifyEmail, {
     update: async (cache, result) => {
       const ok = result.data?.verifyEmail.ok
       if (ok && userData) {

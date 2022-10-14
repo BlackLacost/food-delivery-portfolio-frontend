@@ -1,16 +1,58 @@
+import { useQuery } from '@apollo/client'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { MouseEvent, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { Restaurant } from '../../components/restaurant'
+import { RestaurantCard } from '../../components/restaurant-card'
 import { SearchTermForm } from '../../form.validators'
-import { useRestaurantsPage } from '../../hooks/useRestaurantsPage'
+import {
+  CoreCategoryFieldsFragment,
+  CoreRestaurantFieldsFragment,
+} from '../../fragments'
+import { FragmentType, graphql, useFragment } from '../../gql'
 
-export const Restaurants = () => {
+const GetRestaurantsByPage = graphql(`
+  query GetRestaurantsByPage($input: RestaurantsInput!) {
+    allCategories {
+      ok
+      error
+      categories {
+        ...CoreCategoryFields
+      }
+    }
+    restaurants(input: $input) {
+      ok
+      error
+      totalPages
+      totalResults
+      results {
+        ...CoreRestaurantFields
+      }
+    }
+  }
+`)
+
+export const RestaurantsPage = () => {
   const [page, setPage] = useState(1)
-  const { data, loading } = useRestaurantsPage(page)
+  const { data, loading } = useQuery(GetRestaurantsByPage, {
+    variables: { input: { page } },
+  })
 
+  const restaurants = useFragment(
+    CoreRestaurantFieldsFragment,
+    data?.restaurants.results as FragmentType<
+      typeof CoreRestaurantFieldsFragment
+    >[]
+  )
+  const categories = useFragment(
+    CoreCategoryFieldsFragment,
+    data?.allCategories.categories as FragmentType<
+      typeof CoreCategoryFieldsFragment
+    >[]
+  )
+
+  console.log(data)
   const onNextPage = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault()
     setPage((v) => v + 1)
@@ -48,7 +90,7 @@ export const Restaurants = () => {
       {!loading && (
         <div className="mx-5 max-w-screen-xl xl:mx-auto">
           <div className="my-6 flex justify-center space-x-5">
-            {data?.allCategories.categories?.map((category) => (
+            {categories?.map((category) => (
               <Link key={category.id} to={`/category/${category.slug}`}>
                 <div className="group flex flex-col">
                   {category.coverImage && (
@@ -62,11 +104,12 @@ export const Restaurants = () => {
             ))}
           </div>
           <div className="my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3">
-            {data?.restaurants.results?.map((restaurant) => (
-              <Restaurant
+            {restaurants.map((restaurant) => (
+              <RestaurantCard
                 key={restaurant.id}
                 categoryName={restaurant.category?.name}
                 coverImage={restaurant.coverImage}
+                id={restaurant.id}
                 name={restaurant.name}
               />
             ))}

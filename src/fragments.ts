@@ -1,24 +1,24 @@
-import { gql } from '@apollo/client'
+import { graphql } from './gql'
 
-export const RESTAURANT_FRAGMENT = gql`
-  fragment RestaurantParts on Restaurant {
+export const CoreCategoryFieldsFragment = graphql(`
+  fragment CoreCategoryFields on Category {
     id
-    name
     coverImage
+    name
+    restaurantCount
+    slug
+  }
+`)
+
+export const CoreRestaurantFieldsFragment = graphql(`
+  fragment CoreRestaurantFields on Restaurant {
+    id
     address
-    isPromoted
     category {
       name
     }
-  }
-`
-
-export const CATEGORY_FRAGMENT = gql`
-  fragment CategoryParts on Category {
-    id
-    name
     coverImage
-    slug
-    restaurantCount
+    isPromoted
+    name
   }
-`
+`)

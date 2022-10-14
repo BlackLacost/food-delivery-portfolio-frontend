@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { classValidatorResolver } from '@hookform/resolvers/class-validator'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -9,13 +9,9 @@ import { FormError } from '../components/form-error'
 import { Logo } from '../components/logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { LoginForm } from '../form.validators'
-import {
-  LoginInput,
-  LoginMutation,
-  LoginMutationVariables,
-} from '../gql/graphql'
+import { graphql } from '../gql'
 
-const LOGIN_MUTATION = gql`
+const Login = graphql(`
   mutation Login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -23,35 +19,35 @@ const LOGIN_MUTATION = gql`
       token
     }
   }
-`
+`)
 
-export const Login = () => {
+export const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginInput>({
+  } = useForm<LoginForm>({
     mode: 'onChange',
     resolver: classValidatorResolver(LoginForm),
   })
 
-  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
-    LoginMutation,
-    LoginMutationVariables
-  >(LOGIN_MUTATION, {
-    onCompleted: (data) => {
-      const {
-        login: { ok, token },
-      } = data
-      if (ok && token) {
-        localStorage.setItem(LOCALSTORAGE_TOKEN, token)
-        authTokenVar(token)
-        isLoggedInVar(true)
-      }
-    },
-  })
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation(
+    Login,
+    {
+      onCompleted: (data) => {
+        const {
+          login: { ok, token },
+        } = data
+        if (ok && token) {
+          localStorage.setItem(LOCALSTORAGE_TOKEN, token)
+          authTokenVar(token)
+          isLoggedInVar(true)
+        }
+      },
+    }
+  )
 
-  const onSubmit: SubmitHandler<LoginInput> = (data) => {
+  const onSubmit: SubmitHandler<LoginForm> = (data) => {
     if (!loading) {
       loginMutation({ variables: { loginInput: data } })
     }

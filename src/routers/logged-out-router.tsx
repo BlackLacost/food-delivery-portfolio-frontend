@@ -1,16 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { NotFound } from '../pages/404'
-import { CreateAccount } from '../pages/create-account'
-import { Login } from '../pages/login'
+import { NotFoundPage } from '../pages/404'
+import { CreateAccountPage } from '../pages/create-account'
+import { LoginPage } from '../pages/login'
 
 export const LoggedOutRouter = () => {
   return (
     <Router>
       <Routes>
         <Route path="/">
-          <Route index element={<Login />} />
-          <Route path="create-account" element={<CreateAccount />} />
-          <Route path="*" element={<NotFound />} />
+          <Route index element={<LoginPage />} />
+          <Route path="create-account" element={<CreateAccountPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </Router>

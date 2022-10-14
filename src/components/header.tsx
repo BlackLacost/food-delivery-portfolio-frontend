@@ -1,10 +1,11 @@
+import { useQuery } from '@apollo/client'
 import { FaUserAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { useMe } from '../hooks/useMe'
+import { Me } from '../routers/logged-in-router'
 import { Logo } from './logo'
 
 export const Header = () => {
-  const { data } = useMe()
+  const { data } = useQuery(Me)
   return (
     <>
       {!data?.me.verified && (

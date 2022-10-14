@@ -1,13 +1,35 @@
+import { useLazyQuery } from '@apollo/client'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useLazySearchRestaurant } from '../../hooks/useLazySearchRestaurant'
+import { CoreRestaurantFieldsFragment } from '../../fragments'
+import { FragmentType, graphql, useFragment } from '../../gql'
 
-export const Search = () => {
+const SearchRestaurant = graphql(`
+  query SearchRestaurant($input: SearchRestaurantInput!) {
+    searchRestaurant(input: $input) {
+      ok
+      error
+      totalPages
+      totalResults
+      restaurants {
+        ...CoreRestaurantFields
+      }
+    }
+  }
+`)
+
+export const SearchPage = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const [lazySearchRestaurant, { data, loading }] = useLazySearchRestaurant()
-  console.log(loading, data)
+  const [searchRestaurant, { data, loading }] = useLazyQuery(SearchRestaurant)
+  const restaraunts = useFragment(
+    CoreRestaurantFieldsFragment,
+    data?.searchRestaurant.restaurants as FragmentType<
+      typeof CoreRestaurantFieldsFragment
+    >[]
+  )
+  console.log(loading, { data }, { restaraunts })
 
   useEffect(() => {
     const query = searchParams.get('term')
@@ -15,8 +37,8 @@ export const Search = () => {
       navigate('/', { replace: true })
       return
     }
-    lazySearchRestaurant({ variables: { input: { query } } })
-  }, [lazySearchRestaurant, searchParams, navigate])
+    searchRestaurant({ variables: { input: { query } } })
+  }, [searchRestaurant, searchParams, navigate])
 
   return (
     <h1>
