@@ -6,6 +6,7 @@ import { Logo } from './logo'
 
 export const Header = () => {
   const { data } = useQuery(Me)
+  console.log(data)
   return (
     <>
       {!data?.me.verified && (
