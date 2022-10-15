@@ -8,6 +8,7 @@ import CategoryPage from '../pages/client/category'
 import RestaurantPage from '../pages/client/restaurant'
 import { RestaurantsPage } from '../pages/client/restaurants'
 import { SearchPage } from '../pages/client/search'
+import { MyRestaurantsPage } from '../pages/owner/my-restaurants'
 import { ConfirmEmailPage } from '../pages/user/confirm-email'
 import { EditProfilePage } from '../pages/user/edit-profile'
 
@@ -22,15 +23,30 @@ export const Me = graphql(`
   }
 `)
 
+const CommonRoutes = () => {
+  return (
+    <>
+      <Route path="confirm" element={<ConfirmEmailPage />} />
+      <Route path="edit-profile" element={<EditProfilePage />} />
+    </>
+  )
+}
+
 const ClientRoutes = () => {
   return (
     <>
       <Route index element={<RestaurantsPage />} />
-      <Route path="confirm" element={<ConfirmEmailPage />} />
-      <Route path="edit-profile" element={<EditProfilePage />} />
       <Route path="search" element={<SearchPage />} />
       <Route path="category/:slug" element={<CategoryPage />} />
       <Route path="restaurant/:id" element={<RestaurantPage />} />
+    </>
+  )
+}
+
+const OwnerRoutes = () => {
+  return (
+    <>
+      <Route index element={<MyRestaurantsPage />} />
     </>
   )
 }
@@ -49,7 +65,9 @@ export const LoggedInRouter = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
+          {CommonRoutes()}
           {data.me.role === UserRole.Client && ClientRoutes()}
+          {data.me.role === UserRole.Owner && OwnerRoutes()}
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
