@@ -15,7 +15,7 @@ export const Header = () => {
         </div>
       )}
       <header className="py-4">
-        <div className="mx-5 flex max-w-screen-xl items-center justify-between xl:mx-auto">
+        <div className="container flex items-center justify-between">
           <Link to="/">
             <Logo className="w-52" />
           </Link>
