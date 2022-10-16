@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/button'
 import { FormError } from '../../components/form-error'
 import {
@@ -10,18 +11,21 @@ import {
   createRestaurantSchema,
 } from '../../form.schemas'
 import { graphql } from '../../gql'
+import { MyRestaurantsRoute_Query } from './my-restaurants'
 
 const CreateRestaurant = graphql(`
   mutation CreateRestaurant($input: CreateRestaurantInput!) {
     createRestaurant(input: $input) {
       ok
       error
+      restaurantId
     }
   }
 `)
 
 export const AddRestaurantPage = () => {
   const [uploading, setUploading] = useState(false)
+  const navigate = useNavigate()
 
   const {
     register,
@@ -33,7 +37,14 @@ export const AddRestaurantPage = () => {
   })
 
   const [createRestaurant, { data }] = useMutation(CreateRestaurant, {
-    onCompleted: (data) => data.createRestaurant.ok && setUploading(false),
+    onCompleted: ({ createRestaurant: { ok } }) => {
+      if (ok) {
+        setUploading(false)
+        navigate('/')
+      }
+    },
+    // TODO: update cache 20.06 Cache Optimization part Two
+    refetchQueries: [{ query: MyRestaurantsRoute_Query }],
   })
 
   const onSubmit: SubmitHandler<CreateRestaurantForm> = async ({
@@ -53,14 +64,12 @@ export const AddRestaurantPage = () => {
       })
       const { url: coverImage } = await response.json()
       setUploading(false)
-      console.log(name, categoryName, address, coverImage)
       createRestaurant({
         variables: { input: { name, categoryName, address, coverImage } },
       })
     } catch (error) {
       console.log(error)
     }
-    // createRestaurant({ variables: { input: data } })
   }
   return (
     <div>

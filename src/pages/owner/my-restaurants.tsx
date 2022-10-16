@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 import { RestaurantsCards } from '../../components/restaurants-cards'
 import { graphql } from '../../gql'
 
-export const MyRestaurants = graphql(`
-  query MyRestaurants {
+export const MyRestaurantsRoute_Query = graphql(`
+  query MyRestaurants_Query {
     myRestaurants {
       ok
       results {
@@ -17,7 +17,7 @@ export const MyRestaurants = graphql(`
 `)
 
 export const MyRestaurantsPage = () => {
-  const { data } = useQuery(MyRestaurants)
+  const { data } = useQuery(MyRestaurantsRoute_Query)
   return (
     <div>
       <Helmet>
