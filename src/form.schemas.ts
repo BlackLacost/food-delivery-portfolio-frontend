@@ -1,4 +1,29 @@
 import * as yup from 'yup'
+import { UserRole } from './gql/graphql'
+
+export const editProfileSchema = yup.object({
+  email: yup.string().email().nullable(),
+  password: yup.string().min(3).nullable(),
+})
+export type EditProfileForm = yup.InferType<typeof editProfileSchema>
+
+export const loginSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().min(3).required(),
+})
+export type LoginForm = yup.InferType<typeof loginSchema>
+
+export const createAccountSchema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().min(3).required(),
+  role: yup.mixed<UserRole>().oneOf(Object.values(UserRole)).required(),
+})
+export type CreateAccountForm = yup.InferType<typeof createAccountSchema>
+
+export const searchTermSchema = yup.object({
+  searchTerm: yup.string().min(3).required(),
+})
+export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 
 export const createRestaurantSchema = yup.object({
   name: yup.string().min(5).required(),
@@ -21,7 +46,6 @@ export const createRestaurantSchema = yup.object({
       },
     }),
 })
-
 export type CreateRestaurantForm = {
   name: string
   address: string

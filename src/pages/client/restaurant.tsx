@@ -21,7 +21,7 @@ type Params = {
 
 export default function RestaurantPage() {
   const { id } = useParams<Params>()
-  const { data, loading } = useQuery(GetRestaurant, {
+  const { data } = useQuery(GetRestaurant, {
     variables: { input: { restaurantId: Number(id) } },
   })
 

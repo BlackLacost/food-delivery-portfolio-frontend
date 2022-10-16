@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import { Logo } from '../components/logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
-import { LoginForm } from '../form.validators'
+import { LoginForm, loginSchema } from '../form.schemas'
 import { graphql } from '../gql'
 
 const Login = graphql(`
@@ -28,7 +28,7 @@ export const LoginPage = () => {
     formState: { errors, isValid },
   } = useForm<LoginForm>({
     mode: 'onChange',
-    resolver: classValidatorResolver(LoginForm),
+    resolver: yupResolver(loginSchema),
   })
 
   const [loginMutation, { data: loginMutationResult, loading }] = useMutation(

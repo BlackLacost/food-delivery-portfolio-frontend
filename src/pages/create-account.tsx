@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/button'
 import { FormError } from '../components/form-error'
 import { Logo } from '../components/logo'
-import { CreateAccountForm } from '../form.validators'
+import { CreateAccountForm, createAccountSchema } from '../form.schemas'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
 
@@ -28,7 +28,7 @@ export const CreateAccountPage = () => {
   } = useForm<CreateAccountForm>({
     mode: 'onChange',
     defaultValues: { role: UserRole.Client },
-    resolver: classValidatorResolver(CreateAccountForm),
+    resolver: yupResolver(createAccountSchema),
   })
 
   const [
@@ -36,10 +36,7 @@ export const CreateAccountPage = () => {
     { data: createAccountMutationResult, loading },
   ] = useMutation(CreateAccount, {
     onCompleted: (data) => {
-      const {
-        createAccount: { ok, error },
-      } = data
-      if (ok) {
+      if (data.createAccount.ok) {
         navigate('/')
       }
     },

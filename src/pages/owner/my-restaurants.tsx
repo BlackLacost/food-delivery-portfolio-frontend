@@ -17,7 +17,7 @@ export const MyRestaurants = graphql(`
 `)
 
 export const MyRestaurantsPage = () => {
-  const { data, loading } = useQuery(MyRestaurants)
+  const { data } = useQuery(MyRestaurants)
   const restaurants = useFragment(
     CoreRestaurantFieldsFragment,
     data?.myRestaurants.results as FragmentType<

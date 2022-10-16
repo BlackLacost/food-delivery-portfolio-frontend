@@ -29,7 +29,7 @@ const GetRestaurantsByCategory = graphql(`
 
 export default function CategoryPage() {
   const { slug } = useParams<Params>()
-  const { data, loading } = useQuery(GetRestaurantsByCategory, {
+  const { data } = useQuery(GetRestaurantsByCategory, {
     variables: { input: { slug: slug as string } },
   })
 

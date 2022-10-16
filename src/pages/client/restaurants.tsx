@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/client'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { MouseEvent, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { RestaurantCard } from '../../components/restaurant-card'
-import { SearchTermForm } from '../../form.validators'
+import { SearchTermForm, searchTermSchema } from '../../form.schemas'
 import {
   CoreCategoryFieldsFragment,
   CoreRestaurantFieldsFragment,
@@ -63,7 +63,7 @@ export const RestaurantsPage = () => {
   }
 
   const { register, handleSubmit } = useForm<SearchTermForm>({
-    resolver: classValidatorResolver(SearchTermForm),
+    resolver: yupResolver(searchTermSchema),
   })
   const navigate = useNavigate()
 

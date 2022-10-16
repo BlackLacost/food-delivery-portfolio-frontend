@@ -1,12 +1,11 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { classValidatorResolver } from '@hookform/resolvers/class-validator'
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../../components/button'
 import { H1 } from '../../components/h1'
-import { EditProfileForm } from '../../form.validators'
+import { EditProfileForm, editProfileSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
-import { EditProfileInput } from '../../gql/graphql'
 import { Me } from '../../routers/logged-in-router'
 
 const EditProfile = graphql(`
@@ -29,10 +28,10 @@ export const EditProfilePage = () => {
     setValue,
     getValues,
     formState: { isValid },
-  } = useForm<EditProfileInput>({
+  } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: { email: userData?.me.email, password: null },
-    resolver: classValidatorResolver(EditProfileForm),
+    resolver: yupResolver(editProfileSchema),
   })
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
@@ -72,7 +71,7 @@ export const EditProfilePage = () => {
     setValue('password', null, { shouldValidate: true })
   }
 
-  const onSubmit: SubmitHandler<EditProfileInput> = ({ email, password }) => {
+  const onSubmit: SubmitHandler<EditProfileForm> = ({ email, password }) => {
     editProfile({
       variables: {
         input: {
