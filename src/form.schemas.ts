@@ -57,5 +57,22 @@ export const addDishSchema = yup.object({
   name: yup.string().min(5).required(),
   description: yup.string().min(5).max(140).required(),
   price: yup.number().positive().required(),
+  options: yup
+    .array()
+    .of(
+      yup.object({
+        name: yup.string().min(5).required(),
+        extra: yup.number().positive().integer().optional(),
+      })
+    )
+    .nullable(),
 })
-export type AddDishForm = yup.InferType<typeof addDishSchema>
+export type AddDishForm = {
+  name: string
+  description: string
+  price: number
+  options?: {
+    name: string
+    extra?: number
+  }[]
+}

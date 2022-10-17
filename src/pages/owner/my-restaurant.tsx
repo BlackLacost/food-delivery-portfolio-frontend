@@ -10,6 +10,10 @@ export const MyRestaurantRoute_Query = graphql(`
         name
         menu {
           name
+          options {
+            name
+            extra
+          }
         }
       }
     }
