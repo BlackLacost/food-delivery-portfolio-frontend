@@ -4,10 +4,11 @@ import { Layout } from '../components/layout'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
 import { NotFoundPage } from '../pages/404'
-import CategoryPage from '../pages/client/category'
-import RestaurantPage from '../pages/client/restaurant'
+import { CategoryPage } from '../pages/client/category'
+import { RestaurantPage } from '../pages/client/restaurant'
 import { RestaurantsPage } from '../pages/client/restaurants'
 import { SearchPage } from '../pages/client/search'
+import { AddDishPage } from '../pages/owner/add-dish'
 import { AddRestaurantPage } from '../pages/owner/add-restaurant'
 import { MyRestaurantPage } from '../pages/owner/my-restaurant'
 import { MyRestaurantsPage } from '../pages/owner/my-restaurants'
@@ -51,6 +52,7 @@ const OwnerRoutes = () => {
       <Route index element={<MyRestaurantsPage />} />
       <Route path="add-restaurant" element={<AddRestaurantPage />} />
       <Route path="restaurant/:id" element={<MyRestaurantPage />} />
+      <Route path="restaurant/:id/add-dish" element={<AddDishPage />} />
     </>
   )
 }

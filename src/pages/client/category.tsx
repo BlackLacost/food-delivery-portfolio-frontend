@@ -25,7 +25,7 @@ type Params = {
   slug: string
 }
 
-export default function CategoryPage() {
+export const CategoryPage = () => {
   const { slug } = useParams<Params>()
   const { data } = useQuery(RestaurantsByCategory_Query, {
     variables: { input: { slug: slug as string } },

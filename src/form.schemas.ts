@@ -52,3 +52,10 @@ export type CreateRestaurantForm = {
   categoryName: string
   image: FileList
 }
+
+export const addDishSchema = yup.object({
+  name: yup.string().min(5).required(),
+  description: yup.string().min(5).max(140).required(),
+  price: yup.number().positive().required(),
+})
+export type AddDishForm = yup.InferType<typeof addDishSchema>
