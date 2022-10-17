@@ -9,6 +9,7 @@ import RestaurantPage from '../pages/client/restaurant'
 import { RestaurantsPage } from '../pages/client/restaurants'
 import { SearchPage } from '../pages/client/search'
 import { AddRestaurantPage } from '../pages/owner/add-restaurant'
+import { MyRestaurantPage } from '../pages/owner/my-restaurant'
 import { MyRestaurantsPage } from '../pages/owner/my-restaurants'
 import { ConfirmEmailPage } from '../pages/user/confirm-email'
 import { EditProfilePage } from '../pages/user/edit-profile'
@@ -48,7 +49,8 @@ const OwnerRoutes = () => {
   return (
     <>
       <Route index element={<MyRestaurantsPage />} />
-      <Route path="/add-restaurant" element={<AddRestaurantPage />} />
+      <Route path="add-restaurant" element={<AddRestaurantPage />} />
+      <Route path="restaurant/:id" element={<MyRestaurantPage />} />
     </>
   )
 }
