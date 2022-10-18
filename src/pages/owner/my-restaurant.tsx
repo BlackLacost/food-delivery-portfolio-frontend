@@ -50,6 +50,8 @@ export const MyRestaurantPage = () => {
         </div>
         {data && <DishCards query={data} />}
       </div>
+      {/* TODO: 20 Victory Charts */}
+      <div>График продаж</div>
     </div>
   )
 }
