@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client'
 import { Link, useParams } from 'react-router-dom'
+import { DishCards } from '../../components/dish-cards'
 import { graphql } from '../../gql'
 
 export const MyRestaurantRoute_Query = graphql(`
@@ -8,15 +9,9 @@ export const MyRestaurantRoute_Query = graphql(`
       result {
         coverImage
         name
-        menu {
-          name
-          options {
-            name
-            extra
-          }
-        }
       }
     }
+    ...DishCards_QueryFragment
   }
 `)
 
@@ -53,20 +48,7 @@ export const MyRestaurantPage = () => {
             Buy Promotion &rarr;
           </Link>
         </div>
-        <div>
-          {data?.myRestaurant.result?.menu.length === 0 ? (
-            <>
-              <p className="mb-5 text-xl">No dishes here. Please add a dish!</p>
-              <Link className="link text-lime-600" to="/add-restaurant">
-                Create one &rarr;
-              </Link>
-            </>
-          ) : (
-            <div>
-              {JSON.stringify(data?.myRestaurant.result?.menu, null, 2)}
-            </div>
-          )}
-        </div>
+        {data && <DishCards query={data} />}
       </div>
     </div>
   )
