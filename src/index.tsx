@@ -2,6 +2,8 @@ import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HelmetProvider } from 'react-helmet-async'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { client } from './apollo'
 import { App } from './components/app'
 import reportWebVitals from './reportWebVitals'
@@ -12,6 +14,7 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <HelmetProvider>
+        <ToastContainer />
         <App />
       </HelmetProvider>
     </ApolloProvider>
