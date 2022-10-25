@@ -1,15 +1,24 @@
 import { useQuery } from '@apollo/client'
 import { useParams } from 'react-router-dom'
-import { CoreRestaurantFieldsFragment } from '../../fragments'
-import { FragmentType, graphql, useFragment } from '../../gql'
+import { DishCard } from '../../components/dish-card'
+import { graphql } from '../../gql'
 
-const GetRestaurant = graphql(`
-  query GetRestaurant($input: RestaurantInput!) {
+const RestaurantRoute_Query = graphql(`
+  query Restaurant_Query($input: RestaurantInput!) {
     restaurant(input: $input) {
-      ok
-      error
       restaurant {
-        ...CoreRestaurantFields
+        id
+        address
+        category {
+          name
+        }
+        coverImage
+        isPromoted
+        name
+        menu {
+          id
+          ...Card_DishFragment
+        }
       }
     }
   }
@@ -21,16 +30,11 @@ type Params = {
 
 export const RestaurantPage = () => {
   const { id } = useParams<Params>()
-  const { data } = useQuery(GetRestaurant, {
+  const { data } = useQuery(RestaurantRoute_Query, {
     variables: { input: { restaurantId: Number(id) } },
   })
+  const restaurant = data?.restaurant.restaurant
 
-  const restaurant = useFragment(
-    CoreRestaurantFieldsFragment,
-    data?.restaurant.restaurant as FragmentType<
-      typeof CoreRestaurantFieldsFragment
-    >
-  )
   return (
     <div>
       <div
@@ -47,6 +51,11 @@ export const RestaurantPage = () => {
           <p className="text-sm font-light">{restaurant?.address}</p>
         </div>
       </div>
+      <section className="container my-10 grid grid-cols-3 gap-4">
+        {restaurant?.menu.map((dish) => (
+          <DishCard key={dish.id} dish={dish} isCustomer />
+        ))}
+      </section>
     </div>
   )
 }
