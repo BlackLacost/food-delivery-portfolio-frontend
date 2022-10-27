@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import { FaUserAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { Me } from '../routers/LoggedInRouter'
-import { Logo } from './logo'
+import { Logo } from './Logo'
 
 export const Header = () => {
   const { data } = useQuery(Me)

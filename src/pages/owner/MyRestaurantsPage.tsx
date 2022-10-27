@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
-import { RestaurantsCards } from '../../components/restaurants-cards'
+import { RestaurantsCards } from '../../components/RestaurantsCards'
 import { graphql } from '../../gql'
 
 export const MyRestaurantsRoute_Query = graphql(`

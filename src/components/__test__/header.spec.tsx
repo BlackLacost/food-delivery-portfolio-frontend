@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 import { MockedProvider } from '@apollo/client/testing'
 import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { Header } from '../header'
+import { Header } from '../Header'
 
 describe('<RestaurantCard />', () => {
   // TODO: doesn't work properly

@@ -3,10 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button } from '../../components/button'
+import { Button } from '../../components/Button'
 import { AddDishForm, addDishSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
-import { MyRestaurantRoute_Query } from './my-restaurant'
+import { MyRestaurantRoute_Query } from './MyRestaurantPage'
 
 const AddDishRoute_Mutation = graphql(`
   mutation AddDish_Mutation($input: CreateDishInput!) {

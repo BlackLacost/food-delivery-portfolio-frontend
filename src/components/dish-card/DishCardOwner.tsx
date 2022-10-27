@@ -1,7 +1,7 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../../gql'
-import { DishCardContainer } from './dish-card-container'
-import { DishCardTitle } from './dish-card-title'
+import { DishCardContainer } from './DishCardContainer'
+import { DishCardTitle } from './DishCardTitle'
 
 export const CardOwner_DishFragment = graphql(`
   fragment CardOwner_DishFragment on Dish {

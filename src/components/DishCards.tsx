@@ -1,6 +1,6 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../gql'
-import { DishCardOwner } from './dish-card/dish-card-owner'
+import { DishCardOwner } from './dish-card/DishCardOwner'
 
 export const DishCards_QueryFragment = graphql(`
   fragment DishCards_QueryFragment on Query {

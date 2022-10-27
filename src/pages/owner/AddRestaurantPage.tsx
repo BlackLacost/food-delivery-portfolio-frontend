@@ -4,14 +4,14 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../../components/button'
-import { FormError } from '../../components/form-error'
+import { Button } from '../../components/Button'
+import { FormError } from '../../components/FormError'
 import {
   CreateRestaurantForm,
   createRestaurantSchema,
 } from '../../form.schemas'
 import { graphql } from '../../gql'
-import { MyRestaurantsRoute_Query } from './my-restaurants'
+import { MyRestaurantsRoute_Query } from './MyRestaurantsPage'
 
 const CreateRestaurant = graphql(`
   mutation CreateRestaurant($input: CreateRestaurantInput!) {

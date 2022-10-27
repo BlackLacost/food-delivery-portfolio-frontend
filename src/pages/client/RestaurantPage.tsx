@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button } from '../../components/button'
-import { DishCardClient } from '../../components/dish-card/dish-card-client'
+import { Button } from '../../components/Button'
+import { DishCardClient } from '../../components/dish-card/DishCardClient'
 import { graphql } from '../../gql'
 import {
   CreateOrderItemInput,

@@ -4,8 +4,8 @@ import {
   CreateOrderItemInput,
   OrderItemOptionInputType,
 } from '../../gql/graphql'
-import { DishCardContainer } from './dish-card-container'
-import { DishCardTitle } from './dish-card-title'
+import { DishCardContainer } from './DishCardContainer'
+import { DishCardTitle } from './DishCardTitle'
 
 export const CardClient_DishFragment = graphql(`
   fragment CardClient_DishFragment on Dish {

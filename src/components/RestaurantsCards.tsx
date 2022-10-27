@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'react'
 import { FragmentType, graphql, useFragment } from '../gql'
-import { RestaurantCard } from './restaurant-card'
+import { RestaurantCard } from './RestaurantCard'
 
 const Restaurants_QueryFragment = graphql(`
   fragment Restaurants_QueryFragment on Query {

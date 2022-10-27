@@ -5,7 +5,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { client } from './apollo'
-import { App } from './components/app'
+import { App } from './components/App'
 import reportWebVitals from './reportWebVitals'
 import './tailwind.css'
 

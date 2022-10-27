@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { NotFoundPage } from '../pages/404'
-import { CreateAccountPage } from '../pages/create-account'
-import { LoginPage } from '../pages/login'
+import { CreateAccountPage } from '../pages/CreateAccountPage'
+import { LoginPage } from '../pages/LoginPage'
+import { NotFoundPage } from '../pages/NotFoundPage'
 
 export const LoggedOutRouter = () => {
   return (
