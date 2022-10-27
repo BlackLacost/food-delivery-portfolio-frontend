@@ -3,7 +3,10 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { OrderClientCard } from '../components/order/OrderClientCard'
+import { OrderOwnerCard } from '../components/order/OrderOwnerCard'
 import { graphql } from '../gql'
+import { UserRole } from '../gql/graphql'
+import { Me } from '../routers/LoggedInRouter'
 import { notify } from '../toast'
 
 const GetOrderRoute_Query = graphql(`
@@ -13,6 +16,7 @@ const GetOrderRoute_Query = graphql(`
       error
       order {
         ...ClientCard_OrderFragment
+        ...OwnerCard_OrderFragment
       }
     }
   }
@@ -22,6 +26,7 @@ const OrderUpdates_Subscription = graphql(`
   subscription OrderUpdates($input: OrderUpdatesInput!) {
     orderUpdates(input: $input) {
       ...ClientCard_OrderFragment
+      ...OwnerCard_OrderFragment
     }
   }
 `)
@@ -33,6 +38,9 @@ type Params = {
 export const OrderPage = () => {
   const params = useParams<Params>()
   const orderId = Number(params.id)
+
+  const { data: userData } = useQuery(Me)
+
   const { data, subscribeToMore } = useQuery(GetOrderRoute_Query, {
     variables: { input: { id: orderId } },
     onError: (error) => notify.error(error.message),
@@ -57,16 +65,18 @@ export const OrderPage = () => {
     }
   }, [data, orderId, subscribeToMore])
 
-  if (!data?.getOrder.order) return null
-
-  const order = data.getOrder.order
+  const order = data?.getOrder.order
+  if (!order) return null
 
   return (
     <>
       <Helmet>
         <title>{`Order ${orderId}`} | Uber Eats</title>
       </Helmet>
-      <OrderClientCard order={order} />
+      {userData?.me.role === UserRole.Client && (
+        <OrderClientCard order={order} />
+      )}
+      {userData?.me.role === UserRole.Owner && <OrderOwnerCard order={order} />}
     </>
   )
 }

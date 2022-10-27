@@ -1,7 +1,7 @@
-import { useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useQuery, useSubscription } from '@apollo/client'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { DishCards } from '../../components/DishCards'
 import { Payment } from '../../components/Payment'
 import { graphql } from '../../gql'
@@ -18,6 +18,25 @@ export const MyRestaurantRoute_Query = graphql(`
   }
 `)
 
+const PendingOrders_Subscription = graphql(`
+  subscription PendingOrders_Subscription {
+    pendingOrders {
+      id
+      total
+      status
+      driver {
+        email
+      }
+      customer {
+        email
+      }
+      restaurant {
+        name
+      }
+    }
+  }
+`)
+
 type Params = {
   id: string
 }
@@ -28,6 +47,16 @@ export const MyRestaurantPage = () => {
   const { data } = useQuery(MyRestaurantRoute_Query, {
     variables: { input: { id: restaurantId } },
   })
+
+  const { data: subscriptionData } = useSubscription(PendingOrders_Subscription)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (subscriptionData?.pendingOrders.id) {
+      navigate(`/order/${subscriptionData.pendingOrders.id}`)
+    }
+  }, [subscriptionData])
 
   return (
     <div>
