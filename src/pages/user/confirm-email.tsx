@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { graphql } from '../../gql'
-import { Me } from '../../routers/logged-in-router'
+import { Me } from '../../routers/LoggedInRouter'
 
 const VerifyEmail = graphql(`
   mutation VerifyEmail($input: VerifyEmailInput!) {

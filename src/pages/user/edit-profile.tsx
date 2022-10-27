@@ -6,7 +6,7 @@ import { Button } from '../../components/button'
 import { H1 } from '../../components/h1'
 import { EditProfileForm, editProfileSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
-import { Me } from '../../routers/logged-in-router'
+import { Me } from '../../routers/LoggedInRouter'
 
 const EditProfile = graphql(`
   mutation EditProfile($input: EditProfileInput!) {

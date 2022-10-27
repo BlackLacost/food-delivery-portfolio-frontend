@@ -8,6 +8,7 @@ import { CategoryPage } from '../pages/client/category'
 import { RestaurantPage } from '../pages/client/restaurant'
 import { RestaurantsPage } from '../pages/client/restaurants'
 import { SearchPage } from '../pages/client/search'
+import { OrderPage } from '../pages/OrderPage'
 import { AddDishPage } from '../pages/owner/add-dish'
 import { AddRestaurantPage } from '../pages/owner/add-restaurant'
 import { MyRestaurantPage } from '../pages/owner/my-restaurant'
@@ -31,6 +32,7 @@ const CommonRoutes = () => {
     <>
       <Route path="confirm" element={<ConfirmEmailPage />} />
       <Route path="edit-profile" element={<EditProfilePage />} />
+      <Route path="order/:id" element={<OrderPage />} />
     </>
   )
 }

@@ -104,18 +104,21 @@ export const RestaurantPage = () => {
     addDishToOrder(dish)
   }
 
-  const [orderMutation] = useMutation(CreateOrder_Mutation, {
-    variables: { input: { restaurantId, items: dishesOrder } },
-    onCompleted: ({ createOrder: { ok, error, orderId } }) => {
-      if (ok) {
-        navigate(`/order/${orderId}`)
-        return
-      }
-      if (error) {
-        notify.error(error)
-      }
-    },
-  })
+  const [orderMutation, { loading: loadingOrder }] = useMutation(
+    CreateOrder_Mutation,
+    {
+      variables: { input: { restaurantId, items: dishesOrder } },
+      onCompleted: ({ createOrder: { ok, error, orderId } }) => {
+        if (ok) {
+          navigate(`/order/${orderId}`)
+          return
+        }
+        if (error) {
+          notify.error(error)
+        }
+      },
+    }
+  )
 
   const triggerConfirmOrder = () => {
     const ok = window.confirm('You are about to place an order')
@@ -151,7 +154,7 @@ export const RestaurantPage = () => {
             <Button
               onClick={triggerConfirmOrder}
               type="button"
-              disabled={dishesOrder.length === 0}
+              disabled={dishesOrder.length === 0 || loadingOrder}
             >
               Confirm Order
             </Button>

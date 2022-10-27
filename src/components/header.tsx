@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { FaUserAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { Me } from '../routers/logged-in-router'
+import { Me } from '../routers/LoggedInRouter'
 import { Logo } from './logo'
 
 export const Header = () => {
