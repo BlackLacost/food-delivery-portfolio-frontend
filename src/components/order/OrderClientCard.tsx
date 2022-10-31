@@ -1,5 +1,6 @@
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { H1 } from '../H1'
+import { OrderStatusView } from './OrderStatus'
 
 const ClientCard_OrderFragment = graphql(`
   fragment ClientCard_OrderFragment on Order {
@@ -46,9 +47,7 @@ export const OrderClientCard = (props: Props) => {
             ))}
           </tbody>
         </table>
-        <p className="py-10 text-center text-3xl  text-lime-600">
-          Status: {order.status}
-        </p>
+        <OrderStatusView status={order.status} />
       </div>
     </article>
   )

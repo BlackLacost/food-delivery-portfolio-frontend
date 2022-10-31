@@ -7,6 +7,7 @@ import { CategoryPage } from '../pages/client/CategoryPage'
 import { RestaurantPage } from '../pages/client/RestaurantPage'
 import { RestaurantsPage } from '../pages/client/RestaurantsPage'
 import { SearchPage } from '../pages/client/SearchPage'
+import { Dashboard } from '../pages/driver/Dashboard'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderPage } from '../pages/OrderPage'
 import { AddDishPage } from '../pages/owner/AddDishPage'
@@ -59,6 +60,14 @@ const OwnerRoutes = () => {
   )
 }
 
+const DriverRoutes = () => {
+  return (
+    <>
+      <Route index element={<Dashboard />} />
+    </>
+  )
+}
+
 export const LoggedInRouter = () => {
   const { data, loading, error } = useQuery(Me)
 
@@ -76,6 +85,7 @@ export const LoggedInRouter = () => {
           {CommonRoutes()}
           {data.me.role === UserRole.Client && ClientRoutes()}
           {data.me.role === UserRole.Owner && OwnerRoutes()}
+          {data.me.role === UserRole.Delivery && DriverRoutes()}
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
