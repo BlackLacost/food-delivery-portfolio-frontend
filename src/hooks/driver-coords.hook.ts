@@ -6,7 +6,7 @@ type Coords = {
 }
 
 export const useDriverCoords = () => {
-  const [driverCoords, setDriverCoords] = useState<Coords>({})
+  const [driverCoords, setDriverCoords] = useState<Coords | null>()
 
   const onSuccess = ({
     coords: { latitude, longitude },
@@ -24,5 +24,5 @@ export const useDriverCoords = () => {
     })
   }, [])
 
-  return Object.values(driverCoords)
+  return driverCoords ? (Object.values(driverCoords) as [number, number]) : null
 }

@@ -8,6 +8,7 @@ import { RestaurantPage } from '../pages/client/RestaurantPage'
 import { RestaurantsPage } from '../pages/client/RestaurantsPage'
 import { SearchPage } from '../pages/client/SearchPage'
 import { Dashboard } from '../pages/driver/Dashboard'
+import { DriverOrderPage } from '../pages/driver/DriverOrderPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderPage } from '../pages/OrderPage'
 import { AddDishPage } from '../pages/owner/AddDishPage'
@@ -33,7 +34,6 @@ const CommonRoutes = () => {
     <>
       <Route path="confirm" element={<ConfirmEmailPage />} />
       <Route path="edit-profile" element={<EditProfilePage />} />
-      <Route path="order/:id" element={<OrderPage />} />
     </>
   )
 }
@@ -45,6 +45,7 @@ const ClientRoutes = () => {
       <Route path="search" element={<SearchPage />} />
       <Route path="category/:slug" element={<CategoryPage />} />
       <Route path="restaurant/:id" element={<RestaurantPage />} />
+      <Route path="order/:id" element={<OrderPage />} />
     </>
   )
 }
@@ -56,6 +57,7 @@ const OwnerRoutes = () => {
       <Route path="add-restaurant" element={<AddRestaurantPage />} />
       <Route path="restaurant/:id" element={<MyRestaurantPage />} />
       <Route path="restaurant/:id/add-dish" element={<AddDishPage />} />
+      <Route path="order/:id" element={<OrderPage />} />
     </>
   )
 }
@@ -64,6 +66,7 @@ const DriverRoutes = () => {
   return (
     <>
       <Route index element={<Dashboard />} />
+      <Route path="order/:id" element={<DriverOrderPage />} />
     </>
   )
 }

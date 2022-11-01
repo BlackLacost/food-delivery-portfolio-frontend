@@ -77,6 +77,9 @@ export const OrderPage = () => {
         <OrderClientCard order={order} />
       )}
       {userData?.me.role === UserRole.Owner && <OrderOwnerCard order={order} />}
+      {userData?.me.role === UserRole.Delivery && (
+        <OrderOwnerCard order={order} />
+      )}
     </>
   )
 }
