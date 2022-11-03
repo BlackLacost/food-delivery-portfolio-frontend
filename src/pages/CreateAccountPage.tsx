@@ -1,11 +1,13 @@
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { FormError } from '../components/FormError'
 import { Logo } from '../components/Logo'
+import { GetAddress } from '../components/Yandex/GetAddress'
 import { CreateAccountForm, createAccountSchema } from '../form.schemas'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
@@ -24,6 +26,7 @@ export const CreateAccountPage = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
   } = useForm<CreateAccountForm>({
     mode: 'onChange',
@@ -42,11 +45,19 @@ export const CreateAccountPage = () => {
     },
   })
 
+  const userRole = watch('role')
+
   const onSubmit: SubmitHandler<CreateAccountForm> = (data) => {
     if (!loading) {
       createAccountMutation({ variables: { createAccountInput: data } })
     }
   }
+
+  const [clientPosition, setClientPosition] = useState<{
+    coords?: number[]
+    address?: string
+  }>({})
+
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
       <Helmet>
@@ -57,6 +68,19 @@ export const CreateAccountPage = () => {
         <div className="w-full text-left text-3xl font-medium">
           Let's get started
         </div>
+
+        {userRole === UserRole.Client && (
+          <>
+            <p className="mb-2 w-full text-xl">
+              Укажите ваш адрес доставки на карте
+            </p>
+            <GetAddress
+              clientPosition={clientPosition}
+              setClientPosition={setClientPosition}
+            />
+          </>
+        )}
+
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="m-5 grid w-full gap-3 text-left"
