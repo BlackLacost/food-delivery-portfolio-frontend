@@ -27,7 +27,6 @@ export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 
 export const createRestaurantSchema = yup.object({
   name: yup.string().min(5).required(),
-  address: yup.string().min(5).required(),
   categoryName: yup.string().min(5).required(),
   image: yup
     .mixed()
@@ -48,7 +47,6 @@ export const createRestaurantSchema = yup.object({
 })
 export type CreateRestaurantForm = {
   name: string
-  address: string
   categoryName: string
   image: FileList
 }

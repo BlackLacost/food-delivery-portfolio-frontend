@@ -3,18 +3,18 @@ import React, { Dispatch, SetStateAction, useRef } from 'react'
 import ymaps from 'yandex-maps'
 import { useMapState } from '../../hooks/useMapState.hook'
 
-type ClientPosition = {
+export type Position = {
   coords?: number[]
   address?: string
 }
 
 type Props = {
-  clientPosition: ClientPosition
-  setClientPosition: Dispatch<SetStateAction<ClientPosition>>
+  position: Position
+  setPosition: Dispatch<SetStateAction<Position>>
 }
 
 export const GetAddress = React.memo(
-  ({ clientPosition, setClientPosition }: Props) => {
+  ({ position: clientPosition, setPosition: setClientPosition }: Props) => {
     const mapState = useMapState()
     const ymapsRef = useRef<typeof ymaps>(null)
 

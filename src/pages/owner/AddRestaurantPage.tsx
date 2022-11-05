@@ -1,16 +1,18 @@
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
+import { GetAddress, Position } from '../../components/Yandex/GetAddress'
 import {
   CreateRestaurantForm,
   createRestaurantSchema,
 } from '../../form.schemas'
 import { graphql } from '../../gql'
+import { notify } from '../../toast'
 import { MyRestaurantsRoute_Query } from './MyRestaurantsPage'
 
 const CreateRestaurant = graphql(`
@@ -49,7 +51,6 @@ export const AddRestaurantPage = () => {
 
   const onSubmit: SubmitHandler<CreateRestaurantForm> = async ({
     name,
-    address,
     categoryName,
     image,
   }) => {
@@ -64,26 +65,46 @@ export const AddRestaurantPage = () => {
       })
       const { url: coverImage } = await response.json()
       setUploading(false)
+
+      if (!restaurantPosition.address || !restaurantPosition.coords) {
+        return notify.error('Адрес рестарана обязателен')
+      }
       createRestaurant({
-        variables: { input: { name, categoryName, address, coverImage } },
+        variables: {
+          input: {
+            name,
+            categoryName,
+            address: restaurantPosition.address,
+            latitude: restaurantPosition.coords[0],
+            longitude: restaurantPosition.coords[1],
+            coverImage,
+          },
+        },
       })
     } catch (error) {
       console.log(error)
     }
   }
+
+  const [restaurantPosition, setRestaurantPosition] = React.useState<Position>(
+    {}
+  )
+
   return (
     <div>
       <Helmet>
         <title>Add Restaurant | Uber Eats</title>
       </Helmet>
       <h1>add-restaurant</h1>
-      <form className="grid max-w-sm gap-3" onSubmit={handleSubmit(onSubmit)}>
-        <input className="input" {...register('name')} placeholder="Name" />
-        <input
-          className="input"
-          {...register('address')}
-          placeholder="Address"
+      <form
+        className="mx-auto grid w-full max-w-screen-sm gap-3"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <GetAddress
+          position={restaurantPosition}
+          setPosition={setRestaurantPosition}
         />
+        <input className="input" {...register('name')} placeholder="Name" />
         <input
           className="input"
           {...register('categoryName')}

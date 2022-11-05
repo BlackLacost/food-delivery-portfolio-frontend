@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '../components/Button'
 import { FormError } from '../components/FormError'
 import { Logo } from '../components/Logo'
-import { GetAddress } from '../components/Yandex/GetAddress'
+import { GetAddress, Position } from '../components/Yandex/GetAddress'
 import { CreateAccountForm, createAccountSchema } from '../form.schemas'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
@@ -47,16 +47,31 @@ export const CreateAccountPage = () => {
 
   const userRole = watch('role')
 
-  const onSubmit: SubmitHandler<CreateAccountForm> = (data) => {
+  const onSubmit: SubmitHandler<CreateAccountForm> = ({
+    email,
+    password,
+    role,
+  }) => {
     if (!loading) {
-      createAccountMutation({ variables: { createAccountInput: data } })
+      createAccountMutation({
+        variables: {
+          createAccountInput: {
+            email,
+            password,
+            role,
+            ...(clientPosition.address && { address: clientPosition.address }),
+            ...(clientPosition.coords &&
+              clientPosition.coords.length === 2 && {
+                latitude: clientPosition.coords[0],
+                longitude: clientPosition.coords[1],
+              }),
+          },
+        },
+      })
     }
   }
 
-  const [clientPosition, setClientPosition] = useState<{
-    coords?: number[]
-    address?: string
-  }>({})
+  const [clientPosition, setClientPosition] = useState<Position>({})
 
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
@@ -75,8 +90,8 @@ export const CreateAccountPage = () => {
               Укажите ваш адрес доставки на карте
             </p>
             <GetAddress
-              clientPosition={clientPosition}
-              setClientPosition={setClientPosition}
+              position={clientPosition}
+              setPosition={setClientPosition}
             />
           </>
         )}
