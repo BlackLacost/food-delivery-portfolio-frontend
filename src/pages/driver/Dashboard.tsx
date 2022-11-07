@@ -10,6 +10,7 @@ import {
 } from '@pbe/react-yandex-maps'
 import React from 'react'
 import { useGeolocated } from 'react-geolocated'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { graphql } from '../../gql'
 import { OrderStatus } from '../../gql/graphql'
@@ -129,6 +130,9 @@ export const Dashboard = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       <YMaps query={{ apikey: process.env.REACT_APP_YANDEX_KEY }}>
         <Map
           width={window.innerWidth}
@@ -187,23 +191,6 @@ export const Dashboard = () => {
               />
             ))}
           </Clusterer>
-
-          {/* {coockedOrdersData?.cookedOrders && (
-            <RoutePanel
-              options={{ float: 'right' }}
-              instanceRef={(ref) => {
-                if (ref) {
-                  ref.routePanel.state.set({
-                    fromEnabled: false,
-                    toEnabled: false,
-                    from: driverCoords,
-                    to: restaurantsCoords[0],
-                    type: 'auto',
-                  })
-                }
-              }}
-            />
-          )} */}
         </Map>
       </YMaps>
     </div>

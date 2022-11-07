@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client'
 import { Map, TrafficControl, YMaps, ZoomControl } from '@pbe/react-yandex-maps'
-import { useGeolocated } from 'react-geolocated'
+import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
+import ymaps from 'yandex-maps'
 import { OrderDriverCard } from '../../components/order/OrderDriverCard'
+import { YandexRoute } from '../../components/Yandex/YandexRoute'
 import { graphql } from '../../gql'
 
 const DriverOrderRoute_Query = graphql(`
@@ -13,6 +15,12 @@ const DriverOrderRoute_Query = graphql(`
       error
       order {
         ...DriverCard_OrderFragment
+        restaurant {
+          coords {
+            latitude
+            longitude
+          }
+        }
       }
     }
   }
@@ -29,27 +37,40 @@ export const DriverOrderPage = () => {
   const { data } = useQuery(DriverOrderRoute_Query, {
     variables: { input: { id: orderId } },
   })
+
+  const [driverCoords, setDriverCoords] = React.useState<[number, number]>([
+    57, 37,
+  ])
+
+  const getGeoLocation = async (ymapsInstance: typeof ymaps) => {
+    // @ts-ignore
+    const result = await ymapsInstance.geolocation.get({
+      provider: 'yandex',
+      mapStateAutoApply: true,
+    })
+    const res = await ymapsInstance.geocode(result.geoObjects.position)
+    // @ts-ignore
+    const coords = res.geoObjects.get(0).geometry.getCoordinates()
+    setDriverCoords(coords)
+  }
+
   const order = data?.getOrder.order
 
-  const { coords, isGeolocationAvailable, isGeolocationEnabled, getPosition } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: true,
-      },
-    })
-
-  if (!isGeolocationAvailable) {
-    return <div>Your browser does not support Geolocation</div>
-  }
-
-  if (!isGeolocationEnabled) {
-    return <div>Geolocation is not enabled</div>
-  }
-
-  if (!coords?.latitude || !coords.longitude) {
-    getPosition()
+  if (!order) {
     return null
   }
+
+  if (
+    !order.restaurant?.coords.latitude ||
+    !order.restaurant.coords.longitude
+  ) {
+    return null
+  }
+
+  const restaurantCoords: [number, number] = [
+    order.restaurant.coords.latitude,
+    order.restaurant.coords.longitude,
+  ]
 
   return (
     <div>
@@ -61,35 +82,26 @@ export const DriverOrderPage = () => {
           width={window.innerWidth}
           height="90vh"
           state={{
-            center: [coords.latitude, coords.longitude],
+            center: driverCoords,
             zoom: 16,
           }}
           modules={[
             'control.ZoomControl',
             'control.FullscreenControl',
             'control.TrafficControl',
+            'geolocation',
+            'geocode',
             // 'templateLayoutFactory',
           ]}
+          onLoad={(ymaps) => {
+            // @ts-ignore
+            getGeoLocation(ymaps)
+          }}
         >
           <TrafficControl />
           <ZoomControl />
 
-          {/* {order && driverCoords && (
-            <RoutePanel
-              options={{ float: 'right' }}
-              instanceRef={(ref) => {
-                if (ref) {
-                  ref.routePanel.state.set({
-                    fromEnabled: false,
-                    toEnabled: false,
-                    from: driverCoords,
-                    to: restaurantsCoords[0],
-                    type: 'auto',
-                  })
-                }
-              }}
-            />
-          )} */}
+          <YandexRoute from={driverCoords} to={restaurantCoords} />
         </Map>
       </YMaps>
       {order && (
