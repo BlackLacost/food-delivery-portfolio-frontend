@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useSubscription } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import {
   FullscreenControl,
   Map,
@@ -7,7 +7,7 @@ import {
   YMaps,
   ZoomControl,
 } from '@pbe/react-yandex-maps'
-import { useState } from 'react'
+import React from 'react'
 import { useGeolocated } from 'react-geolocated'
 import { useNavigate } from 'react-router-dom'
 import { graphql } from '../../gql'
@@ -23,6 +23,10 @@ const GetOrdersRoute_Query = graphql(`
         id
         restaurant {
           address
+          coords {
+            latitude
+            longitude
+          }
           name
         }
         status
@@ -47,6 +51,15 @@ const CoockedOrders_Subscription = graphql(`
   subscription CookedOrders_Subscription {
     cookedOrders {
       id
+      restaurant {
+        address
+        coords {
+          latitude
+          longitude
+        }
+        name
+      }
+      status
     }
   }
 `)
@@ -66,20 +79,32 @@ export const Dashboard = () => {
   window.acceptOrder = (orderId) => {
     takeOrderMutation({ variables: { input: { id: orderId } } })
   }
-  const { data: getOrdersData } = useQuery(GetOrdersRoute_Query, {
-    variables: { input: { status: OrderStatus.Cooked } },
-  })
+  const { data: getOrdersData, subscribeToMore: subscribeToMoreOrders } =
+    useQuery(GetOrdersRoute_Query, {
+      variables: { input: { status: OrderStatus.Cooked } },
+    })
+
+  React.useEffect(() => {
+    if (getOrdersData?.getOrders.ok) {
+      subscribeToMoreOrders({
+        document: CoockedOrders_Subscription,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev
+          const newOrder = subscriptionData.data.cookedOrders
+          return {
+            getOrders: {
+              ...prev.getOrders,
+              orders: prev.getOrders.orders?.length
+                ? [...prev.getOrders.orders, newOrder]
+                : [newOrder],
+            },
+          }
+        },
+      })
+    }
+  }, [getOrdersData, subscribeToMoreOrders])
+
   const orders = getOrdersData?.getOrders.orders
-  const [restaurantsCoords, setRestaurantsCoords] = useState<
-    [number, number][]
-  >([
-    [55.701574, 37.59],
-    [55.711574, 37.603856],
-    [55.701574, 37.62],
-  ])
-  const { data: coockedOrdersData } = useSubscription(
-    CoockedOrders_Subscription
-  )
 
   const { coords, isGeolocationAvailable, isGeolocationEnabled, getPosition } =
     useGeolocated({
@@ -122,31 +147,33 @@ export const Dashboard = () => {
           <ZoomControl />
           <FullscreenControl />
 
-          {orders &&
-            orders.slice(0, 3).map((order, index) => (
-              <Placemark
-                modules={['geoObject.addon.balloon']}
-                key={order.id}
-                geometry={restaurantsCoords[index]}
-                properties={{
-                  item: order.id,
-                  balloonContentHeader: `Order #${order.id}`,
-                  balloonContentBody: `${order.restaurant?.name} ${order.restaurant?.address}`,
-                  balloonContentFooter: `
+          {orders?.map(({ id: orderId, restaurant }) => (
+            <Placemark
+              modules={['geoObject.addon.balloon']}
+              key={orderId}
+              geometry={[
+                restaurant?.coords.latitude,
+                restaurant?.coords.longitude,
+              ]}
+              properties={{
+                item: orderId,
+                balloonContentHeader: `Order #${orderId}`,
+                balloonContentBody: `${restaurant?.name} ${restaurant?.address}`,
+                balloonContentFooter: `
                     <input
                       class="input cursor-pointer bg-lime-600 text-white"
                       type="button"
-                      onclick="window.acceptOrder(${order.id})"
+                      onclick="window.acceptOrder(${orderId})"
                       value="Accpet Order"
                     />`,
-                  iconContent: order.restaurant?.name,
-                }}
-                options={{
-                  preset: 'islands#blueStretchyIcon',
-                  balloonPanelMaxMapArea: Infinity,
-                }}
-              />
-            ))}
+                iconContent: restaurant?.name,
+              }}
+              options={{
+                preset: 'islands#blueStretchyIcon',
+                balloonPanelMaxMapArea: Infinity,
+              }}
+            />
+          ))}
 
           {/* {coockedOrdersData?.cookedOrders && (
             <RoutePanel
@@ -166,17 +193,6 @@ export const Dashboard = () => {
           )} */}
         </Map>
       </YMaps>
-      {/* <div className="relative mx-auto -my-60 max-w-screen-sm space-y-5 bg-white p-10 shadow-lg">
-        {coockedOrdersData?.cookedOrders ? (
-          <>
-            <h1 className="text-center text-2xl">New Coocked Order</h1>
-            <p>{JSON.stringify(coockedOrdersData.cookedOrders, null, 2)}</p>
-            <Button className="w-full">Accept Order &rarr;</Button>
-          </>
-        ) : (
-          <h1 className="text-center text-2xl">No Orders Yet...</h1>
-        )}
-      </div> */}
     </div>
   )
 }
