@@ -34,9 +34,14 @@ const RestaurantRoute_Query = graphql(`
 const CreateOrder_Mutation = graphql(`
   mutation CreateOrder_Mutation($input: CreateOrderInput!) {
     createOrder(input: $input) {
-      ok
-      error
-      orderId
+      order {
+        id
+      }
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -108,14 +113,10 @@ export const RestaurantPage = () => {
     CreateOrder_Mutation,
     {
       variables: { input: { restaurantId, items: dishesOrder } },
-      onCompleted: ({ createOrder: { ok, error, orderId } }) => {
-        if (ok) {
-          navigate(`/order/${orderId}`)
-          return
-        }
-        if (error) {
-          notify.error(error)
-        }
+      onError: ({ message }) => notify.error(message),
+      onCompleted: ({ createOrder: { order, error } }) => {
+        if (error) return notify.error(error.message)
+        navigate(`/order/${order?.id}`)
       },
     }
   )

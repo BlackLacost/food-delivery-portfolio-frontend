@@ -12,11 +12,14 @@ import { notify } from '../toast'
 const GetOrderRoute_Query = graphql(`
   query GetOrder_Query($input: GetOrderInput!) {
     getOrder(input: $input) {
-      ok
-      error
       order {
         ...ClientCard_OrderFragment
         ...OwnerCard_OrderFragment
+      }
+      error {
+        ... on Error {
+          message
+        }
       }
     }
   }
@@ -45,12 +48,14 @@ export const OrderPage = () => {
     variables: { input: { id: orderId } },
     onError: (error) => notify.error(error.message),
     onCompleted: ({ getOrder: { error } }) => {
-      if (error) return notify.error(error)
+      error && notify.error(error.message)
     },
   })
 
+  const order = data?.getOrder.order
+
   useEffect(() => {
-    if (data?.getOrder.ok) {
+    if (order) {
       subscribeToMore({
         document: OrderUpdates_Subscription,
         variables: { input: { id: orderId } },
@@ -65,8 +70,9 @@ export const OrderPage = () => {
     }
   }, [data, orderId, subscribeToMore])
 
-  const order = data?.getOrder.order
-  if (!order) return null
+  if (!order) {
+    return null
+  }
 
   return (
     <>
@@ -77,9 +83,6 @@ export const OrderPage = () => {
         <OrderClientCard order={order} />
       )}
       {userData?.me.role === UserRole.Owner && <OrderOwnerCard order={order} />}
-      {userData?.me.role === UserRole.Delivery && (
-        <OrderOwnerCard order={order} />
-      )}
     </>
   )
 }

@@ -19,8 +19,6 @@ import { notify } from '../../toast'
 const GetOrdersRoute_Query = graphql(`
   query GetOrders_Query($input: GetOrdersInput!) {
     getOrders(input: $input) {
-      ok
-      error
       orders {
         id
         restaurant {
@@ -37,13 +35,16 @@ const GetOrdersRoute_Query = graphql(`
   }
 `)
 
-const TakeOrder_Mutation = graphql(`
-  mutation TakeOrder_Mutation($input: TakeOrderInput!) {
-    takeOrder(input: $input) {
-      ok
-      error
+const AcceptOrder_Mutation = graphql(`
+  mutation AcceptOrder_Mutation($input: AcceptOrderInput!) {
+    acceptOrder(input: $input) {
       order {
         id
+      }
+      error {
+        ... on Error {
+          message
+        }
       }
     }
   }
@@ -69,17 +70,15 @@ const CoockedOrders_Subscription = graphql(`
 export const Dashboard = () => {
   const navigate = useNavigate()
 
-  const [takeOrderMutation] = useMutation(TakeOrder_Mutation, {
+  const [acceptOrderMutation] = useMutation(AcceptOrder_Mutation, {
     onError: (error) => notify.error(error.message),
-    onCompleted: ({ takeOrder: { error, ok, order } }) => {
-      if (error) return notify.error(error)
-      if (ok && order) {
-        navigate(`/order/${order.id}`)
-      }
+    onCompleted: ({ acceptOrder: { error, order } }) => {
+      if (error) return notify.error(error.message)
+      navigate(`/order/${order?.id}`)
     },
   })
   window.acceptOrder = (orderId) => {
-    takeOrderMutation({ variables: { input: { id: orderId } } })
+    acceptOrderMutation({ variables: { input: { id: orderId } } })
   }
   const { data: getOrdersData, subscribeToMore: subscribeToMoreOrders } =
     useQuery(GetOrdersRoute_Query, {
@@ -87,7 +86,7 @@ export const Dashboard = () => {
     })
 
   React.useEffect(() => {
-    if (getOrdersData?.getOrders.ok) {
+    if (getOrdersData?.getOrders && getOrdersData.getOrders.orders.length > 0) {
       subscribeToMoreOrders({
         document: CoockedOrders_Subscription,
         updateQuery: (prev, { subscriptionData }) => {
@@ -96,7 +95,7 @@ export const Dashboard = () => {
           return {
             getOrders: {
               ...prev.getOrders,
-              orders: prev.getOrders.orders?.length
+              orders: prev.getOrders.orders.length
                 ? [...prev.getOrders.orders, newOrder]
                 : [newOrder],
             },

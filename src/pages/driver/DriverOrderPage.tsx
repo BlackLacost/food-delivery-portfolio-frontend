@@ -7,12 +7,11 @@ import ymaps from 'yandex-maps'
 import { OrderDriverCard } from '../../components/order/OrderDriverCard'
 import { YandexRoute } from '../../components/Yandex/YandexRoute'
 import { graphql } from '../../gql'
+import { notify } from '../../toast'
 
 const DriverOrderRoute_Query = graphql(`
   query DriverOrder_Query($input: GetOrderInput!) {
     getOrder(input: $input) {
-      ok
-      error
       order {
         ...DriverCard_OrderFragment
         restaurant {
@@ -20,6 +19,11 @@ const DriverOrderRoute_Query = graphql(`
             latitude
             longitude
           }
+        }
+      }
+      error {
+        ... on Error {
+          message
         }
       }
     }
@@ -36,6 +40,10 @@ export const DriverOrderPage = () => {
 
   const { data } = useQuery(DriverOrderRoute_Query, {
     variables: { input: { id: orderId } },
+    onError: ({ message }) => notify.error(message),
+    onCompleted: ({ getOrder: { error } }) => {
+      if (error) notify.error(error.message)
+    },
   })
 
   const [driverCoords, setDriverCoords] = React.useState<[number, number]>([
@@ -56,9 +64,7 @@ export const DriverOrderPage = () => {
 
   const order = data?.getOrder.order
 
-  if (!order) {
-    return null
-  }
+  if (!order) return null
 
   if (
     !order.restaurant?.coords.latitude ||

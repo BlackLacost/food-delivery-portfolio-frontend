@@ -26,8 +26,11 @@ const OwnerCard_OrderFragment = graphql(`
 const EditOrder_Mutation = graphql(`
   mutation EditOrder_Mutation($input: EditOrderInput!) {
     editOrder(input: $input) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -41,7 +44,7 @@ export const OrderOwnerCard = (props: Props) => {
   const [editOrder] = useMutation(EditOrder_Mutation, {
     onError: (error) => notify.error(error.message),
     onCompleted: ({ editOrder: { error } }) => {
-      if (error) return notify.error(error)
+      if (error) return notify.error(error.message)
     },
   })
 
