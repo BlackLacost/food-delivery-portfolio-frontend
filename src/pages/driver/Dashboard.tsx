@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import {
+  Clusterer,
   FullscreenControl,
   Map,
   Placemark,
@@ -140,6 +141,7 @@ export const Dashboard = () => {
             'control.ZoomControl',
             'control.FullscreenControl',
             'control.TrafficControl',
+            'clusterer.addon.balloon',
             // 'templateLayoutFactory',
           ]}
         >
@@ -147,33 +149,44 @@ export const Dashboard = () => {
           <ZoomControl />
           <FullscreenControl />
 
-          {orders?.map(({ id: orderId, restaurant }) => (
-            <Placemark
-              modules={['geoObject.addon.balloon']}
-              key={orderId}
-              geometry={[
-                restaurant?.coords.latitude,
-                restaurant?.coords.longitude,
-              ]}
-              properties={{
-                item: orderId,
-                balloonContentHeader: `Order #${orderId}`,
-                balloonContentBody: `${restaurant?.name} ${restaurant?.address}`,
-                balloonContentFooter: `
+          <Clusterer
+            options={{
+              balloonPanelMaxMapArea: Infinity,
+              clusterDisableClickZoom: true,
+            }}
+          >
+            {orders?.map(({ id: orderId, restaurant }) => (
+              <Placemark
+                modules={['geoObject.addon.balloon']}
+                key={orderId}
+                geometry={[
+                  restaurant?.coords.latitude,
+                  restaurant?.coords.longitude,
+                ]}
+                properties={{
+                  item: orderId,
+                  // balloonContentHeader: `Order #${orderId}`,
+                  balloonContentHeader: `${restaurant?.name}`,
+                  balloonContentBody: `
+                    <p class='font-bold mb-2'>Order #${orderId}</p>
+                    <p>Address: ${restaurant?.address}</p>
+                  `,
+                  balloonContentFooter: `
                     <input
                       class="input cursor-pointer bg-lime-600 text-white"
                       type="button"
                       onclick="window.acceptOrder(${orderId})"
                       value="Accpet Order"
                     />`,
-                iconContent: restaurant?.name,
-              }}
-              options={{
-                preset: 'islands#blueStretchyIcon',
-                balloonPanelMaxMapArea: Infinity,
-              }}
-            />
-          ))}
+                  iconContent: restaurant?.name,
+                }}
+                options={{
+                  preset: 'islands#blueStretchyIcon',
+                  balloonPanelMaxMapArea: Infinity,
+                }}
+              />
+            ))}
+          </Clusterer>
 
           {/* {coockedOrdersData?.cookedOrders && (
             <RoutePanel
