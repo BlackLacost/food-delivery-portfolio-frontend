@@ -11,7 +11,7 @@ import { notify } from '../../toast'
 
 const DriverOrderRoute_Query = graphql(`
   query DriverOrder_Query($input: GetOrderInput!) {
-    getOrder(input: $input) {
+    getDriverOrder(input: $input) {
       order {
         ...DriverCard_OrderFragment
         restaurant {
@@ -41,7 +41,7 @@ export const DriverOrderPage = () => {
   const { data } = useQuery(DriverOrderRoute_Query, {
     variables: { input: { id: orderId } },
     onError: ({ message }) => notify.error(message),
-    onCompleted: ({ getOrder: { error } }) => {
+    onCompleted: ({ getDriverOrder: { error } }) => {
       if (error) notify.error(error.message)
     },
   })
@@ -62,7 +62,7 @@ export const DriverOrderPage = () => {
     setDriverCoords(coords)
   }
 
-  const order = data?.getOrder.order
+  const order = data?.getDriverOrder.order
 
   if (!order) return null
 

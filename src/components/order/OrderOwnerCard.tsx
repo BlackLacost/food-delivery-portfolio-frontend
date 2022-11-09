@@ -17,9 +17,6 @@ const OwnerCard_OrderFragment = graphql(`
     customer {
       email
     }
-    restaurant {
-      id
-    }
   }
 `)
 

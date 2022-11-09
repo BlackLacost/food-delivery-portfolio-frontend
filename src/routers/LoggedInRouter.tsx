@@ -4,17 +4,18 @@ import { Layout } from '../components/Layout'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
 import { CategoryPage } from '../pages/client/CategoryPage'
+import { ClientOrderPage } from '../pages/client/ClientOrderPage'
 import { RestaurantPage } from '../pages/client/RestaurantPage'
 import { RestaurantsPage } from '../pages/client/RestaurantsPage'
 import { SearchPage } from '../pages/client/SearchPage'
 import { Dashboard } from '../pages/driver/Dashboard'
 import { DriverOrderPage } from '../pages/driver/DriverOrderPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
-import { OrderPage } from '../pages/OrderPage'
 import { AddDishPage } from '../pages/owner/AddDishPage'
 import { AddRestaurantPage } from '../pages/owner/AddRestaurantPage'
 import { MyRestaurantPage } from '../pages/owner/MyRestaurantPage'
 import { MyRestaurantsPage } from '../pages/owner/MyRestaurantsPage'
+import { OwnerOrderPage } from '../pages/owner/OwnerOrderPage'
 import { ConfirmEmailPage } from '../pages/user/ConfirmEmailPage'
 import { EditProfilePage } from '../pages/user/EditProfilePage'
 
@@ -45,7 +46,7 @@ const ClientRoutes = () => {
       <Route path="search" element={<SearchPage />} />
       <Route path="category/:slug" element={<CategoryPage />} />
       <Route path="restaurant/:id" element={<RestaurantPage />} />
-      <Route path="order/:id" element={<OrderPage />} />
+      <Route path="order/:id" element={<ClientOrderPage />} />
     </>
   )
 }
@@ -57,7 +58,7 @@ const OwnerRoutes = () => {
       <Route path="add-restaurant" element={<AddRestaurantPage />} />
       <Route path="restaurant/:id" element={<MyRestaurantPage />} />
       <Route path="restaurant/:id/add-dish" element={<AddDishPage />} />
-      <Route path="order/:id" element={<OrderPage />} />
+      <Route path="order/:id" element={<OwnerOrderPage />} />
     </>
   )
 }
