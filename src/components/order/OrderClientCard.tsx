@@ -26,12 +26,12 @@ type Props = {
 export const OrderClientCard = (props: Props) => {
   const order = useFragment(ClientCard_OrderFragment, props.order)
   return (
-    <article className="mx-5 my-10 max-w-screen-sm border border-gray-800 sm:mx-auto">
-      <H1 className="bg-gray-800 py-4 text-center text-white">
+    <article className="border border-gray-800">
+      <H1 className="bg-gray-800 py-2 text-center text-white">
         Order #{order.id}
       </H1>
       <div className="px-5">
-        <p className="py-10 text-center text-3xl">{order.total} руб.</p>
+        <p className="py-3 text-center text-3xl">{order.total} руб.</p>
         <table className="w-full border-collapse">
           <tbody>
             {[
@@ -40,9 +40,7 @@ export const OrderClientCard = (props: Props) => {
               `Driver: ${order.driver?.email ?? 'Not yet.'}`,
             ].map((line, index) => (
               <tr key={index}>
-                <td className="border-y border-gray-800 py-4 text-xl">
-                  {line}
-                </td>
+                <td className="border-y border-gray-800 py-2">{line}</td>
               </tr>
             ))}
           </tbody>

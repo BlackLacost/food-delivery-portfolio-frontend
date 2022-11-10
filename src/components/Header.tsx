@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client'
+import { BiDish } from 'react-icons/bi'
 import { FaUserAlt } from 'react-icons/fa'
 import { IoLogOut } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
@@ -29,6 +30,9 @@ export const Header = () => {
             <Logo className="w-52" />
           </Link>
           <div className="flex items-center space-x-4">
+            <Link to="/orders">
+              <BiDish size={40} />
+            </Link>
             <Link to="/edit-profile">
               <FaUserAlt size={30} />
             </Link>
