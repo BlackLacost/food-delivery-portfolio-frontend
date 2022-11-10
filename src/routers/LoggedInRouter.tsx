@@ -89,7 +89,7 @@ export const LoggedInRouter = () => {
           {CommonRoutes()}
           {data.me.role === UserRole.Client && ClientRoutes()}
           {data.me.role === UserRole.Owner && OwnerRoutes()}
-          {data.me.role === UserRole.Delivery && DriverRoutes()}
+          {data.me.role === UserRole.Driver && DriverRoutes()}
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
