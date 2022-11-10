@@ -2,8 +2,8 @@ import { useMutation } from '@apollo/client'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { OrderStatus, RestaurantOrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
-import { Button } from '../Button'
 import { H1 } from '../H1'
+import { OrderButton } from './OrderButton'
 import { OrderStatusView } from './OrderStatus'
 
 const OwnerCard_OrderFragment = graphql(`
@@ -76,20 +76,14 @@ export const OrderOwnerCard = (props: Props) => {
           </tbody>
         </table>
         {order.status === OrderStatus.Pending && (
-          <Button
-            className="my-4 w-full py-4"
-            onClick={() => onClick(RestaurantOrderStatus.Cooking)}
-          >
+          <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooking)}>
             Accept Order
-          </Button>
+          </OrderButton>
         )}
         {order.status === OrderStatus.Cooking && (
-          <Button
-            className="my-4 w-full py-4"
-            onClick={() => onClick(RestaurantOrderStatus.Cooked)}
-          >
+          <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooked)}>
             Order Cooked
-          </Button>
+          </OrderButton>
         )}
         {order.status === OrderStatus.Cooked && (
           <OrderStatusView status={order.status} />
