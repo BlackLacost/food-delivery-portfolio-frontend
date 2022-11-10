@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
 import { FragmentType, graphql, useFragment } from '../../gql'
-import { OrderStatus } from '../../gql/graphql'
+import { DriverOrderStatus, OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
 import { Button } from '../Button'
 
@@ -23,9 +23,12 @@ const DriverCard_OrderFragment = graphql(`
   }
 `)
 
-const EditOrder_Mutation = graphql(`
-  mutation EditOrder_Mutation($input: EditOrderInput!) {
-    editOrder(input: $input) {
+const SetDriverOrderStatus_Mutation = graphql(`
+  mutation SetDriverOrderStatus_Mutation($input: SetDriverOrderStatusInput!) {
+    setDriverOrderStatus(input: $input) {
+      order {
+        status
+      }
       error {
         ... on Error {
           message
@@ -42,17 +45,19 @@ type Props = {
 export const OrderDriverCard = (props: Props) => {
   const navigate = useNavigate()
   const order = useFragment(DriverCard_OrderFragment, props.order)
-  const [editOrder] = useMutation(EditOrder_Mutation, {
+  const [setDriverOrderStatus] = useMutation(SetDriverOrderStatus_Mutation, {
     onError: (error) => notify.error(error.message),
-    onCompleted: ({ editOrder: { error } }) => {
+    onCompleted: ({ setDriverOrderStatus: { order, error } }) => {
       if (error) return notify.error(error.message)
-
-      navigate('/')
+      if (order?.status === OrderStatus.Delivered) {
+        navigate('/')
+      }
     },
+    refetchQueries: 'active',
   })
 
-  const onClick = (status: OrderStatus) => {
-    editOrder({ variables: { input: { id: order.id, status } } })
+  const onClick = (status: DriverOrderStatus) => {
+    setDriverOrderStatus({ variables: { input: { id: order.id, status } } })
   }
 
   return (
@@ -80,9 +85,17 @@ export const OrderDriverCard = (props: Props) => {
         {order.status === OrderStatus.Accepted && (
           <Button
             className="my-2 w-full py-1 text-base"
-            onClick={() => onClick(OrderStatus.Delivered)}
+            onClick={() => onClick(DriverOrderStatus.PickedUp)}
           >
-            Delivered
+            Забрал
+          </Button>
+        )}
+        {order.status === OrderStatus.PickedUp && (
+          <Button
+            className="my-2 w-full py-1 text-base"
+            onClick={() => onClick(DriverOrderStatus.Delivered)}
+          >
+            Доствален
           </Button>
         )}
       </div>
