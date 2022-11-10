@@ -7,6 +7,7 @@ import ymaps from 'yandex-maps'
 import { OrderDriverCard } from '../../components/order/OrderDriverCard'
 import { YandexRoute } from '../../components/Yandex/YandexRoute'
 import { graphql } from '../../gql'
+import { OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
 
 const DriverOrderRoute_Query = graphql(`
@@ -14,12 +15,19 @@ const DriverOrderRoute_Query = graphql(`
     getDriverOrder(input: $input) {
       order {
         ...DriverCard_OrderFragment
+        customer {
+          coords {
+            latitude
+            longitude
+          }
+        }
         restaurant {
           coords {
             latitude
             longitude
           }
         }
+        status
       }
       error {
         ... on Error {
@@ -68,7 +76,9 @@ export const DriverOrderPage = () => {
 
   if (
     !order.restaurant?.coords.latitude ||
-    !order.restaurant.coords.longitude
+    !order.restaurant?.coords.longitude ||
+    !order.customer?.coords?.latitude ||
+    !order.customer?.coords?.longitude
   ) {
     return null
   }
@@ -76,6 +86,11 @@ export const DriverOrderPage = () => {
   const restaurantCoords: [number, number] = [
     order.restaurant.coords.latitude,
     order.restaurant.coords.longitude,
+  ]
+
+  const customerCoords: [number, number] = [
+    order.customer.coords.latitude,
+    order.customer.coords.longitude,
   ]
 
   return (
@@ -107,7 +122,12 @@ export const DriverOrderPage = () => {
           <TrafficControl />
           <ZoomControl />
 
-          <YandexRoute from={driverCoords} to={restaurantCoords} />
+          {order.status === OrderStatus.Accepted && (
+            <YandexRoute from={driverCoords} to={restaurantCoords} />
+          )}
+          {order.status === OrderStatus.PickedUp && (
+            <YandexRoute from={driverCoords} to={customerCoords} />
+          )}
         </Map>
       </YMaps>
       {order && (
