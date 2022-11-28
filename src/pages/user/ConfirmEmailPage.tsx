@@ -8,8 +8,11 @@ import { Me } from '../../routers/LoggedInRouter'
 const VerifyEmail = graphql(`
   mutation VerifyEmail($input: VerifyEmailInput!) {
     verifyEmail(input: $input) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -19,9 +22,9 @@ export const ConfirmEmailPage = () => {
   const { data: userData } = useQuery(Me)
   const navigate = useNavigate()
   const [verifyEmail] = useMutation(VerifyEmail, {
-    update: async (cache, result) => {
-      const ok = result.data?.verifyEmail.ok
-      if (ok && userData) {
+    update: async (cache, { data }) => {
+      const error = data?.verifyEmail.error
+      if (!error && userData) {
         // await refetchMe()
         cache.writeFragment({
           id: `User:${userData.me.id}`,

@@ -11,12 +11,16 @@ import { GetAddress, Position } from '../components/Yandex/GetAddress'
 import { CreateAccountForm, createAccountSchema } from '../form.schemas'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
+import { notify } from '../toast'
 
 const CreateAccount = graphql(`
   mutation CreateAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -38,10 +42,12 @@ export const CreateAccountPage = () => {
     createAccountMutation,
     { data: createAccountMutationResult, loading },
   ] = useMutation(CreateAccount, {
-    onCompleted: (data) => {
-      if (data.createAccount.ok) {
-        navigate('/')
-      }
+    onCompleted: ({ createAccount: { error } }) => {
+      if (error) return notify.error(error.message)
+      navigate('/')
+    },
+    onError: (error) => {
+      console.log(JSON.stringify(error, null, 2))
     },
   })
 
@@ -130,11 +136,6 @@ export const CreateAccountPage = () => {
           <Button canClick={isValid} loading={loading}>
             Create Account
           </Button>
-          {createAccountMutationResult?.createAccount.error && (
-            <FormError>
-              {createAccountMutationResult.createAccount.error}
-            </FormError>
-          )}
         </form>
         <div>
           Already have an account?{' '}

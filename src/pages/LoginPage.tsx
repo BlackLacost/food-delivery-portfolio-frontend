@@ -10,12 +10,16 @@ import { Logo } from '../components/Logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { LoginForm, loginSchema } from '../form.schemas'
 import { graphql } from '../gql'
+import { notify } from '../toast'
 
 const Login = graphql(`
   mutation Login($loginInput: LoginInput!) {
     login(input: $loginInput) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
       token
     }
   }
@@ -31,21 +35,19 @@ export const LoginPage = () => {
     resolver: yupResolver(loginSchema),
   })
 
-  const [loginMutation, { data: loginMutationResult, loading }] = useMutation(
-    Login,
-    {
-      onCompleted: (data) => {
-        const {
-          login: { ok, token },
-        } = data
-        if (ok && token) {
-          localStorage.setItem(LOCALSTORAGE_TOKEN, token)
-          authTokenVar(token)
-          isLoggedInVar(true)
-        }
-      },
-    }
-  )
+  const [loginMutation, { loading }] = useMutation(Login, {
+    onCompleted: ({ login: { token, error } }) => {
+      if (error) {
+        return notify.error(error.message)
+      }
+
+      if (token) {
+        localStorage.setItem(LOCALSTORAGE_TOKEN, token)
+        authTokenVar(token)
+        isLoggedInVar(true)
+      }
+    },
+  })
 
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     if (!loading) {
@@ -91,9 +93,6 @@ export const LoginPage = () => {
           <Button canClick={isValid} loading={loading}>
             Log In
           </Button>
-          {loginMutationResult?.login.error && (
-            <FormError>{loginMutationResult.login.error}</FormError>
-          )}
         </form>
         <div>
           New to Uber?{' '}

@@ -11,8 +11,11 @@ import { Me } from '../../routers/LoggedInRouter'
 const EditProfile = graphql(`
   mutation EditProfile($input: EditProfileInput!) {
     editProfile(input: $input) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -35,10 +38,10 @@ export const EditProfilePage = () => {
   })
 
   const [editProfile, { loading }] = useMutation(EditProfile, {
-    update: async (cache, result) => {
-      const ok = result.data?.editProfile.ok
+    update: async (cache, { data }) => {
+      const error = data?.editProfile.error
 
-      if (ok && userData) {
+      if (!error && userData) {
         // await refetchMe()
         const {
           me: { id, email: prevEmail },

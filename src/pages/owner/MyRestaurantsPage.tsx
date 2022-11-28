@@ -7,8 +7,7 @@ import { graphql } from '../../gql'
 export const MyRestaurantsRoute_Query = graphql(`
   query MyRestaurants_Query {
     myRestaurants {
-      ok
-      results {
+      restaurants {
         id
       }
     }
@@ -25,7 +24,8 @@ export const MyRestaurantsPage = () => {
       </Helmet>
       <div className="container mt-32">
         <h1 className="mb-10 text-4xl">My Restaurants</h1>
-        {data?.myRestaurants.ok && data?.myRestaurants.results?.length === 0 ? (
+        {data?.myRestaurants.restaurants &&
+        data?.myRestaurants.restaurants?.length === 0 ? (
           <>
             <p className="mb-5 text-xl">No restaurants here. Create One!</p>
             <Link className="link text-lime-600" to="/add-restaurant">

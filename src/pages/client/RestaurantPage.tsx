@@ -12,7 +12,7 @@ import { notify } from '../../toast'
 
 const RestaurantRoute_Query = graphql(`
   query Restaurant_Query($input: RestaurantInput!) {
-    restaurant(input: $input) {
+    getRestaurant(input: $input) {
       restaurant {
         id
         address
@@ -57,7 +57,7 @@ export const RestaurantPage = () => {
   const { data } = useQuery(RestaurantRoute_Query, {
     variables: { input: { restaurantId } },
   })
-  const restaurant = data?.restaurant.restaurant
+  const restaurant = data?.getRestaurant.restaurant
 
   const [orderStarted, setOrderStarted] = useState(false)
   const [dishesOrder, setDishesOrder] = useState<CreateOrderItemInput[]>([])

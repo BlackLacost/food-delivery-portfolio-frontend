@@ -5,18 +5,21 @@ import { graphql } from '../../gql'
 const RestaurantsByCategory_Query = graphql(`
   query RestaurantsByCategory_Query($input: CategoryInput!) {
     category(input: $input) {
-      ok
-      error
-      totalPages
-      totalResults
-      restaurants {
-        id
-        name
-      }
       category {
         id
         name
       }
+      error {
+        ... on Error {
+          message
+        }
+      }
+      restaurants {
+        id
+        name
+      }
+      totalPages
+      totalResults
     }
   }
 `)

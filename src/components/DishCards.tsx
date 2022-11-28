@@ -5,10 +5,15 @@ import { DishCardOwner } from './dish-card/DishCardOwner'
 export const DishCards_QueryFragment = graphql(`
   fragment DishCards_QueryFragment on Query {
     myRestaurant(input: $input) {
-      result {
+      restaurant {
         menu {
           id
           ...CardOwner_DishFragment
+        }
+      }
+      error {
+        ... on Error {
+          message
         }
       }
     }
@@ -20,8 +25,8 @@ type Props = {
 }
 
 export const DishCards: React.FC<Props> = ({ query }) => {
-  const menu = useFragment(DishCards_QueryFragment, query).myRestaurant.result
-    ?.menu
+  const menu = useFragment(DishCards_QueryFragment, query).myRestaurant
+    .restaurant?.menu
 
   if (menu?.length === 0) {
     return (

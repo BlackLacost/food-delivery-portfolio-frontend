@@ -18,7 +18,7 @@ const GetRestaurants_Query = graphql(`
         ...Card_CategoryFragment
       }
     }
-    restaurants(input: $input) {
+    getRestaurants(input: $input) {
       totalPages
     }
     ...Restaurants_QueryFragment
@@ -80,7 +80,7 @@ export const RestaurantsPage = () => {
           <Pagination
             className="my-6"
             page={page}
-            totalPages={data.restaurants.totalPages ?? 1}
+            totalPages={data.getRestaurants.totalPages ?? 1}
             onNextPage={onNextPage}
             onPrevPage={onPrevPage}
           />

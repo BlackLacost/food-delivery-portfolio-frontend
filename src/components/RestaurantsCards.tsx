@@ -4,8 +4,8 @@ import { RestaurantCard } from './RestaurantCard'
 
 const Restaurants_QueryFragment = graphql(`
   fragment Restaurants_QueryFragment on Query {
-    restaurants(input: $input) {
-      results {
+    getRestaurants(input: $input) {
+      restaurants {
         id
         ...Card_RestaurantFragment
       }
@@ -16,7 +16,7 @@ const Restaurants_QueryFragment = graphql(`
 const MyRestaurants_QueryFragment = graphql(`
   fragment MyRestaurants_QueryFragment on Query {
     myRestaurants {
-      results {
+      restaurants {
         id
         ...Card_RestaurantFragment
       }
@@ -37,9 +37,9 @@ export const RestaurantsCards = ({
   ...rest
 }: Props) => {
   const restaurants = useFragment(Restaurants_QueryFragment, clientQuery)
-    ?.restaurants.results
+    ?.getRestaurants.restaurants
   const myRestaurants = useFragment(MyRestaurants_QueryFragment, ownerQuery)
-    ?.myRestaurants.results
+    ?.myRestaurants.restaurants
 
   return (
     <div

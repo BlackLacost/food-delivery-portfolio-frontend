@@ -18,9 +18,9 @@ import { MyRestaurantsRoute_Query } from './MyRestaurantsPage'
 const CreateRestaurant = graphql(`
   mutation CreateRestaurant($input: CreateRestaurantInput!) {
     createRestaurant(input: $input) {
-      ok
-      error
-      restaurantId
+      restaurant {
+        id
+      }
     }
   }
 `)
@@ -39,11 +39,21 @@ export const AddRestaurantPage = () => {
   })
 
   const [createRestaurant, { data }] = useMutation(CreateRestaurant, {
-    onCompleted: ({ createRestaurant: { ok } }) => {
-      if (ok) {
+    onCompleted: ({ createRestaurant: { restaurant } }) => {
+      if (restaurant) {
         setUploading(false)
-        navigate('/')
+        return navigate('/')
       }
+    },
+    onError: (error) => {
+      console.log(JSON.stringify(error, null, 2))
+      // TODO: create BadInputError on backend
+      // error.graphQLErrors.forEach((graphqlError) =>
+      //   // @ts-ignore
+      //   graphqlError.extensions.response.message.forEach((error) => {
+      //     notify.error(error)
+      //   })
+      // )
     },
     // TODO: update cache 20.06 Cache Optimization part Two
     refetchQueries: [{ query: MyRestaurantsRoute_Query }],
@@ -122,9 +132,9 @@ export const AddRestaurantPage = () => {
         <Button canClick={isValid} loading={uploading}>
           Create Restaurant
         </Button>
-        {data?.createRestaurant.error && (
-          <FormError>{data.createRestaurant.error}</FormError>
-        )}
+        {/* {data?.createRestaurant.error && (
+          <FormError>{data.createRestaurant.error.message}</FormError>
+        )} */}
       </form>
     </div>
   )

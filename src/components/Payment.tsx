@@ -27,8 +27,11 @@ const PromotionPayment_Mutation = graphql(`
 const CreatePayment_Mutation = graphql(`
   mutation CreatePayment_Mutation($input: CreatePaymentInput!) {
     createPayment(input: $input) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -48,13 +51,11 @@ export const Payment = ({ isOpen, setIsOpen }: Props) => {
   const [isProcessPayment, setIsProcessPayment] = useState(false)
   const [promotionPayment] = useMutation(PromotionPayment_Mutation)
   const [createPayment] = useMutation(CreatePayment_Mutation, {
-    onCompleted: ({ createPayment: { ok, error } }) => {
+    onCompleted: ({ createPayment: { error } }) => {
       if (error) {
-        notify.error(error)
+        return notify.error(error.message)
       }
-      if (ok) {
-        notify.success('Платеж успешно совершен')
-      }
+      notify.success('Платеж успешно совершен')
     },
   })
 

@@ -8,13 +8,11 @@ import { FragmentType, graphql, useFragment } from '../../gql'
 const SearchRestaurant = graphql(`
   query SearchRestaurant($input: SearchRestaurantInput!) {
     searchRestaurant(input: $input) {
-      ok
-      error
-      totalPages
-      totalResults
       restaurants {
         ...CoreRestaurantFields
       }
+      totalPages
+      totalResults
     }
   }
 `)

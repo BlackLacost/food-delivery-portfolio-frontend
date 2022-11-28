@@ -26,7 +26,7 @@ export const searchTermSchema = yup.object({
 export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 
 export const createRestaurantSchema = yup.object({
-  name: yup.string().min(5).required(),
+  name: yup.string().min(3).required(),
   categoryName: yup.string().min(5).required(),
   image: yup
     .mixed()
@@ -53,7 +53,7 @@ export type CreateRestaurantForm = {
 
 export const addDishSchema = yup.object({
   name: yup.string().min(5).required(),
-  description: yup.string().min(5).max(140).required(),
+  description: yup.string().min(5).max(500).required(),
   price: yup.number().positive().required(),
   options: yup
     .array()

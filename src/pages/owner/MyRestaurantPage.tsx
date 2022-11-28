@@ -9,9 +9,14 @@ import { graphql } from '../../gql'
 export const MyRestaurantRoute_Query = graphql(`
   query MyRestaurant_Query($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
-      result {
+      restaurant {
         coverImage
         name
+      }
+      error {
+        ... on Error {
+          message
+        }
       }
     }
     ...DishCards_QueryFragment
@@ -56,13 +61,13 @@ export const MyRestaurantPage = () => {
     if (subscriptionData?.pendingOrders.id) {
       navigate(`/order/${subscriptionData.pendingOrders.id}`)
     }
-  }, [subscriptionData])
+  }, [subscriptionData, navigate])
 
   return (
     <div>
       <Helmet>
         <title>
-          {data?.myRestaurant.result?.name || 'Loading...'} | Number Eats
+          {data?.myRestaurant.restaurant?.name || 'Loading...'} | Number Eats
         </title>
         <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
       </Helmet>
@@ -70,12 +75,12 @@ export const MyRestaurantPage = () => {
       <div
         className="bg-gray-600 bg-cover bg-center py-28"
         style={{
-          backgroundImage: `url(${data?.myRestaurant.result?.coverImage}`,
+          backgroundImage: `url(${data?.myRestaurant.restaurant?.coverImage}`,
         }}
       />
       <div className="container mt-10">
         <h1 className="mb-10 text-4xl">
-          {data?.myRestaurant.result?.name ?? 'Loading...'}
+          {data?.myRestaurant.restaurant?.name ?? 'Loading...'}
         </h1>
         <div className="mb-8">
           <Link

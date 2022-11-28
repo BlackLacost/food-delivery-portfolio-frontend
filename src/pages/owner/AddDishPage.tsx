@@ -11,8 +11,11 @@ import { MyRestaurantRoute_Query } from './MyRestaurantPage'
 const AddDishRoute_Mutation = graphql(`
   mutation AddDish_Mutation($input: CreateDishInput!) {
     createDish(input: $input) {
-      ok
-      error
+      error {
+        ... on Error {
+          message
+        }
+      }
     }
   }
 `)
@@ -37,8 +40,8 @@ export const AddDishPage = () => {
   })
 
   const [addDish, { loading }] = useMutation(AddDishRoute_Mutation, {
-    onCompleted: ({ createDish: { ok } }) => {
-      if (ok) {
+    onCompleted: ({ createDish: { error } }) => {
+      if (!error) {
         navigate(-1)
       }
     },
