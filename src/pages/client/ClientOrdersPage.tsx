@@ -30,13 +30,21 @@ const ClientOrderUpdates_Subscription = graphql(`
 
 export const ClientOrdersPage = () => {
   const { data, subscribeToMore } = useQuery(GetClientOrdersRoute_Query, {
-    variables: { input: {} },
+    variables: {
+      input: {
+        statuses: [
+          OrderStatus.Pending,
+          OrderStatus.Cooking,
+          OrderStatus.Cooked,
+          OrderStatus.Accepted,
+          OrderStatus.PickedUp,
+        ],
+      },
+    },
     onError: (error) => notify.error(error.message),
   })
 
-  const notDeliveredOrders = data?.getOrders.orders.filter(
-    (order) => order.status !== OrderStatus.Delivered
-  )
+  const notDeliveredOrders = data?.getOrders.orders
 
   React.useEffect(() => {
     notDeliveredOrders?.forEach((order) => {

@@ -82,7 +82,7 @@ export const Dashboard = () => {
   }
   const { data: getOrdersData, subscribeToMore: subscribeToMoreOrders } =
     useQuery(GetOrdersRoute_Query, {
-      variables: { input: { status: OrderStatus.Cooked } },
+      variables: { input: { statuses: [OrderStatus.Cooked] } },
     })
 
   React.useEffect(() => {
