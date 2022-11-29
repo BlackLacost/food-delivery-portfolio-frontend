@@ -114,9 +114,9 @@ export const RestaurantPage = () => {
     {
       variables: { input: { restaurantId, items: dishesOrder } },
       onError: ({ message }) => notify.error(message),
-      onCompleted: ({ createOrder: { order, error } }) => {
+      onCompleted: ({ createOrder: { error } }) => {
         if (error) return notify.error(error.message)
-        navigate(`/order/${order?.id}`)
+        navigate('/orders')
       },
     }
   )

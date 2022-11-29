@@ -4,7 +4,6 @@ import { Layout } from '../components/Layout'
 import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
 import { CategoryPage } from '../pages/client/CategoryPage'
-import { ClientOrderPage } from '../pages/client/ClientOrderPage'
 import { ClientOrdersPage } from '../pages/client/ClientOrdersPage'
 import { RestaurantPage } from '../pages/client/RestaurantPage'
 import { RestaurantsPage } from '../pages/client/RestaurantsPage'
@@ -47,7 +46,6 @@ const ClientRoutes = () => {
       <Route path="search" element={<SearchPage />} />
       <Route path="category/:slug" element={<CategoryPage />} />
       <Route path="restaurant/:id" element={<RestaurantPage />} />
-      <Route path="order/:id" element={<ClientOrderPage />} />
       <Route path="orders" element={<ClientOrdersPage />} />
     </>
   )
