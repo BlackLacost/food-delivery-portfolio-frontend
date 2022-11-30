@@ -6,7 +6,7 @@ import { graphql } from '../../gql'
 import { OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
 
-const GetClientOrdersRoute_Query = graphql(`
+export const GetClientOrdersRoute_Query = graphql(`
   query GetClientOrders_Query($input: GetOrdersInput!) {
     getOrders(input: $input) {
       orders {

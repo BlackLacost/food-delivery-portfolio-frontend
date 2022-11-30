@@ -7,8 +7,10 @@ import { graphql } from '../../gql'
 import {
   CreateOrderItemInput,
   OrderItemOptionInputType,
+  OrderStatus,
 } from '../../gql/graphql'
 import { notify } from '../../toast'
+import { GetClientOrdersRoute_Query } from './ClientOrdersPage'
 
 const RestaurantRoute_Query = graphql(`
   query Restaurant_Query($input: RestaurantInput!) {
@@ -118,6 +120,22 @@ export const RestaurantPage = () => {
         if (error) return notify.error(error.message)
         navigate('/orders')
       },
+      refetchQueries: [
+        {
+          query: GetClientOrdersRoute_Query,
+          variables: {
+            input: {
+              statuses: [
+                OrderStatus.Pending,
+                OrderStatus.Cooking,
+                OrderStatus.Cooked,
+                OrderStatus.Accepted,
+                OrderStatus.PickedUp,
+              ],
+            },
+          },
+        },
+      ],
     }
   )
 
