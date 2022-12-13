@@ -22,6 +22,7 @@ const OwnerOrderUpdates_Subscription = graphql(`
   subscription OwnerOrderUpdates($input: OrderUpdatesInput!) {
     orderUpdates(input: $input) {
       id
+      status
       ...OwnerCard_OrderFragment
     }
   }
@@ -83,6 +84,28 @@ export const OwnerOrdersPage = () => {
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
           const updatedOrder = subscriptionData.data.orderUpdates
+          const { status, id } = updatedOrder
+
+          // Удалить заказ c Dashboard если его статус не равен
+          // Pending или Cooking или Cooked
+          if (
+            !(
+              status === OrderStatus.Pending ||
+              status === OrderStatus.Cooking ||
+              status === OrderStatus.Cooked
+            )
+          ) {
+            return {
+              getRestaurantOrders: {
+                ...prev.getRestaurantOrders,
+                orders: prev.getRestaurantOrders.orders.filter((order) => {
+                  return order.id !== id
+                }),
+              },
+            }
+          }
+
+          // Обновить заказ
           return {
             getRestaurantOrders: {
               ...prev.getRestaurantOrders,
