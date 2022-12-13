@@ -84,10 +84,16 @@ export const MyRestaurantPage = () => {
         </h1>
         <div className="mb-8">
           <Link
-            className="mr-8 bg-gray-800  py-3 px-10 text-white"
+            className="mr-8 bg-gray-800 py-3 px-10 text-white"
             to={`/restaurant/${restaurantId}/add-dish`}
           >
             Add Dish &rarr;
+          </Link>
+          <Link
+            className="mr-8 bg-gray-800 py-3 px-10 text-white"
+            to={`/restaurant/${restaurantId}/orders`}
+          >
+            Заказы &rarr;
           </Link>
           <button
             className="bg-lime-600 py-3 px-10 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"

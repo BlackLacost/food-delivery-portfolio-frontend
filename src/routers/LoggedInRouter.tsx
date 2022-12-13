@@ -16,6 +16,7 @@ import { AddRestaurantPage } from '../pages/owner/AddRestaurantPage'
 import { MyRestaurantPage } from '../pages/owner/MyRestaurantPage'
 import { MyRestaurantsPage } from '../pages/owner/MyRestaurantsPage'
 import { OwnerOrderPage } from '../pages/owner/OwnerOrderPage'
+import { OwnerOrdersPage } from '../pages/owner/OwnerOrdersPage'
 import { ConfirmEmailPage } from '../pages/user/ConfirmEmailPage'
 import { EditProfilePage } from '../pages/user/EditProfilePage'
 
@@ -58,6 +59,8 @@ const OwnerRoutes = () => {
       <Route path="add-restaurant" element={<AddRestaurantPage />} />
       <Route path="restaurant/:id" element={<MyRestaurantPage />} />
       <Route path="restaurant/:id/add-dish" element={<AddDishPage />} />
+      <Route path="order/:id" element={<OwnerOrderPage />} />
+      <Route path="restaurant/:id/orders" element={<OwnerOrdersPage />} />
       <Route path="order/:id" element={<OwnerOrderPage />} />
     </>
   )
