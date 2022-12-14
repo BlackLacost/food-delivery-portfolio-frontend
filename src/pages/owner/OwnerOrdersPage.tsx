@@ -50,6 +50,7 @@ export const OwnerOrdersPage = () => {
             OrderStatus.Pending,
             OrderStatus.Cooking,
             OrderStatus.Cooked,
+            OrderStatus.Accepted,
           ],
         },
       },
@@ -92,7 +93,8 @@ export const OwnerOrdersPage = () => {
             !(
               status === OrderStatus.Pending ||
               status === OrderStatus.Cooking ||
-              status === OrderStatus.Cooked
+              status === OrderStatus.Cooked ||
+              status === OrderStatus.Accepted
             )
           ) {
             return {

@@ -85,7 +85,8 @@ export const OrderOwnerCard = (props: Props) => {
             Order Cooked
           </OrderButton>
         )}
-        {order.status === OrderStatus.Cooked && (
+        {(order.status === OrderStatus.Cooked ||
+          order.status === OrderStatus.Accepted) && (
           <OrderStatusView status={order.status} />
         )}
       </div>
