@@ -53,12 +53,25 @@ export const ClientOrdersPage = () => {
         variables: { input: { id: order.id } },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev
-          const newOrder = subscriptionData.data.orderUpdates
+          const orderUpdates = subscriptionData.data.orderUpdates
+
+          // Delete Delivered order
+          if (orderUpdates.status === OrderStatus.Delivered) {
+            return {
+              getOrders: {
+                ...prev.getOrders,
+                orders: prev.getOrders.orders.filter((order) => {
+                  return order.id !== orderUpdates.id
+                }),
+              },
+            }
+          }
+
           return {
             getOrders: {
               ...prev.getOrders,
               orders: prev.getOrders.orders.map((order) => {
-                return order.id === newOrder.id ? newOrder : order
+                return order.id === orderUpdates.id ? orderUpdates : order
               }),
             },
           }
