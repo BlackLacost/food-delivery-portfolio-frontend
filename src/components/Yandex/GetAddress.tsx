@@ -39,7 +39,7 @@ export const GetAddress = React.memo(
             modules={['geocode', 'geolocation']}
             width={'100%'}
             height="400px"
-            state={mapState}
+            defaultState={mapState}
             onLoad={(ymapsInstance) => {
               if (ymapsInstance) {
                 // @ts-ignore

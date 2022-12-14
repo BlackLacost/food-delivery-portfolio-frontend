@@ -38,7 +38,7 @@ export const AddRestaurantPage = () => {
     resolver: yupResolver(createRestaurantSchema),
   })
 
-  const [createRestaurant, { data }] = useMutation(CreateRestaurant, {
+  const [createRestaurant] = useMutation(CreateRestaurant, {
     onCompleted: ({ createRestaurant: { restaurant } }) => {
       if (restaurant) {
         setUploading(false)
@@ -69,10 +69,13 @@ export const AddRestaurantPage = () => {
       const actualImage = image[0]
       const formBody = new FormData()
       formBody.append('file', actualImage)
-      const response = await fetch('http://localhost:4000/uploads/', {
-        method: 'POST',
-        body: formBody,
-      })
+      const response = await fetch(
+        `${process.env.REACT_APP_GRAPHQL_HTTP}/uploads/`,
+        {
+          method: 'POST',
+          body: formBody,
+        }
+      )
       const { url: coverImage } = await response.json()
       setUploading(false)
 

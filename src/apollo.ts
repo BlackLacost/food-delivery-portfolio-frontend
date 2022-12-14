@@ -17,7 +17,7 @@ export const authTokenVar = makeVar(token)
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: 'ws://192.168.88.100:4000/graphql',
+    url: process.env.REACT_APP_GRAPHQL_WS + '/graphql',
     connectionParams: {
       'x-jwt': authTokenVar() || '',
     },
@@ -25,7 +25,7 @@ const wsLink = new GraphQLWsLink(
 )
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.88.100:4000/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_HTTP + '/graphql',
 })
 
 const authLink = setContext((_, { headers }) => {

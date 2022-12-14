@@ -1,3 +1,4 @@
+.env
 gql/
 graphql.schema.json
 

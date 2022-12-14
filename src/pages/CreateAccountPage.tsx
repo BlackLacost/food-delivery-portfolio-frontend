@@ -38,10 +38,7 @@ export const CreateAccountPage = () => {
     resolver: yupResolver(createAccountSchema),
   })
 
-  const [
-    createAccountMutation,
-    { data: createAccountMutationResult, loading },
-  ] = useMutation(CreateAccount, {
+  const [createAccountMutation, { loading }] = useMutation(CreateAccount, {
     onCompleted: ({ createAccount: { error } }) => {
       if (error) return notify.error(error.message)
       navigate('/')

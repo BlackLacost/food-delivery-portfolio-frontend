@@ -36,6 +36,7 @@
     "dev:react": "cross-env BROWSER=none react-scripts start",
     "start": "concurrently npm:dev:*",
     "build": "react-scripts build",
+    "prebuild": "npm run codegen",
     "test": "react-scripts test",
     "test:coverage": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject"
