@@ -58,24 +58,22 @@ export const OwnerOrdersPage = () => {
     })
 
   useEffect(() => {
-    if (getOrdersData?.getRestaurantOrders) {
-      subscribeToMoreOrders({
-        document: NewRestaurantOrder_Subscription,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) return prev
-          const newOrder = subscriptionData.data.pendingOrders
-          return {
-            getRestaurantOrders: {
-              ...prev.getRestaurantOrders,
-              orders: prev.getRestaurantOrders.orders.length
-                ? [...prev.getRestaurantOrders.orders, newOrder]
-                : [newOrder],
-            },
-          }
-        },
-      })
-    }
-  }, [getOrdersData, subscribeToMoreOrders])
+    subscribeToMoreOrders({
+      document: NewRestaurantOrder_Subscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const newOrder = subscriptionData.data.pendingOrders
+        return {
+          getRestaurantOrders: {
+            ...prev.getRestaurantOrders,
+            orders: prev.getRestaurantOrders.orders.length
+              ? [...prev.getRestaurantOrders.orders, newOrder]
+              : [newOrder],
+          },
+        }
+      },
+    })
+  }, [subscribeToMoreOrders])
 
   useEffect(() => {
     getOrdersData?.getRestaurantOrders.orders?.forEach((order) => {

@@ -86,24 +86,22 @@ export const Dashboard = () => {
     })
 
   React.useEffect(() => {
-    if (getOrdersData?.getOrders && getOrdersData.getOrders.orders.length > 0) {
-      subscribeToMoreOrders({
-        document: CoockedOrders_Subscription,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) return prev
-          const newOrder = subscriptionData.data.cookedOrders
-          return {
-            getOrders: {
-              ...prev.getOrders,
-              orders: prev.getOrders.orders.length
-                ? [...prev.getOrders.orders, newOrder]
-                : [newOrder],
-            },
-          }
-        },
-      })
-    }
-  }, [getOrdersData, subscribeToMoreOrders])
+    subscribeToMoreOrders({
+      document: CoockedOrders_Subscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev
+        const newOrder = subscriptionData.data.cookedOrders
+        return {
+          getOrders: {
+            ...prev.getOrders,
+            orders: prev.getOrders.orders.length
+              ? [...prev.getOrders.orders, newOrder]
+              : [newOrder],
+          },
+        }
+      },
+    })
+  }, [subscribeToMoreOrders])
 
   const orders = getOrdersData?.getOrders.orders
 
