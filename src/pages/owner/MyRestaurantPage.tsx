@@ -2,8 +2,8 @@ import { useQuery, useSubscription } from '@apollo/client'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { DishCards } from '../../components/DishCards'
 import { Payment } from '../../components/Payment'
+import { DishCards } from '../../features/restaurant/dish-card/DishCards'
 import { graphql } from '../../gql'
 
 export const MyRestaurantRoute_Query = graphql(`

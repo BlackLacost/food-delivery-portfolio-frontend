@@ -1,5 +1,5 @@
 import React, { HTMLProps } from 'react'
-import { Button } from '../Button'
+import { Button } from '../../components/Button'
 
 type Props = HTMLProps<HTMLButtonElement> & {
   onClick(): void

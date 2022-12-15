@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FragmentType, graphql, useFragment } from '../gql'
+import { FragmentType, graphql, useFragment } from '../../gql'
 
 export const Card_CategoryFragment = graphql(`
   fragment Card_CategoryFragment on Category {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { FragmentType, graphql, useFragment } from '../../gql'
+import { FragmentType, graphql, useFragment } from '../../../gql'
 import { DishCardContainer } from './DishCardContainer'
 import { DishCardTitle } from './DishCardTitle'
 

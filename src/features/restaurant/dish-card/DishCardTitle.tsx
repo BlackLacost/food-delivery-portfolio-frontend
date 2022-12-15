@@ -1,4 +1,4 @@
-import { FragmentType, graphql, useFragment } from '../../gql'
+import { FragmentType, graphql, useFragment } from '../../../gql'
 
 export const CardTitle_DishFragment = graphql(`
   fragment CardTitle_DishFragment on Dish {

@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
-import { DishCardClient } from '../../components/dish-card/DishCardClient'
+import { DishCardClient } from '../../features/restaurant/dish-card/DishCardClient'
 import { graphql } from '../../gql'
 import {
   CreateOrderItemInput,

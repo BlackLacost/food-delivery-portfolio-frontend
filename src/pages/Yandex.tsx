@@ -5,7 +5,7 @@ import {
   YMaps,
 } from '@pbe/react-yandex-maps'
 import { useState } from 'react'
-import { PlacemarkWithTitle } from '../components/Yandex/PlacemarkWithTitle'
+import { PlacemarkWithTitle } from '../features/yandex-map/PlacemarkWithTitle'
 
 type Coords = [number, number]
 

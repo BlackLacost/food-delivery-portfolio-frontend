@@ -1,9 +1,9 @@
 import React from 'react'
-import { FragmentType, graphql, useFragment } from '../../gql'
+import { FragmentType, graphql, useFragment } from '../../../gql'
 import {
   CreateOrderItemInput,
   OrderItemOptionInputType,
-} from '../../gql/graphql'
+} from '../../../gql/graphql'
 import { DishCardContainer } from './DishCardContainer'
 import { DishCardTitle } from './DishCardTitle'
 

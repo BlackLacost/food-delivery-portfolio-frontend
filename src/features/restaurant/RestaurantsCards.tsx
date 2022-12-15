@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react'
-import { FragmentType, graphql, useFragment } from '../gql'
+import { FragmentType, graphql, useFragment } from '../../gql'
 import { RestaurantCard } from './RestaurantCard'
 
 const Restaurants_QueryFragment = graphql(`

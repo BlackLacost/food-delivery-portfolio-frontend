@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
-import { GetAddress, Position } from '../../components/Yandex/GetAddress'
+import { GetAddress, Position } from '../../features/yandex-map/GetAddress'
 import {
   CreateRestaurantForm,
   createRestaurantSchema,

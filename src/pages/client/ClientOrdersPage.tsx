@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import { OrderClientCard } from '../../components/order/OrderClientCard'
+import { OrderClientCard } from '../../features/order/OrderClientCard'
 import { graphql } from '../../gql'
 import { OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'

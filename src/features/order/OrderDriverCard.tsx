@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../../components/Button'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { DriverOrderStatus, OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
-import { Button } from '../Button'
 
 const DriverCard_OrderFragment = graphql(`
   fragment DriverCard_OrderFragment on Order {

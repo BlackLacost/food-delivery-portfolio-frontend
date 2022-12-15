@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client'
+import { H1 } from '../../components/H1'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { OrderStatus, RestaurantOrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
-import { H1 } from '../H1'
 import { OrderButton } from './OrderButton'
 import { OrderStatusView } from './OrderStatus'
 
