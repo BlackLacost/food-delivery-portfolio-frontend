@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { DishCardClient } from '../../features/restaurant/dish-card/DishCardClient'
+import { RestaurantImageDescription } from '../../features/restaurant/RestaurantImageDescription'
 import { graphql } from '../../gql'
 import {
   CreateOrderItemInput,
@@ -16,14 +17,7 @@ const RestaurantRoute_Query = graphql(`
   query Restaurant_Query($input: RestaurantInput!) {
     getRestaurant(input: $input) {
       restaurant {
-        id
-        address
-        category {
-          name
-        }
-        coverImage
-        isPromoted
-        name
+        ...ImageDescription_RestaurantFragment
         menu {
           id
           ...CardClient_DishFragment
@@ -153,20 +147,7 @@ export const RestaurantPage = () => {
 
   return (
     <div>
-      <div
-        className="bg-gray-800 bg-cover bg-center py-48"
-        style={{
-          backgroundImage: `url(${restaurant?.coverImage})`,
-        }}
-      >
-        <div className="w-96 bg-white py-5 pl-5">
-          <h1 className="mb-3 text-4xl">{restaurant?.name}</h1>
-          <p className="mb-2 text-sm font-light">
-            {restaurant?.category?.name}
-          </p>
-          <p className="text-sm font-light">{restaurant?.address}</p>
-        </div>
-      </div>
+      {restaurant && <RestaurantImageDescription restaurant={restaurant} />}
       <section className="container my-10 flex flex-col items-end">
         {orderStarted ? (
           <div className="flex space-x-4">

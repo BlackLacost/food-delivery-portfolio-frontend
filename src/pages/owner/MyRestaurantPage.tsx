@@ -4,14 +4,15 @@ import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Payment } from '../../components/Payment'
 import { DishCards } from '../../features/restaurant/dish-card/DishCards'
+import { RestaurantImageDescription } from '../../features/restaurant/RestaurantImageDescription'
 import { graphql } from '../../gql'
 
 export const MyRestaurantRoute_Query = graphql(`
   query MyRestaurant_Query($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
       restaurant {
-        coverImage
         name
+        ...ImageDescription_RestaurantFragment
       }
       error {
         ... on Error {
@@ -63,25 +64,17 @@ export const MyRestaurantPage = () => {
     }
   }, [subscriptionData, navigate])
 
+  const restaurant = data?.myRestaurant.restaurant
+
   return (
     <div>
       <Helmet>
-        <title>
-          {data?.myRestaurant.restaurant?.name || 'Loading...'} | Number Eats
-        </title>
+        <title>{restaurant?.name || 'Loading...'} | Number Eats</title>
         <script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
       </Helmet>
       <Payment isOpen={isOpenPayment} setIsOpen={setIsOpenPayment} />
-      <div
-        className="bg-gray-600 bg-cover bg-center py-28"
-        style={{
-          backgroundImage: `url(${data?.myRestaurant.restaurant?.coverImage}`,
-        }}
-      />
+      {restaurant && <RestaurantImageDescription restaurant={restaurant} />}
       <div className="container mt-10">
-        <h1 className="mb-10 text-4xl">
-          {data?.myRestaurant.restaurant?.name ?? 'Loading...'}
-        </h1>
         <div className="mb-8">
           <Link
             className="mr-8 bg-gray-800 py-3 px-10 text-white"
