@@ -70,7 +70,7 @@ export const DishCardClient: React.FC<Props> = ({
             </button>
           ) : (
             <button
-              className="bg-lime-600 py-1 px-2 font-semibold text-white"
+              className="bg-primary-600 py-1 px-2 font-semibold text-white"
               type="button"
               onClick={() => addDishToOrder({ dishId: dish.id })}
             >

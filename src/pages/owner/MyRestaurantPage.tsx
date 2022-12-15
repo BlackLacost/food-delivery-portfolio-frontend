@@ -96,7 +96,7 @@ export const MyRestaurantPage = () => {
             Заказы &rarr;
           </Link>
           <button
-            className="bg-lime-600 py-3 px-10 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"
+            className="bg-primary-600 py-3 px-10 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"
             onClick={() => setIsOpenPayment(true)}
             type="button"
           >

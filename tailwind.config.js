@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
@@ -13,6 +15,9 @@ module.exports = {
       },
     },
     extend: {
+      colors: {
+        primary: colors.lime,
+      },
       fontFamily: {
         logo: ['Montserrat', 'sans-serif'],
       },

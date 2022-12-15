@@ -23,7 +23,7 @@ export const PlacemarkWithTitle = ({ coords, title }: Props) => {
       properties={{
         balloonContentHeader: title,
         balloonContentBody:
-          '<div class="text-lime-600 text-xl">Описание заказа</div>',
+          '<div class="text-primary-600 text-xl">Описание заказа</div>',
         iconContent: title,
         hintContent: title,
       }}

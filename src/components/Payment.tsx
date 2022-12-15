@@ -125,7 +125,7 @@ export const Payment = ({ isOpen, setIsOpen }: Props) => {
       as="div"
       className="fixed inset-0 overflow-y-auto bg-gray-500/75 p-4 pt-[5vh]"
     >
-      <Dialog.Panel className="mx-auto max-w-xl rounded-xl bg-lime-600 shadow-2xl ring-1 ring-black/25">
+      <Dialog.Panel className="mx-auto max-w-xl rounded-xl bg-primary-600 shadow-2xl ring-1 ring-black/25">
         <div id="payment-form" className="pt-20" />
       </Dialog.Panel>
     </Dialog>

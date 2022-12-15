@@ -174,7 +174,7 @@ export const Dashboard = () => {
                   `,
                   balloonContentFooter: `
                     <input
-                      class="input cursor-pointer bg-lime-600 text-white"
+                      class="input cursor-pointer bg-primary-600 text-white"
                       type="button"
                       onclick="window.acceptOrder(${orderId})"
                       value="Accpet Order"

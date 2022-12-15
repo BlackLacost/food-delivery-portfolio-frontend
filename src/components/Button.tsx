@@ -15,7 +15,7 @@ export const Button: FC<Props> = ({
 }) => {
   return (
     <button
-      className={`bg-lime-600 py-4 px-6 text-lg font-medium text-white transition-colors hover:bg-lime-700 focus:bg-lime-700 focus:outline-none disabled:bg-gray-300 ${className}`}
+      className={`bg-primary-600 py-4 px-6 text-lg font-medium text-white transition-colors hover:bg-primary-700 focus:bg-primary-700 focus:outline-none disabled:bg-gray-300 ${className}`}
       type={type}
       disabled={!canClick || loading}
       {...rest}
