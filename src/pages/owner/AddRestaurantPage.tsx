@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
+import { H1 } from '../../components/H1'
 import { GetAddress, Position } from '../../features/yandex-map/GetAddress'
 import {
   CreateRestaurantForm,
@@ -104,15 +105,12 @@ export const AddRestaurantPage = () => {
   )
 
   return (
-    <div>
+    <div className="mx-auto flex w-full max-w-screen-sm flex-col space-y-4">
       <Helmet>
-        <title>Add Restaurant | Доставка Еды</title>
+        <title>Добавить ресторан | Доставка Еды</title>
       </Helmet>
-      <h1>add-restaurant</h1>
-      <form
-        className="mx-auto grid w-full max-w-screen-sm gap-3"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <H1>Добавить ресторан</H1>
+      <form className="grid gap-3 pb-10" onSubmit={handleSubmit(onSubmit)}>
         <GetAddress
           position={restaurantPosition}
           setPosition={setRestaurantPosition}
