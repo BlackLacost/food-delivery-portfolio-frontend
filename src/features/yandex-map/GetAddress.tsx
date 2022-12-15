@@ -70,11 +70,9 @@ export const GetAddress = React.memo(
             />
           </Map>
         </YMaps>
-        <input
-          className="input mt-5 w-full"
-          disabled
-          value={clientPosition.address}
-        />
+        <div className="input mt-5 w-full cursor-not-allowed bg-gray-100">
+          {clientPosition.address}
+        </div>
       </>
     )
   }
