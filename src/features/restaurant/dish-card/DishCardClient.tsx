@@ -1,10 +1,13 @@
 import React from 'react'
+import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
+import { Rub } from '../../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import {
   CreateOrderItemInput,
   OrderItemOptionInputType,
 } from '../../../gql/graphql'
 import { DishCardContainer } from './DishCardContainer'
+import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
 export const CardClient_DishFragment = graphql(`
@@ -59,45 +62,49 @@ export const DishCardClient: React.FC<Props> = ({
     <DishCardContainer isSelected={isSelected}>
       <div className="flex items-start justify-between">
         <DishCardTitle dish={dish} />
-        {orderStarted &&
-          (isSelected ? (
-            <button
-              className="bg-red-500 py-1 px-2 font-semibold text-white"
-              type="button"
-              onClick={() => removeDishFromOrder(dish.id)}
-            >
-              Remove
-            </button>
-          ) : (
-            <button
-              className="bg-primary-600 py-1 px-2 font-semibold text-white"
-              type="button"
-              onClick={() => addDishToOrder({ dishId: dish.id })}
-            >
-              Add
-            </button>
-          ))}
+        {orderStarted && (
+          <div className="absolute right-0 top-[-14px]">
+            {isSelected ? (
+              <button
+                type="button"
+                onClick={() => removeDishFromOrder(dish.id)}
+              >
+                <AiFillMinusCircle className="h-10 w-10 text-danger-600" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => addDishToOrder({ dishId: dish.id })}
+              >
+                <AiFillPlusCircle className="h-10 w-10 text-primary-600" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
-      <p>{dish.price} руб.</p>
+      <DishCardPrice>{dish.price}</DishCardPrice>
 
-      {dish.options?.length !== 0 && (
+      {orderStarted && isSelected && dish.options?.length !== 0 && (
         <div className="my-4">
-          <h3 className="my-1 font-semibold">Dish options:</h3>
-          <div className="flex flex-col space-y-3">
+          <h3 className="my-1 font-semibold">Выберете опции:</h3>
+          <div className="flex flex-col">
             {dish.options?.map((option, index) => (
               <div
-                className={`flex items-center space-x-3 border p-2 ${
-                  orderStarted &&
-                  isSelected &&
-                  isSelectedDishOption(dish.id, option)
-                    ? 'cursor-pointer border-black'
-                    : 'cursor-pointer border-white'
-                }`}
+                className={`flex cursor-pointer items-center space-x-1`}
                 key={index}
                 onClick={() => onOptionClick(dish.id, option)}
               >
-                <p>{option.name}</p>
-                <p className="text-sm text-gray-800">{option.extra} руб.</p>
+                <p
+                  className={`flex-grow ${
+                    isSelectedDishOption(dish.id, option) &&
+                    'font-semibold text-primary-600'
+                  }`}
+                >
+                  {option.name}
+                </p>
+                <p className="text-sm font-semibold text-primary-600">
+                  {option.extra} <Rub />
+                </p>
               </div>
             ))}
           </div>

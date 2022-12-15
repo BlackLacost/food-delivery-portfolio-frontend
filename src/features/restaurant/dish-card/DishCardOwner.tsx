@@ -1,7 +1,7 @@
 import React from 'react'
-import { Rub } from '../../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import { DishCardContainer } from './DishCardContainer'
+import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
 export const CardOwner_DishFragment = graphql(`
@@ -21,9 +21,7 @@ export const DishCardOwner: React.FC<Props> = (props) => {
   return (
     <DishCardContainer>
       <DishCardTitle dish={dish} />
-      <p>
-        {dish.price} <Rub />
-      </p>
+      <DishCardPrice>{dish.price}</DishCardPrice>
     </DishCardContainer>
   )
 }

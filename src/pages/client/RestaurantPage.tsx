@@ -190,7 +190,7 @@ export const RestaurantPage = () => {
             Start Order
           </Button>
         )}
-        <div className="my-10 grid w-full grid-cols-3 gap-4">
+        <div className="my-10 grid w-full grid-cols-2 gap-4">
           {restaurant?.menu.map((dish) => (
             <DishCardClient
               key={dish.id}

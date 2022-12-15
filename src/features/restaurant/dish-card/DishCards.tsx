@@ -37,7 +37,7 @@ export const DishCards: React.FC<Props> = ({ query }) => {
   }
 
   return (
-    <section className="grid grid-cols-3 gap-4">
+    <section className="grid grid-cols-2 gap-4">
       {menu?.map((dish) => (
         <DishCardOwner key={dish.id} dish={dish} />
       ))}
