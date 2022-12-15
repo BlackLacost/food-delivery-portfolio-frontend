@@ -14,6 +14,7 @@ import {
 } from '../../form.schemas'
 import { graphql } from '../../gql'
 import { notify } from '../../toast'
+import { uploadImage } from '../utils/upload-image'
 import { MyRestaurantsRoute_Query } from './MyRestaurantsPage'
 
 const CreateRestaurant = graphql(`
@@ -67,17 +68,7 @@ export const AddRestaurantPage = () => {
   }) => {
     try {
       setUploading(true)
-      const actualImage = image[0]
-      const formBody = new FormData()
-      formBody.append('file', actualImage)
-      const response = await fetch(
-        `${process.env.REACT_APP_GRAPHQL_HTTP}/uploads/`,
-        {
-          method: 'POST',
-          body: formBody,
-        }
-      )
-      const { url: coverImage } = await response.json()
+      const coverImage = await uploadImage(image[0])
       setUploading(false)
 
       if (!restaurantPosition.address || !restaurantPosition.coords) {
