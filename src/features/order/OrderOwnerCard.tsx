@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import { H1 } from '../../components/H1'
+import { Rub } from '../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { OrderStatus, RestaurantOrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
@@ -60,7 +61,9 @@ export const OrderOwnerCard = (props: Props) => {
         Order #{order.id}
       </H1>
       <div className="px-5">
-        <p className="py-10 text-center text-3xl">{order.total} руб.</p>
+        <p className="py-10 text-center text-3xl">
+          {order.total} <Rub />
+        </p>
         <table className="w-full border-collapse">
           <tbody>
             {[

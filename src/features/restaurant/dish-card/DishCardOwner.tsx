@@ -1,4 +1,5 @@
 import React from 'react'
+import { Rub } from '../../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import { DishCardContainer } from './DishCardContainer'
 import { DishCardTitle } from './DishCardTitle'
@@ -20,7 +21,9 @@ export const DishCardOwner: React.FC<Props> = (props) => {
   return (
     <DishCardContainer>
       <DishCardTitle dish={dish} />
-      <p>{dish.price} руб.</p>
+      <p>
+        {dish.price} <Rub />
+      </p>
     </DishCardContainer>
   )
 }

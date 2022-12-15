@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
+import { Rub } from '../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { DriverOrderStatus, OrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
@@ -66,7 +67,9 @@ export const OrderDriverCard = (props: Props) => {
         Order #{order.id}
       </h1>
       <div className="px-3">
-        <p className="py-2 text-center text-xl">{order.total} руб.</p>
+        <p className="py-2 text-center text-xl">
+          {order.total} <Rub />
+        </p>
         <table className="w-full border-collapse">
           <tbody>
             {[
