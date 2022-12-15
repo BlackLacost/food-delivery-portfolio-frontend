@@ -1,8 +1,12 @@
 import { FC, HTMLAttributes } from 'react'
-import logo from '../images/logo.svg'
 
 type Props = HTMLAttributes<HTMLImageElement> & {}
 
 export const Logo: FC<Props> = ({ ...rest }) => {
-  return <img src={logo} alt="Logo" {...rest} />
+  return (
+    <div {...rest}>
+      <p className={`font-logo text-3xl`}>Доставка Еды</p>
+      <p className="text-sm">(портфолио)</p>
+    </div>
+  )
 }

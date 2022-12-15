@@ -25,10 +25,10 @@ export const Header = () => {
           <span>Please verify your email.</span>
         </div>
       )}
-      <header className="py-4">
+      <header className="py-2">
         <div className="container flex items-center justify-between">
           <Link to="/">
-            <Logo className="w-52" />
+            <Logo />
           </Link>
           <div className="flex items-center space-x-4">
             {data?.me.role === UserRole.Client && (
