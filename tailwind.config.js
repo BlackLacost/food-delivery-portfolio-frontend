@@ -17,6 +17,7 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.lime,
+        danger: colors.rose,
       },
       fontFamily: {
         logo: ['Montserrat', 'sans-serif'],
