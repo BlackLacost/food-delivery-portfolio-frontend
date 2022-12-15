@@ -96,7 +96,7 @@ export const DriverOrderPage = () => {
   return (
     <div>
       <Helmet>
-        <title>{`Order ${orderId}`} | Uber Eats</title>
+        <title>{`Order ${orderId}`} | Доставка Еды</title>
       </Helmet>
       <YMaps query={{ apikey: process.env.REACT_APP_YANDEX_KEY }}>
         <Map

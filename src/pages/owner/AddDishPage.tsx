@@ -72,7 +72,7 @@ export const AddDishPage = () => {
   return (
     <div className="container flex flex-col items-center">
       <Helmet>
-        <title>Add Dish | Uber Eats</title>
+        <title>Add Dish | Доставка Еды</title>
       </Helmet>
       <h1 className="mt-28 mb-8 text-2xl">Add Dish</h1>
       <form

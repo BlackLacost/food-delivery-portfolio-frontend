@@ -52,7 +52,7 @@ export const RestaurantsPage = () => {
   return (
     <div>
       <Helmet>
-        <title>Home | Uber Eats</title>
+        <title>Home | Доставка Еды</title>
       </Helmet>
       <form
         onSubmit={handleSubmit(onSubmit)}

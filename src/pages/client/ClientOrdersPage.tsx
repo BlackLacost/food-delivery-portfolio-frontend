@@ -83,7 +83,7 @@ export const ClientOrdersPage = () => {
   return (
     <>
       <Helmet>
-        <title>Client Orders | Uber Eats</title>
+        <title>Client Orders | Доставка Еды</title>
       </Helmet>
       <div className="container">
         <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

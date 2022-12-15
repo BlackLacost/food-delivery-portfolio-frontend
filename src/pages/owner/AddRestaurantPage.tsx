@@ -106,7 +106,7 @@ export const AddRestaurantPage = () => {
   return (
     <div>
       <Helmet>
-        <title>Add Restaurant | Uber Eats</title>
+        <title>Add Restaurant | Доставка Еды</title>
       </Helmet>
       <h1>add-restaurant</h1>
       <form

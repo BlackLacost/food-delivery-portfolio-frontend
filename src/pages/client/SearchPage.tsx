@@ -41,7 +41,7 @@ export const SearchPage = () => {
   return (
     <h1>
       <Helmet>
-        <title>Search | Uber Eats</title>
+        <title>Search | Доставка Еды</title>
       </Helmet>
       Search Page
     </h1>

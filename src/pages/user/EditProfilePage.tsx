@@ -88,7 +88,7 @@ export const EditProfilePage = () => {
   return (
     <div className="mt-52 flex flex-col items-center justify-center px-5">
       <Helmet>
-        <title>Edit Profile | Uber Eats</title>
+        <title>Edit Profile | Доставка Еды</title>
       </Helmet>
       <H1 className="">Edit Profile</H1>
       <form

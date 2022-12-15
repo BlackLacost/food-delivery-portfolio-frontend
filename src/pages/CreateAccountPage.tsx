@@ -79,7 +79,7 @@ export const CreateAccountPage = () => {
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
       <Helmet>
-        <title>Create Account | Uber Eats</title>
+        <title>Создать Аккаунт | Доставка Еды</title>
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <Logo className="mb-10 w-60" />

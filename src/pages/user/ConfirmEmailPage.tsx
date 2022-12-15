@@ -54,7 +54,7 @@ export const ConfirmEmailPage = () => {
   return (
     <div className="mt-52 flex flex-col items-center">
       <Helmet>
-        <title>Verify Email | Uber Eats</title>
+        <title>Verify Email | Доставка Еды</title>
       </Helmet>
       <h1 className="mb-2 text-lg font-semibold">Confirming email...</h1>
       <p className="text-sm text-gray-700">

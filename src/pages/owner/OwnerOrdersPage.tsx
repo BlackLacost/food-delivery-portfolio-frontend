@@ -124,7 +124,7 @@ export const OwnerOrdersPage = () => {
   return (
     <>
       <Helmet>
-        <title>Restaurant Orders | Uber Eats</title>
+        <title>Restaurant Orders | Доставка Еды</title>
       </Helmet>
       {orders?.map((order) => (
         <OrderOwnerCard key={order.id} order={order} />

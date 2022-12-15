@@ -57,7 +57,7 @@ export const LoginPage = () => {
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
       <Helmet>
-        <title>Login | Uber Eats</title>
+        <title>Login | Доставка Еды</title>
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <Logo className="mb-10 w-60" />
@@ -95,12 +95,12 @@ export const LoginPage = () => {
           </Button>
         </form>
         <div>
-          New to Uber?{' '}
+          Еще нет аккаунта?{' '}
           <Link
             to="/create-account"
             className="text-primary-600 hover:underline"
           >
-            Create an Account
+            Создать аккаунт
           </Link>
         </div>
       </div>

@@ -20,7 +20,7 @@ export const MyRestaurantsPage = () => {
   return (
     <div>
       <Helmet>
-        <title>My Restaurants | Uber Eats</title>
+        <title>My Restaurants | Доставка Еды</title>
       </Helmet>
       <div className="container mt-32">
         <h1 className="mb-10 text-4xl">My Restaurants</h1>
