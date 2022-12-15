@@ -12,7 +12,11 @@ module.exports = {
         DEFAULT: '1.25rem',
       },
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        logo: ['Montserrat', 'sans-serif'],
+      },
+    },
   },
   corePlugins: {
     aspectRatio: false,
