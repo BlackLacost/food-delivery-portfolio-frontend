@@ -27,21 +27,21 @@ export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 
 export const createRestaurantSchema = yup.object({
   name: yup.string().min(3).required(),
-  categoryName: yup.string().min(5).required(),
+  categoryName: yup.string().min(3).required(),
   image: yup
     .mixed()
     .test({
       message: 'Image Required',
-      test: (files: FileList) => files.length > 0,
+      test: (files: FileList) => files?.length > 0,
     })
     .test({
       message: 'Only one Image',
-      test: (files: FileList) => files.length === 1,
+      test: (files: FileList) => files?.length === 1,
     })
     .test({
       message: 'Max size is 5 Mb',
       test: (files: FileList) => {
-        return files.length > 0 && files[0].size <= 5 * 1024 * 1024
+        return files?.length > 0 && files[0].size <= 5 * 1024 * 1024
       },
     }),
 })

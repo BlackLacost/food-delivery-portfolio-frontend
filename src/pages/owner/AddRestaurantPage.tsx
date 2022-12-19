@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -27,13 +27,27 @@ const CreateRestaurant = graphql(`
   }
 `)
 
+const GetCategories_Query = graphql(`
+  query GetCategories_Query {
+    allCategories {
+      categories {
+        id
+        name
+      }
+    }
+  }
+`)
+
 export const AddRestaurantPage = () => {
   const [uploading, setUploading] = useState(false)
   const navigate = useNavigate()
 
+  const { data: categoriesData, loading } = useQuery(GetCategories_Query)
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
   } = useForm<CreateRestaurantForm>({
     mode: 'onChange',
@@ -60,6 +74,14 @@ export const AddRestaurantPage = () => {
     // TODO: update cache 20.06 Cache Optimization part Two
     refetchQueries: [{ query: MyRestaurantsRoute_Query }],
   })
+
+  const [restaurantPosition, setRestaurantPosition] = React.useState<Position>(
+    {}
+  )
+
+  if (loading || !categoriesData?.allCategories.categories) return null
+
+  const categories = categoriesData.allCategories.categories ?? []
 
   const onSubmit: SubmitHandler<CreateRestaurantForm> = async ({
     name,
@@ -91,10 +113,6 @@ export const AddRestaurantPage = () => {
     }
   }
 
-  const [restaurantPosition, setRestaurantPosition] = React.useState<Position>(
-    {}
-  )
-
   return (
     <div className="mx-auto flex w-full max-w-screen-sm flex-col space-y-4">
       <Helmet>
@@ -107,17 +125,26 @@ export const AddRestaurantPage = () => {
           setPosition={setRestaurantPosition}
         />
         <input className="input" {...register('name')} placeholder="Name" />
+        <select className="input" {...register('categoryName')}>
+          {categories.map((category) => (
+            <option key={category.id} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
         <input
-          className="input"
-          {...register('categoryName')}
-          placeholder="Category"
-        />
-        <input
-          className="input"
+          className="hidden"
           {...register('image')}
           accept="image/*"
           type="file"
+          id="coverImage"
         />
+        <label htmlFor="coverImage" className="input cursor-pointer">
+          {watch('image') && watch('image').length > 0
+            ? watch('image')[0].name
+            : 'Выберете картинку ресторана...'}
+        </label>
         {errors.image?.message && (
           <FormError>{errors.image.message.toString()}</FormError>
         )}

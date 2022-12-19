@@ -5,11 +5,15 @@
 @tailwind components;
 
 .input {
-  @apply border border-gray-200 p-3 text-lg font-light transition-colors focus:border-gray-500  focus:outline-none;
+  @apply border border-gray-200 p-3 text-lg font-light transition-colors focus:border-gray-500 focus:outline-none;
 }
 
 .link {
   @apply text-primary-600 hover:underline;
+}
+
+.creatable-select-container .creatable-select__control {
+  @apply rounded-none border-gray-200 py-2 text-lg font-light hover:border-gray-200;
 }
 
 @tailwind utilities;
