@@ -54,7 +54,7 @@ export const RestaurantsPage = () => {
       <Helmet>
         <title>Home | Доставка Еды</title>
       </Helmet>
-      <form
+      {/* <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-hull flex items-center justify-center bg-gray-800 py-40"
       >
@@ -64,7 +64,7 @@ export const RestaurantsPage = () => {
           placeholder="Search restaurants..."
           className="input w-3/4 rounded-md border-0 md:w-5/12 lg:w-4/12"
         />
-      </form>
+      </form> */}
       {!loading && data && (
         <div className="mx-5 max-w-screen-xl xl:mx-auto">
           <div className="my-6 flex justify-center space-x-5">
