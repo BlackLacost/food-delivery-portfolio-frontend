@@ -21,7 +21,7 @@ export const CategoryCard = ({ category }: Props) => {
   )
   return (
     <Link key={id} to={`/category/${slug}`}>
-      <div className="group flex flex-col">
+      <div className="group flex flex-col items-center space-y-3">
         {coverImage && (
           <div className="h-16 w-16 rounded-full group-hover:bg-gray-200">
             <img src={coverImage} alt={name} />
