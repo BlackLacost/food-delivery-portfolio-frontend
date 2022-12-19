@@ -57,13 +57,10 @@ export const LoginPage = () => {
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
       <Helmet>
-        <title>Login | Доставка Еды</title>
+        <title>Вход | Доставка Еды</title>
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <Logo className="mb-10 w-60" />
-        <div className="w-full text-left text-3xl font-medium">
-          Welcome back
-        </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="m-5 grid w-full gap-3 text-left"
@@ -71,7 +68,7 @@ export const LoginPage = () => {
           <input
             {...register('email')}
             type="email"
-            placeholder="Email"
+            placeholder="Почта"
             className="input"
           />
           {errors.email?.message && (
@@ -80,7 +77,7 @@ export const LoginPage = () => {
           <input
             {...register('password')}
             type="password"
-            placeholder="Password"
+            placeholder="Пароль"
             className="input"
           />
           {errors.password?.message && (
@@ -91,7 +88,7 @@ export const LoginPage = () => {
           )}
 
           <Button canClick={isValid} loading={loading}>
-            Log In
+            Войти
           </Button>
         </form>
         <div>
