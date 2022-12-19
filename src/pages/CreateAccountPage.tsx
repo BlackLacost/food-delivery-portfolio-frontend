@@ -13,6 +13,12 @@ import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
 import { notify } from '../toast'
 
+const ROLES = [
+  { role: UserRole.Client, label: 'Клиент' },
+  { role: UserRole.Owner, label: 'Владелец' },
+  { role: UserRole.Driver, label: 'Водитель' },
+]
+
 const CreateAccount = graphql(`
   mutation CreateAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
@@ -83,9 +89,6 @@ export const CreateAccountPage = () => {
       </Helmet>
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <Logo className="mb-10 w-60" />
-        <div className="w-full text-left text-3xl font-medium">
-          Let's get started
-        </div>
 
         {userRole === UserRole.Client && (
           <>
@@ -106,7 +109,7 @@ export const CreateAccountPage = () => {
           <input
             {...register('email')}
             type="email"
-            placeholder="Email"
+            placeholder="Почта"
             className="input"
           />
           {errors.email?.message && (
@@ -118,7 +121,7 @@ export const CreateAccountPage = () => {
           <input
             {...register('password')}
             type="password"
-            placeholder="Password"
+            placeholder="Пароль"
             className="input"
           />
           {errors.password?.message && (
@@ -126,18 +129,20 @@ export const CreateAccountPage = () => {
           )}
           <select {...register('role')} className="input">
             {Object.keys(UserRole).map((role) => (
-              <option key={role}>{role}</option>
+              <option key={role} value={role}>
+                {ROLES.find((r) => r.role === role)?.label}
+              </option>
             ))}
           </select>
 
           <Button canClick={isValid} loading={loading}>
-            Create Account
+            Создать аккаунт
           </Button>
         </form>
         <div>
-          Already have an account?{' '}
+          Уже есть аккаунт?{' '}
           <Link to="/" className="text-primary-600 hover:underline">
-            Log in now
+            Войти
           </Link>
         </div>
       </div>
