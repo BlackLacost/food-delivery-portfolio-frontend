@@ -20,10 +20,10 @@ export const MyRestaurantsPage = () => {
   return (
     <div>
       <Helmet>
-        <title>My Restaurants | Доставка Еды</title>
+        <title>Мои рестораны | Доставка Еды</title>
       </Helmet>
-      <div className="container mt-32">
-        <h1 className="mb-10 text-4xl">My Restaurants</h1>
+      <div className="container mt-12">
+        <h1 className="mb-10 text-4xl">Мои рестораны</h1>
         {data?.myRestaurants.restaurants && (
           <div className="flex flex-col space-y-4">
             <AddRestaurantButton
