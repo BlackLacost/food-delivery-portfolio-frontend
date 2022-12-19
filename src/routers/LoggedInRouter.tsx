@@ -73,7 +73,7 @@ const DriverRoutes = () => {
 }
 
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useQuery(Me)
+  const { data, loading, error } = useQuery(Me, { fetchPolicy: 'no-cache' })
 
   if (!data || loading || error) {
     return (
@@ -82,6 +82,7 @@ export const LoggedInRouter = () => {
       </div>
     )
   }
+
   return (
     <Router>
       <Routes>

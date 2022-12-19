@@ -19,7 +19,7 @@ const VerifyEmail = graphql(`
 
 export const ConfirmEmailPage = () => {
   // const { data: userData, refetch: refetchMe } = useMe()
-  const { data: userData } = useQuery(Me)
+  const { data: userData } = useQuery(Me, { fetchPolicy: 'no-cache' })
   const navigate = useNavigate()
   const [verifyEmail] = useMutation(VerifyEmail, {
     update: async (cache, { data }) => {

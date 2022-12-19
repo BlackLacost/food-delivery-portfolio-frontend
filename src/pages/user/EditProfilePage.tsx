@@ -22,7 +22,7 @@ const EditProfile = graphql(`
 
 export const EditProfilePage = () => {
   // const { data: userData, refetch: refetchMe } = useMe()
-  const { data: userData } = useQuery(Me)
+  const { data: userData } = useQuery(Me, { fetchPolicy: 'no-cache' })
 
   const {
     register,

@@ -10,7 +10,7 @@ import { Me } from '../routers/LoggedInRouter'
 import { Logo } from './Logo'
 
 export const Header = () => {
-  const { data } = useQuery(Me)
+  const { data } = useQuery(Me, { fetchPolicy: 'no-cache' })
 
   const logout = () => {
     localStorage.removeItem(LOCALSTORAGE_TOKEN)
