@@ -13,7 +13,7 @@ export const Header = () => {
   const { data } = useQuery(Me)
 
   const logout = () => {
-    localStorage.setItem(LOCALSTORAGE_TOKEN, '')
+    localStorage.removeItem(LOCALSTORAGE_TOKEN)
     authTokenVar(null)
     isLoggedInVar(false)
   }
