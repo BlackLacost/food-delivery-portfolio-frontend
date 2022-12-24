@@ -1,8 +1,7 @@
-import { useQuery } from '@apollo/client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Layout } from '../components/Layout'
-import { graphql } from '../gql'
 import { UserRole } from '../gql/graphql'
+import { useMe } from '../hooks/useMe'
 import { CategoryPage } from '../pages/client/CategoryPage'
 import { ClientOrdersPage } from '../pages/client/ClientOrdersPage'
 import { RestaurantPage } from '../pages/client/RestaurantPage'
@@ -18,17 +17,6 @@ import { MyRestaurantsPage } from '../pages/owner/MyRestaurantsPage'
 import { OwnerOrdersPage } from '../pages/owner/OwnerOrdersPage'
 import { ConfirmEmailPage } from '../pages/user/ConfirmEmailPage'
 import { EditProfilePage } from '../pages/user/EditProfilePage'
-
-export const Me = graphql(`
-  query Me {
-    me {
-      id
-      email
-      role
-      verified
-    }
-  }
-`)
 
 const CommonRoutes = () => {
   return (
@@ -73,7 +61,7 @@ const DriverRoutes = () => {
 }
 
 export const LoggedInRouter = () => {
-  const { data, loading, error } = useQuery(Me, { fetchPolicy: 'no-cache' })
+  const { data, loading, error } = useMe('network-only')
 
   if (!data || loading || error) {
     return (

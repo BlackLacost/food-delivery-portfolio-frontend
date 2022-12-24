@@ -1,21 +1,22 @@
-import { useQuery } from '@apollo/client'
 import { BiDish } from 'react-icons/bi'
 import { FaUserAlt } from 'react-icons/fa'
 import { IoLogOut } from 'react-icons/io5'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { UserRole } from '../gql/graphql'
-import { Me } from '../routers/LoggedInRouter'
+import { useMe } from '../hooks/useMe'
 import { Logo } from './Logo'
 
 export const Header = () => {
-  const { data } = useQuery(Me, { fetchPolicy: 'no-cache' })
+  const { data } = useMe()
+  const navigate = useNavigate()
 
   const logout = () => {
     localStorage.removeItem(LOCALSTORAGE_TOKEN)
     authTokenVar(null)
     isLoggedInVar(false)
+    navigate('/')
   }
 
   return (
