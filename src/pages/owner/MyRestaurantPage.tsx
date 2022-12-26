@@ -80,7 +80,7 @@ export const MyRestaurantPage = () => {
             className="bg-gray-800 p-3 text-white"
             to={`/restaurant/${restaurantId}/add-dish`}
           >
-            Add Dish &rarr;
+            Добавить товар &rarr;
           </Link>
           <Link
             className="bg-gray-800 p-3 text-white"
@@ -93,7 +93,7 @@ export const MyRestaurantPage = () => {
             onClick={() => setIsOpenPayment(true)}
             type="button"
           >
-            Buy Promotion &rarr;
+            Реклама &rarr;
           </button>
         </div>
 
