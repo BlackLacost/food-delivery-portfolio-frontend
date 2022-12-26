@@ -1,11 +1,14 @@
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
+import { FormError } from '../../components/FormError'
 import { AddDishForm, addDishSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
+import { uploadImage } from '../utils/upload-image'
 import { MyRestaurantRoute_Query } from './MyRestaurantPage'
 
 const AddDishRoute_Mutation = graphql(`
@@ -22,6 +25,7 @@ const AddDishRoute_Mutation = graphql(`
 
 export const AddDishPage = () => {
   const params = useParams<{ id: string }>()
+  const [uploading, setUploading] = useState(false)
   const restaurantId = Number(params.id)
   const navigate = useNavigate()
 
@@ -29,7 +33,8 @@ export const AddDishPage = () => {
     register,
     handleSubmit,
     control,
-    formState: { isValid },
+    formState: { isValid, errors },
+    watch,
   } = useForm<AddDishForm>({
     mode: 'onChange',
     resolver: yupResolver(addDishSchema),
@@ -53,18 +58,27 @@ export const AddDishPage = () => {
     ],
   })
 
-  const onSubmit: SubmitHandler<AddDishForm> = ({
+  const onSubmit: SubmitHandler<AddDishForm> = async ({
     name,
     description,
     price,
     options,
+    image,
   }) => {
     // console.log(rest)
-    addDish({
-      variables: {
-        input: { name, description, price, restaurantId, options },
-      },
-    })
+    try {
+      setUploading(true)
+      const photo = await uploadImage(image[0])
+      setUploading(false)
+
+      addDish({
+        variables: {
+          input: { name, description, price, restaurantId, options, photo },
+        },
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onAddOptionClick = () => prepend({ name: '' })
@@ -85,6 +99,24 @@ export const AddDishPage = () => {
           {...register('description')}
           placeholder="Description"
         />
+        <input
+          className="hidden"
+          {...register('image')}
+          accept="image/*"
+          type="file"
+          id="coverImage"
+        />
+        <label
+          htmlFor="coverImage"
+          className="input cursor-pointer text-gray-400"
+        >
+          {watch('image') && watch('image').length > 0
+            ? watch('image')[0].name
+            : 'Выберете картинку товара...'}
+        </label>
+        {errors.image?.message && (
+          <FormError>{errors.image.message.toString()}</FormError>
+        )}
         <input
           className="input"
           {...register('price')}

@@ -7,7 +7,9 @@ import { DishCardTitle } from './DishCardTitle'
 export const CardOwner_DishFragment = graphql(`
   fragment CardOwner_DishFragment on Dish {
     ...CardTitle_DishFragment
+    name
     price
+    photo
   }
 `)
 
@@ -21,6 +23,9 @@ export const DishCardOwner: React.FC<Props> = (props) => {
   return (
     <DishCardContainer>
       <DishCardTitle dish={dish} />
+      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
+        <img className="object-cover" src={dish.photo} alt={dish?.name} />
+      </div>
       <DishCardPrice>{dish.price}</DishCardPrice>
     </DishCardContainer>
   )

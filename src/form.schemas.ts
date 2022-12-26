@@ -55,6 +55,22 @@ export const addDishSchema = yup.object({
   name: yup.string().min(5).required(),
   description: yup.string().min(5).max(500).required(),
   price: yup.number().positive().required(),
+  image: yup
+    .mixed()
+    .test({
+      message: 'Картинка товара обязательна',
+      test: (files: FileList) => files?.length > 0,
+    })
+    .test({
+      message: 'Выберете только одну картинку',
+      test: (files: FileList) => files?.length === 1,
+    })
+    .test({
+      message: 'Максимальный размер картинки 2 Mb',
+      test: (files: FileList) => {
+        return files?.length > 0 && files[0].size <= 2 * 1024 * 1024
+      },
+    }),
   options: yup
     .array()
     .of(
@@ -69,6 +85,7 @@ export type AddDishForm = {
   name: string
   description: string
   price: number
+  image: FileList
   options?: {
     name: string
     extra?: number

@@ -7,7 +7,7 @@ type Props = HTMLProps<HTMLDivElement> & {
 export const DishCardContainer = ({ children, isSelected = false }: Props) => {
   return (
     <article
-      className={`relative p-4 transition-all  ${
+      className={`relative space-y-3 p-4 transition-all  ${
         isSelected ? 'border-gray-800' : 'hover:border-gray-800'
       }`}
     >
