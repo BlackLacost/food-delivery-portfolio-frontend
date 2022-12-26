@@ -18,6 +18,14 @@ const OwnerCard_OrderFragment = graphql(`
     customer {
       email
     }
+    items {
+      dish {
+        name
+        options {
+          name
+        }
+      }
+    }
   }
 `)
 
@@ -67,6 +75,13 @@ export const OrderOwnerCard = (props: Props) => {
         <table className="w-full border-collapse">
           <tbody>
             {[
+              order.items.map(
+                (item) =>
+                  `Товар: ${item.dish.name} ${
+                    item.dish.options &&
+                    `с ${item.dish.options.map((o) => o.name).join(', ')}`
+                  }`
+              ),
               `Deliver To: ${order.customer?.email}`,
               `Driver: ${order.driver?.email ?? 'Not yet.'}`,
             ].map((line, index) => (
@@ -92,6 +107,7 @@ export const OrderOwnerCard = (props: Props) => {
           order.status === OrderStatus.Accepted) && (
           <OrderStatusView status={order.status} />
         )}
+        <pre>{JSON.stringify(order.items, null, 2)}</pre>
       </div>
     </article>
   )
