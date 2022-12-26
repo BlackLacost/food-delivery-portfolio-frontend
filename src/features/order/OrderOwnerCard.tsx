@@ -66,7 +66,7 @@ export const OrderOwnerCard = (props: Props) => {
   return (
     <article className="mx-5 my-10 max-w-screen-sm border border-gray-800 sm:mx-auto">
       <H1 className="bg-gray-800 py-4 text-center text-white">
-        Order #{order.id}
+        Заказ № {order.id}
       </H1>
       <div className="px-5">
         <p className="py-10 text-center text-3xl">
@@ -82,8 +82,10 @@ export const OrderOwnerCard = (props: Props) => {
                     `с ${item.dish.options.map((o) => o.name).join(', ')}`
                   }`
               ),
-              `Deliver To: ${order.customer?.email}`,
-              `Driver: ${order.driver?.email ?? 'Not yet.'}`,
+              `Почта клиента: ${order.customer?.email}`,
+              `Почта водителя: ${
+                order.driver?.email ?? 'Водитель еще не принял заказ.'
+              }`,
             ].map((line, index) => (
               <tr key={index}>
                 <td className="border-y border-gray-800 py-4 text-xl">
@@ -95,19 +97,18 @@ export const OrderOwnerCard = (props: Props) => {
         </table>
         {order.status === OrderStatus.Pending && (
           <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooking)}>
-            Accept Order
+            Принять заказ
           </OrderButton>
         )}
         {order.status === OrderStatus.Cooking && (
           <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooked)}>
-            Order Cooked
+            Заказ приготовлен
           </OrderButton>
         )}
         {(order.status === OrderStatus.Cooked ||
           order.status === OrderStatus.Accepted) && (
           <OrderStatusView status={order.status} />
         )}
-        <pre>{JSON.stringify(order.items, null, 2)}</pre>
       </div>
     </article>
   )
