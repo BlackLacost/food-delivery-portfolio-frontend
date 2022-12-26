@@ -75,21 +75,21 @@ export const MyRestaurantPage = () => {
       <Payment isOpen={isOpenPayment} setIsOpen={setIsOpenPayment} />
       {restaurant && <RestaurantImageDescription restaurant={restaurant} />}
       <div className="container mt-10">
-        <div className="mb-8">
+        <div className="mb-8 flex flex-wrap justify-end gap-4">
           <Link
-            className="mr-8 bg-gray-800 py-3 px-10 text-white"
+            className="bg-gray-800 p-3 text-white"
             to={`/restaurant/${restaurantId}/add-dish`}
           >
             Add Dish &rarr;
           </Link>
           <Link
-            className="mr-8 bg-gray-800 py-3 px-10 text-white"
+            className="bg-gray-800 p-3 text-white"
             to={`/restaurant/${restaurantId}/orders`}
           >
             Заказы &rarr;
           </Link>
           <button
-            className="bg-primary-600 py-3 px-10 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"
+            className="bg-primary-600 p-3 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"
             onClick={() => setIsOpenPayment(true)}
             type="button"
           >
@@ -100,7 +100,7 @@ export const MyRestaurantPage = () => {
         {data && <DishCards query={data} />}
       </div>
       {/* TODO: 20 Victory Charts */}
-      <div>График продаж</div>
+      {/* <div>График продаж</div> */}
     </div>
   )
 }
