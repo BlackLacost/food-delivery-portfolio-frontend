@@ -1,15 +1,15 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import { DishCardContainer } from './DishCardContainer'
+import { DishCardImage } from './DishCardImage'
 import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
 export const CardOwner_DishFragment = graphql(`
   fragment CardOwner_DishFragment on Dish {
     ...CardTitle_DishFragment
-    name
+    ...CardImage_DishFragment
     price
-    photo
   }
 `)
 
@@ -23,9 +23,7 @@ export const DishCardOwner: React.FC<Props> = (props) => {
   return (
     <DishCardContainer>
       <DishCardTitle dish={dish} />
-      <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
-        <img className="object-cover" src={dish.photo} alt={dish?.name} />
-      </div>
+      <DishCardImage dish={dish} />
       <DishCardPrice>{dish.price}</DishCardPrice>
     </DishCardContainer>
   )

@@ -7,6 +7,7 @@ import {
   OrderItemOptionInputType,
 } from '../../../gql/graphql'
 import { DishCardContainer } from './DishCardContainer'
+import { DishCardImage } from './DishCardImage'
 import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
@@ -14,6 +15,7 @@ export const CardClient_DishFragment = graphql(`
   fragment CardClient_DishFragment on Dish {
     id
     ...CardTitle_DishFragment
+    ...CardImage_DishFragment
     price
     options {
       name
@@ -82,6 +84,7 @@ export const DishCardClient: React.FC<Props> = ({
           </div>
         )}
       </div>
+      <DishCardImage dish={dish} />
       <DishCardPrice>{dish.price}</DishCardPrice>
 
       {orderStarted && isSelected && dish.options?.length !== 0 && (
