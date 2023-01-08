@@ -75,13 +75,13 @@ export const OrderOwnerCard = (props: Props) => {
         <table className="w-full border-collapse">
           <tbody>
             {[
-              order.items.map(
-                (item) =>
-                  `Товар: ${item.dish.name} ${
-                    item.dish.options &&
-                    `с ${item.dish.options.map((o) => o.name).join(', ')}`
-                  }`
-              ),
+              ...order.items.map((item) => {
+                return `Товар: ${item.dish.name} ${
+                  item.dish.options && item.dish.options.length > 0
+                    ? `с ${item.dish.options.map((o) => o.name).join(', ')}`
+                    : ''
+                }`
+              }),
               `Почта клиента: ${order.customer?.email}`,
               `Почта водителя: ${
                 order.driver?.email ?? 'Водитель еще не принял заказ.'

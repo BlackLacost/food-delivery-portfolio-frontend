@@ -17,6 +17,14 @@ const ClientCard_OrderFragment = graphql(`
     restaurant {
       name
     }
+    items {
+      dish {
+        name
+        options {
+          name
+        }
+      }
+    }
   }
 `)
 
@@ -38,6 +46,14 @@ export const OrderClientCard = (props: Props) => {
         <table className="w-full border-collapse">
           <tbody>
             {[
+              ...order.items.map(
+                (item) =>
+                  `Товар: ${item.dish.name} ${
+                    item.dish.options && item.dish.options.length > 0
+                      ? `с ${item.dish.options.map((o) => o.name).join(', ')}`
+                      : ''
+                  }`
+              ),
               `Prepared By: ${order.restaurant?.name}`,
               `Deliver To: ${order.customer?.email}`,
               `Driver: ${order.driver?.email ?? 'Not yet.'}`,
