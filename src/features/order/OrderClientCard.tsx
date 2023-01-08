@@ -37,7 +37,7 @@ export const OrderClientCard = (props: Props) => {
   return (
     <article className="border border-gray-800">
       <H1 className="bg-gray-800 py-2 text-center text-white">
-        Order #{order.id}
+        Заказ № {order.id}
       </H1>
       <div className="px-5">
         <p className="py-3 text-center text-3xl">
@@ -54,9 +54,8 @@ export const OrderClientCard = (props: Props) => {
                       : ''
                   }`
               ),
-              `Prepared By: ${order.restaurant?.name}`,
-              `Deliver To: ${order.customer?.email}`,
-              `Driver: ${order.driver?.email ?? 'Not yet.'}`,
+              `Магазин: ${order.restaurant?.name}`,
+              `Водитель: ${order.driver?.email ?? 'еще нет'}`,
             ].map((line, index) => (
               <tr key={index}>
                 <td className="border-y border-gray-800 py-2">{line}</td>

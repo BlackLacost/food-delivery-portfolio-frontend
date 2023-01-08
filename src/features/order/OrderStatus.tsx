@@ -7,7 +7,7 @@ type Props = {
 export const OrderStatusView = ({ status }: Props) => {
   return (
     <p className="py-3 text-center text-xl text-primary-600">
-      Status: {status}
+      Статус: {status}
     </p>
   )
 }
