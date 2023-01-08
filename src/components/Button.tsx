@@ -20,7 +20,7 @@ export const Button: FC<Props> = ({
       disabled={!canClick || loading}
       {...rest}
     >
-      {loading ? 'Loading...' : children}
+      {loading ? 'Загрузка...' : children}
     </button>
   )
 }
