@@ -31,7 +31,7 @@ export const DishCards: React.FC<Props> = ({ query }) => {
   if (menu?.length === 0) {
     return (
       <section>
-        <p className="mb-5 text-xl">No dishes here. Please add a dish!</p>
+        <p className="mb-5 text-xl">Пока еще не блюд.</p>
       </section>
     )
   }
