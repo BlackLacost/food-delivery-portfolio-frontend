@@ -133,12 +133,7 @@ export const RestaurantPage = () => {
     }
   )
 
-  const triggerConfirmOrder = () => {
-    const ok = window.confirm('You are about to place an order')
-    if (ok) {
-      orderMutation()
-    }
-  }
+  const triggerConfirmOrder = () => orderMutation()
 
   const triggerCancleOrder = () => {
     setOrderStarted(false)
@@ -156,19 +151,19 @@ export const RestaurantPage = () => {
               type="button"
               disabled={dishesOrder.length === 0 || loadingOrder}
             >
-              Confirm Order
+              Подтвердить заказ
             </Button>
             <Button
               className="bg-gray-700 hover:bg-gray-800"
               onClick={triggerCancleOrder}
               type="button"
             >
-              Cancel Order
+              Отменить заказ
             </Button>
           </div>
         ) : (
           <Button onClick={triggerStartOrder} type="button">
-            Start Order
+            Сформировать заказ
           </Button>
         )}
         <div className="my-10 grid w-full grid-cols-2 gap-4">
