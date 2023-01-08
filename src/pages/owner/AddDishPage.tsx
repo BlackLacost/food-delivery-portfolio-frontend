@@ -86,18 +86,18 @@ export const AddDishPage = () => {
   return (
     <div className="container flex flex-col items-center">
       <Helmet>
-        <title>Add Dish | Доставка Еды</title>
+        <title>Добавить Блюдо | Доставка Еды</title>
       </Helmet>
-      <h1 className="mt-28 mb-8 text-2xl">Add Dish</h1>
+      <h1 className="mt-28 mb-8 text-2xl">Добавить блюдо</h1>
       <form
         className="my-5 mx-auto grid w-full max-w-screen-sm gap-3"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input className="input" {...register('name')} placeholder="Name" />
+        <input className="input" {...register('name')} placeholder="Название" />
         <input
           className="input"
           {...register('description')}
-          placeholder="Description"
+          placeholder="Описание"
         />
         <input
           className="hidden"
@@ -112,7 +112,7 @@ export const AddDishPage = () => {
         >
           {watch('image') && watch('image').length > 0
             ? watch('image')[0].name
-            : 'Выберете картинку товара...'}
+            : 'Выберете картинку'}
         </label>
         {errors.image?.message && (
           <FormError>{errors.image.message.toString()}</FormError>
@@ -122,16 +122,16 @@ export const AddDishPage = () => {
           {...register('price')}
           type="number"
           min={0}
-          placeholder="Price"
+          placeholder="Рублей"
         />
         <div className="my-10">
-          <p className="mb-5 text-lg">Dish Options</p>
+          <p className="mb-5 text-lg">Доп. опции</p>
           <button
             className="mb-5 bg-gray-900 py-2 px-4 font-semibold text-white"
             onClick={onAddOptionClick}
             type="button"
           >
-            Add Option
+            Добавить опцию
           </button>
           <div className="grid gap-3">
             {fields.map((field, index) => (
@@ -139,28 +139,28 @@ export const AddDishPage = () => {
                 <input
                   className="flex-1 border-2 px-4 py-2 focus:border-gray-600 focus:outline-none"
                   {...register(`options.${index}.name`)}
-                  placeholder="Name"
+                  placeholder="Название"
                 />
                 <input
                   className="border-2 px-4 py-2 focus:border-gray-600 focus:outline-none"
                   {...register(`options.${index}.extra`)}
                   type="number"
                   min={0}
-                  placeholder="Extra"
+                  placeholder="Цена"
                 />
                 <button
                   className="bg-red-500 py-1 px-4 font-semibold text-white"
                   onClick={() => remove(index)}
                   type="button"
                 >
-                  Remove Option
+                  Удалить опцию
                 </button>
               </section>
             ))}
           </div>
         </div>
         <Button canClick={isValid} loading={loading}>
-          Add Dish
+          Добавить блюдо
         </Button>
       </form>
     </div>
