@@ -76,7 +76,7 @@ export const OrderOwnerCard = (props: Props) => {
           <tbody>
             {[
               ...order.items.map((item) => {
-                return `Товар: ${item.dish.name} ${
+                return `Блюдо: ${item.dish.name} ${
                   item.dish.options && item.dish.options.length > 0
                     ? `с ${item.dish.options.map((o) => o.name).join(', ')}`
                     : ''

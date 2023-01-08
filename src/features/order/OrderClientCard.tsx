@@ -48,7 +48,7 @@ export const OrderClientCard = (props: Props) => {
             {[
               ...order.items.map(
                 (item) =>
-                  `Товар: ${item.dish.name} ${
+                  `Блюдо: ${item.dish.name} ${
                     item.dish.options && item.dish.options.length > 0
                       ? `с ${item.dish.options.map((o) => o.name).join(', ')}`
                       : ''
