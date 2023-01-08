@@ -4,9 +4,11 @@ import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
+import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/Button'
 import { FormError } from '../components/FormError'
 import { Logo } from '../components/Logo'
+import { LOCALSTORAGE_TOKEN } from '../constants'
 import { GetAddress, Position } from '../features/yandex-map/GetAddress'
 import { CreateAccountForm, createAccountSchema } from '../form.schemas'
 import { graphql } from '../gql'
@@ -22,6 +24,7 @@ const ROLES = [
 const CreateAccount = graphql(`
   mutation CreateAccount($createAccountInput: CreateAccountInput!) {
     createAccount(input: $createAccountInput) {
+      token
       error {
         ... on Error {
           message
@@ -45,12 +48,18 @@ export const CreateAccountPage = () => {
   })
 
   const [createAccountMutation, { loading }] = useMutation(CreateAccount, {
-    onCompleted: ({ createAccount: { error } }) => {
+    onCompleted: ({ createAccount: { error, token } }) => {
       if (error) return notify.error(error.message)
-      navigate('/')
+
+      if (token) {
+        localStorage.setItem(LOCALSTORAGE_TOKEN, token)
+        authTokenVar(token)
+        isLoggedInVar(true)
+        navigate('/')
+      }
     },
     onError: (error) => {
-      console.log(JSON.stringify(error, null, 2))
+      console.log('!!!', JSON.stringify(error, null, 2))
     },
   })
 
