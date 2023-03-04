@@ -15,6 +15,8 @@ export const Pagination = ({
   onNextPage,
   ...rest
 }: Props) => {
+  if (totalPages <= 1) return null
+
   return (
     <div
       className={`grid-x-5 mx-auto grid max-w-xs grid-cols-3 items-center ${className}`}

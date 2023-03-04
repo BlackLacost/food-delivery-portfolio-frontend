@@ -56,13 +56,13 @@ export const RestaurantsPage = () => {
       </Helmet>
       {/* <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-hull flex items-center justify-center bg-gray-800 py-40"
+        className="flex items-center justify-center py-40 bg-gray-800 w-hull"
       >
         <input
           {...register('searchTerm')}
           type="text"
           placeholder="Search restaurants..."
-          className="input w-3/4 rounded-md border-0 md:w-5/12 lg:w-4/12"
+          className="w-3/4 border-0 rounded-md input md:w-5/12 lg:w-4/12"
         />
       </form> */}
       {!loading && data && (
