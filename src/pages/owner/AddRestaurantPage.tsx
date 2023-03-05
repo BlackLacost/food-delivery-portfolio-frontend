@@ -13,9 +13,9 @@ import {
   createRestaurantSchema,
 } from '../../form.schemas'
 import { graphql } from '../../gql'
+import { MyRestaurantsDocument } from '../../gql/graphql'
 import { notify } from '../../toast'
 import { uploadImage } from '../utils/upload-image'
-import { MyRestaurantsRoute_Query } from './MyRestaurantsPage'
 
 const CreateRestaurant = graphql(`
   mutation CreateRestaurant($input: CreateRestaurantInput!) {
@@ -72,7 +72,7 @@ export const AddRestaurantPage = () => {
       // )
     },
     // TODO: update cache 20.06 Cache Optimization part Two
-    refetchQueries: [{ query: MyRestaurantsRoute_Query }],
+    refetchQueries: [{ query: MyRestaurantsDocument }],
   })
 
   const [restaurantPosition, setRestaurantPosition] = React.useState<Position>(

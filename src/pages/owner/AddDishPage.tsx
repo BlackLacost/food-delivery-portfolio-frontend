@@ -88,9 +88,9 @@ export const AddDishPage = () => {
       <Helmet>
         <title>Добавить Блюдо | Доставка Еды</title>
       </Helmet>
-      <h1 className="mt-28 mb-8 text-2xl">Добавить блюдо</h1>
+      <h1 className="mb-8 mt-28 text-2xl">Добавить блюдо</h1>
       <form
-        className="my-5 mx-auto grid w-full max-w-screen-sm gap-3"
+        className="mx-auto my-5 grid w-full max-w-screen-sm gap-3"
         onSubmit={handleSubmit(onSubmit)}
       >
         <input className="input" {...register('name')} placeholder="Название" />
@@ -127,7 +127,7 @@ export const AddDishPage = () => {
         <div className="my-10">
           <p className="mb-5 text-lg">Доп. опции</p>
           <button
-            className="mb-5 bg-gray-900 py-2 px-4 font-semibold text-white"
+            className="mb-5 bg-gray-900 px-4 py-2 font-semibold text-white"
             onClick={onAddOptionClick}
             type="button"
           >
@@ -149,7 +149,7 @@ export const AddDishPage = () => {
                   placeholder="Цена"
                 />
                 <button
-                  className="bg-red-500 py-1 px-4 font-semibold text-white"
+                  className="bg-red-500 px-4 py-1 font-semibold text-white"
                   onClick={() => remove(index)}
                   type="button"
                 >

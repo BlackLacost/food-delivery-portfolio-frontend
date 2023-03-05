@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
 import { FragmentType, graphql, useFragment } from '../../gql'
+import { Card_RestaurantFragmentDoc } from '../../gql/graphql'
 
-export const Card_RestaurantFragment = graphql(`
-  fragment Card_RestaurantFragment on Restaurant {
+graphql(`
+  fragment Card_Restaurant on Restaurant {
     id
     category {
       name
@@ -13,12 +14,12 @@ export const Card_RestaurantFragment = graphql(`
 `)
 
 type Props = {
-  restaurant: FragmentType<typeof Card_RestaurantFragment>
+  restaurant: FragmentType<typeof Card_RestaurantFragmentDoc>
 }
 
 export const RestaurantCard = ({ restaurant }: Props) => {
   const { id, category, coverImage, name } = useFragment(
-    Card_RestaurantFragment,
+    Card_RestaurantFragmentDoc,
     restaurant
   )
   return (

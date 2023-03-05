@@ -1,17 +1,15 @@
 import { useQuery } from '@apollo/client'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { MouseEvent, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { Pagination } from '../../components/Pagination'
 import { CategoryCard } from '../../features/restaurant/CategoryCard'
-import { RestaurantsCards } from '../../features/restaurant/RestaurantsCards'
-import { SearchTermForm, searchTermSchema } from '../../form.schemas'
+import { RestaurantCard } from '../../features/restaurant/RestaurantCard'
 import { graphql } from '../../gql'
+import { GetRestaurantsDocument } from '../../gql/graphql'
+import { notify } from '../../toast'
 
-const GetRestaurants_Query = graphql(`
-  query GetRestaurants_Query($input: RestaurantsInput!) {
+graphql(`
+  query GetRestaurants($input: RestaurantsInput!) {
     allCategories {
       categories {
         id
@@ -20,15 +18,21 @@ const GetRestaurants_Query = graphql(`
     }
     getRestaurants(input: $input) {
       totalPages
+      restaurants {
+        id
+        ...Card_Restaurant
+      }
     }
-    ...Restaurants_QueryFragment
   }
 `)
 
 export const RestaurantsPage = () => {
   const [page, setPage] = useState(1)
-  const { data, loading } = useQuery(GetRestaurants_Query, {
+  const { data, loading } = useQuery(GetRestaurantsDocument, {
     variables: { input: { page } },
+    onError: (error) => {
+      notify.error(error.message)
+    },
   })
 
   const onNextPage = (e: MouseEvent<HTMLElement>) => {
@@ -40,14 +44,21 @@ export const RestaurantsPage = () => {
     setPage((v) => v - 1)
   }
 
-  const { register, handleSubmit } = useForm<SearchTermForm>({
-    resolver: yupResolver(searchTermSchema),
-  })
-  const navigate = useNavigate()
+  // const { register, handleSubmit } = useForm<SearchTermForm>({
+  //   resolver: yupResolver(searchTermSchema),
+  // })
+  // const navigate = useNavigate()
+  //
+  // const onSubmit: SubmitHandler<SearchTermForm> = ({ searchTerm }) => {
+  //   navigate(`/search?term=${searchTerm}`)
+  // }
 
-  const onSubmit: SubmitHandler<SearchTermForm> = ({ searchTerm }) => {
-    navigate(`/search?term=${searchTerm}`)
-  }
+  if (loading) return null
+  if (!data?.allCategories.categories || !data.getRestaurants.restaurants)
+    return null
+
+  const { categories } = data.allCategories
+  const { restaurants, totalPages } = data.getRestaurants
 
   return (
     <div>
@@ -65,27 +76,27 @@ export const RestaurantsPage = () => {
           className="w-3/4 border-0 rounded-md input md:w-5/12 lg:w-4/12"
         />
       </form> */}
-      {!loading && data && (
-        <div className="mx-5 max-w-screen-xl xl:mx-auto">
-          <div className="my-6 flex justify-center space-x-5">
-            {data.allCategories.categories?.map((category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </div>
-          <RestaurantsCards
-            className="my-6"
-            clientQuery={data}
-            ownerQuery={undefined}
-          />
-          <Pagination
-            className="my-6"
-            page={page}
-            totalPages={data.getRestaurants.totalPages ?? 1}
-            onNextPage={onNextPage}
-            onPrevPage={onPrevPage}
-          />
+      <div className="mx-5 max-w-screen-xl xl:mx-auto">
+        <div className="my-6 flex justify-center space-x-5">
+          {categories.map((category) => (
+            <CategoryCard key={category.id} category={category} />
+          ))}
         </div>
-      )}
+        <div
+          className={`my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3`}
+        >
+          {restaurants.map((restaurant) => (
+            <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+          ))}
+        </div>
+        <Pagination
+          className="my-6"
+          page={page}
+          totalPages={totalPages ?? 1}
+          onNextPage={onNextPage}
+          onPrevPage={onPrevPage}
+        />
+      </div>
     </div>
   )
 }
