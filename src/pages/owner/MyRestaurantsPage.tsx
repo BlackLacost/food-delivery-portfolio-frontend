@@ -34,7 +34,6 @@ export const MyRestaurantsPage = () => {
           <AddRestaurantButton
             restaurantsCount={data.myRestaurants.restaurants.length}
           />
-          {/* <RestaurantsCards ownerQuery={data} clientQuery={undefined} /> */}
           <div
             className={`my-6 grid grid-cols-1 gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3`}
           >

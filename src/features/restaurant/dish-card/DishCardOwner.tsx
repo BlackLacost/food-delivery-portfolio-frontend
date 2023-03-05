@@ -1,24 +1,25 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../../../gql'
+import { DishCardOwnerFragmentDoc } from '../../../gql/graphql'
 import { DishCardContainer } from './DishCardContainer'
 import { DishCardImage } from './DishCardImage'
 import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
-export const CardOwner_DishFragment = graphql(`
-  fragment CardOwner_DishFragment on Dish {
-    ...CardTitle_DishFragment
-    ...CardImage_DishFragment
+graphql(`
+  fragment DishCardOwner on Dish {
+    ...DishCardTitle
+    ...DishCardImage
     price
   }
 `)
 
 type Props = {
-  dish: FragmentType<typeof CardOwner_DishFragment>
+  dish: FragmentType<typeof DishCardOwnerFragmentDoc>
 }
 
 export const DishCardOwner: React.FC<Props> = (props) => {
-  const dish = useFragment(CardOwner_DishFragment, props.dish)
+  const dish = useFragment(DishCardOwnerFragmentDoc, props.dish)
 
   return (
     <DishCardContainer>

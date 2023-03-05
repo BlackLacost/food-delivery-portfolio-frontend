@@ -1,10 +1,11 @@
 import { H1 } from '../../components/H1'
 import { Rub } from '../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../gql'
+import { ClientOrderCardFragmentDoc } from '../../gql/graphql'
 import { OrderStatusView } from './OrderStatus'
 
-const ClientCard_OrderFragment = graphql(`
-  fragment ClientCard_OrderFragment on Order {
+graphql(`
+  fragment ClientOrderCard on Order {
     id
     total
     status
@@ -29,11 +30,11 @@ const ClientCard_OrderFragment = graphql(`
 `)
 
 type Props = {
-  order: FragmentType<typeof ClientCard_OrderFragment>
+  order: FragmentType<typeof ClientOrderCardFragmentDoc>
 }
 
 export const OrderClientCard = (props: Props) => {
-  const order = useFragment(ClientCard_OrderFragment, props.order)
+  const order = useFragment(ClientOrderCardFragmentDoc, props.order)
   return (
     <article className="border border-gray-800">
       <H1 className="bg-gray-800 py-2 text-center text-white">

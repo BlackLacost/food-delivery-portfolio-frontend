@@ -3,33 +3,37 @@ import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import { OrderClientCard } from '../../features/order/OrderClientCard'
 import { graphql } from '../../gql'
-import { OrderStatus } from '../../gql/graphql'
+import {
+  ClientOrderUpdatesDocument,
+  GetClientOrdersDocument,
+  OrderStatus,
+} from '../../gql/graphql'
 import { notify } from '../../toast'
 
-export const GetClientOrdersRoute_Query = graphql(`
-  query GetClientOrders_Query($input: GetOrdersInput!) {
+graphql(`
+  query GetClientOrders($input: GetOrdersInput!) {
     getOrders(input: $input) {
       orders {
         id
         status
-        ...ClientCard_OrderFragment
+        ...ClientOrderCard
       }
     }
   }
 `)
 
-const ClientOrderUpdates_Subscription = graphql(`
+graphql(`
   subscription ClientOrderUpdates($input: OrderUpdatesInput!) {
     orderUpdates(input: $input) {
       id
       status
-      ...ClientCard_OrderFragment
+      ...ClientOrderCard
     }
   }
 `)
 
 export const ClientOrdersPage = () => {
-  const { data, subscribeToMore } = useQuery(GetClientOrdersRoute_Query, {
+  const { data, subscribeToMore } = useQuery(GetClientOrdersDocument, {
     variables: {
       input: {
         statuses: [
@@ -49,7 +53,7 @@ export const ClientOrdersPage = () => {
   React.useEffect(() => {
     notDeliveredOrders?.forEach((order) => {
       subscribeToMore({
-        document: ClientOrderUpdates_Subscription,
+        document: ClientOrderUpdatesDocument,
         variables: { input: { id: order.id } },
         updateQuery: (prev, { subscriptionData }) => {
           if (!subscriptionData.data) return prev

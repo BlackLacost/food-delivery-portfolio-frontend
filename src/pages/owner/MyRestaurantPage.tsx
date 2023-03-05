@@ -6,16 +6,17 @@ import { Payment } from '../../components/Payment'
 import { DishCards } from '../../features/restaurant/dish-card/DishCards'
 import { RestaurantImageDescription } from '../../features/restaurant/RestaurantImageDescription'
 import { graphql } from '../../gql'
+import { MyRestaurantDocument } from '../../gql/graphql'
 
-export const MyRestaurantRoute_Query = graphql(`
-  query MyRestaurant_Query($input: MyRestaurantInput!) {
+graphql(`
+  query MyRestaurant($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
       restaurant {
         name
-        ...ImageDescription_RestaurantFragment
+        ...RestaurantImageDescription
       }
     }
-    ...DishCards_QueryFragment
+    ...DishCards
   }
 `)
 
@@ -26,7 +27,7 @@ type Params = {
 export const MyRestaurantPage = () => {
   const [isOpenPayment, setIsOpenPayment] = useState(false)
   const restaurantId = Number(useParams<Params>().id)
-  const { data } = useQuery(MyRestaurantRoute_Query, {
+  const { data } = useQuery(MyRestaurantDocument, {
     variables: { input: { id: restaurantId } },
   })
 

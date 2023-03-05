@@ -3,9 +3,10 @@ import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { RestaurantCard } from '../../features/restaurant/RestaurantCard'
 import { graphql } from '../../gql'
+import { RestaurantsByCategoryDocument } from '../../gql/graphql'
 
-const RestaurantsByCategory_Query = graphql(`
-  query RestaurantsByCategory_Query($input: CategoryInput!) {
+graphql(`
+  query RestaurantsByCategory($input: CategoryInput!) {
     category(input: $input) {
       category {
         id
@@ -30,15 +31,13 @@ type Params = {
 
 export const CategoryPage = () => {
   const { slug } = useParams<Params>()
-  const { data } = useQuery(RestaurantsByCategory_Query, {
+  const { data } = useQuery(RestaurantsByCategoryDocument, {
     variables: { input: { slug: slug as string } },
   })
 
   if (!data?.category) return null
 
   const { category, restaurants } = data.category
-
-  console.log(restaurants)
 
   return (
     <div>

@@ -1,14 +1,15 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../../../gql'
+import { DishCardsFragmentDoc } from '../../../gql/graphql'
 import { DishCardOwner } from './DishCardOwner'
 
-export const DishCards_QueryFragment = graphql(`
-  fragment DishCards_QueryFragment on Query {
+graphql(`
+  fragment DishCards on Query {
     myRestaurant(input: $input) {
       restaurant {
         menu {
           id
-          ...CardOwner_DishFragment
+          ...DishCardOwner
         }
       }
       error {
@@ -21,12 +22,12 @@ export const DishCards_QueryFragment = graphql(`
 `)
 
 type Props = {
-  query: FragmentType<typeof DishCards_QueryFragment>
+  query: FragmentType<typeof DishCardsFragmentDoc>
 }
 
 export const DishCards: React.FC<Props> = ({ query }) => {
-  const menu = useFragment(DishCards_QueryFragment, query).myRestaurant
-    .restaurant?.menu
+  const menu = useFragment(DishCardsFragmentDoc, query).myRestaurant.restaurant
+    ?.menu
 
   if (menu?.length === 0) {
     return (

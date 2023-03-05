@@ -8,11 +8,11 @@ import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
 import { AddDishForm, addDishSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
+import { CreateDishDocument, MyRestaurantDocument } from '../../gql/graphql'
 import { uploadImage } from '../utils/upload-image'
-import { MyRestaurantRoute_Query } from './MyRestaurantPage'
 
-const AddDishRoute_Mutation = graphql(`
-  mutation AddDish_Mutation($input: CreateDishInput!) {
+graphql(`
+  mutation CreateDish($input: CreateDishInput!) {
     createDish(input: $input) {
       error {
         ... on Error {
@@ -44,7 +44,7 @@ export const AddDishPage = () => {
     name: 'options',
   })
 
-  const [addDish, { loading }] = useMutation(AddDishRoute_Mutation, {
+  const [addDish, { loading }] = useMutation(CreateDishDocument, {
     onCompleted: ({ createDish: { error } }) => {
       if (!error) {
         navigate(-1)
@@ -52,7 +52,7 @@ export const AddDishPage = () => {
     },
     refetchQueries: [
       {
-        query: MyRestaurantRoute_Query,
+        query: MyRestaurantDocument,
         variables: { input: { id: restaurantId } },
       },
     ],

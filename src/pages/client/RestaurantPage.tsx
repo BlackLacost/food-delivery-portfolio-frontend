@@ -6,29 +6,31 @@ import { DishCardClient } from '../../features/restaurant/dish-card/DishCardClie
 import { RestaurantImageDescription } from '../../features/restaurant/RestaurantImageDescription'
 import { graphql } from '../../gql'
 import {
+  CreateOrderDocument,
   CreateOrderItemInput,
+  GetClientOrdersDocument,
+  GetRestaurantDocument,
   OrderItemOptionInputType,
   OrderStatus,
 } from '../../gql/graphql'
 import { notify } from '../../toast'
-import { GetClientOrdersRoute_Query } from './ClientOrdersPage'
 
-const RestaurantRoute_Query = graphql(`
-  query Restaurant_Query($input: RestaurantInput!) {
+graphql(`
+  query GetRestaurant($input: RestaurantInput!) {
     getRestaurant(input: $input) {
       restaurant {
-        ...ImageDescription_RestaurantFragment
+        ...RestaurantImageDescription
         menu {
           id
-          ...CardClient_DishFragment
+          ...DishCardClient
         }
       }
     }
   }
 `)
 
-const CreateOrder_Mutation = graphql(`
-  mutation CreateOrder_Mutation($input: CreateOrderInput!) {
+graphql(`
+  mutation CreateOrder($input: CreateOrderInput!) {
     createOrder(input: $input) {
       order {
         id
@@ -50,7 +52,7 @@ export const RestaurantPage = () => {
   const params = useParams<Params>()
   const navigate = useNavigate()
   const restaurantId = Number(params.id)
-  const { data } = useQuery(RestaurantRoute_Query, {
+  const { data } = useQuery(GetRestaurantDocument, {
     variables: { input: { restaurantId } },
   })
   const restaurant = data?.getRestaurant.restaurant
@@ -106,7 +108,7 @@ export const RestaurantPage = () => {
   }
 
   const [orderMutation, { loading: loadingOrder }] = useMutation(
-    CreateOrder_Mutation,
+    CreateOrderDocument,
     {
       variables: { input: { restaurantId, items: dishesOrder } },
       onError: ({ message }) => notify.error(message),
@@ -116,7 +118,7 @@ export const RestaurantPage = () => {
       },
       refetchQueries: [
         {
-          query: GetClientOrdersRoute_Query,
+          query: GetClientOrdersDocument,
           variables: {
             input: {
               statuses: [

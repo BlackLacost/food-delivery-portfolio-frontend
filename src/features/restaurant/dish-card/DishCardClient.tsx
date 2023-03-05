@@ -4,6 +4,7 @@ import { Rub } from '../../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import {
   CreateOrderItemInput,
+  DishCardClientFragmentDoc,
   OrderItemOptionInputType,
 } from '../../../gql/graphql'
 import { DishCardContainer } from './DishCardContainer'
@@ -11,11 +12,11 @@ import { DishCardImage } from './DishCardImage'
 import { DishCardPrice } from './DishCardPrice'
 import { DishCardTitle } from './DishCardTitle'
 
-export const CardClient_DishFragment = graphql(`
-  fragment CardClient_DishFragment on Dish {
+graphql(`
+  fragment DishCardClient on Dish {
     id
-    ...CardTitle_DishFragment
-    ...CardImage_DishFragment
+    ...DishCardTitle
+    ...DishCardImage
     price
     options {
       name
@@ -31,7 +32,7 @@ export const CardClient_DishFragment = graphql(`
 type Props = {
   addDishToOrder: (dish: CreateOrderItemInput) => void
   toggleDishOption: (dishId: number, option: OrderItemOptionInputType) => void
-  dish: FragmentType<typeof CardClient_DishFragment>
+  dish: FragmentType<typeof DishCardClientFragmentDoc>
   isSelected: boolean
   isSelectedDishOption: (
     dishId: number,
@@ -50,7 +51,7 @@ export const DishCardClient: React.FC<Props> = ({
   removeDishFromOrder,
   ...rest
 }) => {
-  const dish = useFragment(CardClient_DishFragment, rest.dish)
+  const dish = useFragment(DishCardClientFragmentDoc, rest.dish)
 
   const onOptionClick = (
     dishId: number,

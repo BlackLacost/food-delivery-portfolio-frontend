@@ -1,19 +1,20 @@
 import { FC } from 'react'
 import { FragmentType, graphql, useFragment } from '../../../gql'
+import { DishCardImageFragmentDoc } from '../../../gql/graphql'
 
-export const CardImage_DishFragment = graphql(`
-  fragment CardImage_DishFragment on Dish {
+graphql(`
+  fragment DishCardImage on Dish {
     name
     photo
   }
 `)
 
 type Props = {
-  dish: FragmentType<typeof CardImage_DishFragment>
+  dish: FragmentType<typeof DishCardImageFragmentDoc>
 }
 
 export const DishCardImage: FC<Props> = (props) => {
-  const dish = useFragment(CardImage_DishFragment, props.dish)
+  const dish = useFragment(DishCardImageFragmentDoc, props.dish)
 
   return (
     <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">

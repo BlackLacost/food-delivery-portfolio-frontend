@@ -1,8 +1,9 @@
 import React from 'react'
 import { FragmentType, graphql, useFragment } from '../../gql'
+import { RestaurantImageDescriptionFragmentDoc } from '../../gql/graphql'
 
-const ImageDescription_RestaurantFragment = graphql(`
-  fragment ImageDescription_RestaurantFragment on Restaurant {
+graphql(`
+  fragment RestaurantImageDescription on Restaurant {
     address
     category {
       name
@@ -13,12 +14,12 @@ const ImageDescription_RestaurantFragment = graphql(`
 `)
 
 type Props = {
-  restaurant: FragmentType<typeof ImageDescription_RestaurantFragment>
+  restaurant: FragmentType<typeof RestaurantImageDescriptionFragmentDoc>
 }
 
 export const RestaurantImageDescription: React.FC<Props> = (props) => {
   const restaurant = useFragment(
-    ImageDescription_RestaurantFragment,
+    RestaurantImageDescriptionFragmentDoc,
     props.restaurant
   )
 
