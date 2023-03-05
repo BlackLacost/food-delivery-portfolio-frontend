@@ -29,9 +29,11 @@ export const RestaurantCard = ({ restaurant }: Props) => {
           <img className="object-cover" src={coverImage} alt={category?.name} />
         </div>
         <h2 className="py-2 text-xl">{name}</h2>
-        <p className="border-t-2 border-gray-200 pt-2 text-gray-500">
-          {category?.name ?? 'Without Category'}
-        </p>
+        {category?.name ? (
+          <p className="border-t-2 border-gray-200 pt-2 text-gray-500">
+            {category.name}
+          </p>
+        ) : null}
       </article>
     </Link>
   )
