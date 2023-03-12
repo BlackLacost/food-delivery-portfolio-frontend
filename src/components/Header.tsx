@@ -23,7 +23,7 @@ export const Header = () => {
     <>
       {!data?.me.verified && (
         <div className="bg-red-500 p-3 text-center text-sm text-white">
-          <span>Please verify your email.</span>
+          <span>Пожалуйства подтвердите почту.</span>
         </div>
       )}
       <header className="py-2">
