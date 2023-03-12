@@ -8,16 +8,22 @@ export const editProfileSchema = yup.object({
 export type EditProfileForm = yup.InferType<typeof editProfileSchema>
 
 export const loginSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(3).required(),
+  email: yup
+    .string()
+    .email('Почта должна быть указана правильно')
+    .required('Почта обязательна'),
+  password: yup
+    .string()
+    .min(3, 'Пароль должен быть минимум из 3 символов')
+    .required('Пароль обязателен'),
 })
 export type LoginForm = yup.InferType<typeof loginSchema>
 
-export const createAccountSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(3).required(),
-  role: yup.mixed<UserRole>().oneOf(Object.values(UserRole)).required(),
-})
+export const createAccountSchema = loginSchema.concat(
+  yup.object({
+    role: yup.mixed<UserRole>().oneOf(Object.values(UserRole)).required(),
+  })
+)
 export type CreateAccountForm = yup.InferType<typeof createAccountSchema>
 
 export const searchTermSchema = yup.object({
