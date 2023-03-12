@@ -88,9 +88,9 @@ export const EditProfilePage = () => {
   return (
     <div className="mt-52 flex flex-col items-center justify-center px-5">
       <Helmet>
-        <title>Edit Profile | Доставка Еды</title>
+        <title>Редактирование Профиля | Доставка Еды</title>
       </Helmet>
-      <H1 className="">Edit Profile</H1>
+      <H1 className="">Редактирование Профиля</H1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-5 grid w-full max-w-screen-sm gap-3"
@@ -98,17 +98,17 @@ export const EditProfilePage = () => {
         <input
           {...register('email')}
           type="email"
-          placeholder="Email"
+          placeholder="Почта"
           className="input"
         />
         <input
           {...register('password')}
           type="password"
-          placeholder="Password"
+          placeholder="Пароль"
           className="input"
         />
         <Button canClick={isValid} loading={loading}>
-          Save Profile
+          Сохранить
         </Button>
       </form>
     </div>
