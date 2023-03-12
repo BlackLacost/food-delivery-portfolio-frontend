@@ -1,9 +1,8 @@
 import { useQuery } from '@apollo/client'
 import { Map, TrafficControl, YMaps, ZoomControl } from '@pbe/react-yandex-maps'
-import React from 'react'
+import { useGeolocated } from 'react-geolocated'
 import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
-import ymaps from 'yandex-maps'
 import { OrderDriverCard } from '../../features/order/OrderDriverCard'
 import { YandexRoute } from '../../features/yandex-map/YandexRoute'
 import { graphql } from '../../gql'
@@ -54,20 +53,24 @@ export const DriverOrderPage = () => {
     },
   })
 
-  const [driverCoords, setDriverCoords] = React.useState<[number, number]>([
-    57, 37,
-  ])
-
-  const getGeoLocation = async (ymapsInstance: typeof ymaps) => {
-    // @ts-ignore
-    const result = await ymapsInstance.geolocation.get({
-      provider: 'yandex',
-      mapStateAutoApply: true,
+  const { coords, isGeolocationAvailable, isGeolocationEnabled, getPosition } =
+    useGeolocated({
+      positionOptions: {
+        enableHighAccuracy: true,
+      },
     })
-    const res = await ymapsInstance.geocode(result.geoObjects.position)
-    // @ts-ignore
-    const coords = res.geoObjects.get(0).geometry.getCoordinates()
-    setDriverCoords(coords)
+
+  if (!isGeolocationAvailable) {
+    return <div>Your browser does not support Geolocation</div>
+  }
+
+  if (!isGeolocationEnabled) {
+    return <div>Geolocation is not enabled</div>
+  }
+
+  if (!coords?.latitude || !coords?.longitude) {
+    getPosition()
+    return null
   }
 
   const order = data?.getDriverOrder.order
@@ -103,7 +106,7 @@ export const DriverOrderPage = () => {
           width={window.innerWidth}
           height="90vh"
           state={{
-            center: driverCoords,
+            center: [coords.latitude, coords.longitude],
             zoom: 16,
           }}
           modules={[
@@ -114,19 +117,21 @@ export const DriverOrderPage = () => {
             'geocode',
             // 'templateLayoutFactory',
           ]}
-          onLoad={(ymaps) => {
-            // @ts-ignore
-            getGeoLocation(ymaps)
-          }}
         >
           <TrafficControl />
           <ZoomControl />
 
           {order.status === OrderStatus.Accepted && (
-            <YandexRoute from={driverCoords} to={restaurantCoords} />
+            <YandexRoute
+              from={[coords.latitude, coords.longitude]}
+              to={restaurantCoords}
+            />
           )}
           {order.status === OrderStatus.PickedUp && (
-            <YandexRoute from={driverCoords} to={customerCoords} />
+            <YandexRoute
+              from={[coords.latitude, coords.longitude]}
+              to={customerCoords}
+            />
           )}
         </Map>
       </YMaps>
