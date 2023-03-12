@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client'
+import { useReducer } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { Rub } from '../../components/Rub'
@@ -57,51 +58,61 @@ export const OrderDriverCard = (props: Props) => {
     refetchQueries: 'active',
   })
 
+  const [isOpen, toggleIsOpen] = useReducer((state) => !state, false)
+
   const onClick = (status: DriverOrderStatus) => {
     setDriverOrderStatus({ variables: { input: { id: order.id, status } } })
   }
 
   return (
     <article className="mx-5 max-w-screen-sm border border-gray-800 bg-white sm:mx-auto">
-      <h1 className="bg-gray-800 py-2 text-center text-white">
+      <h1
+        className="bg-gray-800 py-2 px-4 text-center text-white"
+        onClick={toggleIsOpen}
+      >
         Order #{order.id}
       </h1>
-      <div className="px-3">
-        <p className="py-2 text-center text-xl">
-          {order.total} <Rub />
-        </p>
-        <table className="w-full border-collapse">
-          <tbody>
-            {[
-              `From: ${order.restaurant?.address}`,
-              `To: ${order.customer?.email}`,
-              `Driver: ${order.driver?.email ?? 'Not yet.'}`,
-            ].map((line, index) => (
-              <tr key={index}>
-                <td className="border-y border-gray-800 py-2 text-sm">
-                  {line}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {order.status === OrderStatus.Accepted && (
-          <Button
-            className="my-2 w-full py-1 text-base"
-            onClick={() => onClick(DriverOrderStatus.PickedUp)}
-          >
-            Забрал
-          </Button>
-        )}
-        {order.status === OrderStatus.PickedUp && (
-          <Button
-            className="my-2 w-full py-1 text-base"
-            onClick={() => onClick(DriverOrderStatus.Delivered)}
-          >
-            Доствален
-          </Button>
-        )}
-      </div>
+      {isOpen && (
+        <div className="px-3">
+          <p className="py-2 text-center text-xl">
+            {order.total} <Rub />
+          </p>
+          <table className="w-full border-collapse">
+            <tbody>
+              {[
+                `From: ${order.restaurant?.address}`,
+                `To: ${order.customer?.email}`,
+                `Driver: ${order.driver?.email ?? 'Not yet.'}`,
+              ].map((line, index) => (
+                <tr key={index}>
+                  <td className="border-y border-gray-800 py-2 text-sm">
+                    {line}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {order.status === OrderStatus.Accepted && (
+            <Button
+              className="my-2 w-full py-1 text-base"
+              onClick={() => {
+                onClick(DriverOrderStatus.PickedUp)
+                toggleIsOpen()
+              }}
+            >
+              Забрал
+            </Button>
+          )}
+          {order.status === OrderStatus.PickedUp && (
+            <Button
+              className="my-2 w-full py-1 text-base"
+              onClick={() => onClick(DriverOrderStatus.Delivered)}
+            >
+              Доствален
+            </Button>
+          )}
+        </div>
+      )}
     </article>
   )
 }
