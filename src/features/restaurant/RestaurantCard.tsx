@@ -10,6 +10,7 @@ graphql(`
     }
     coverImage
     name
+    isPromoted
   }
 `)
 
@@ -18,7 +19,7 @@ type Props = {
 }
 
 export const RestaurantCard = ({ restaurant }: Props) => {
-  const { id, category, coverImage, name } = useFragment(
+  const { id, category, coverImage, name, isPromoted } = useFragment(
     Card_RestaurantFragmentDoc,
     restaurant
   )
@@ -32,9 +33,15 @@ export const RestaurantCard = ({ restaurant }: Props) => {
             alt={category?.name}
           />
         </div>
-        <h2 className="py-2 text-xl">{name}</h2>
+        <h2 className={`py-2 text-xl ${isPromoted ? 'font-bold' : ''}`}>
+          {name}
+        </h2>
         {category?.name ? (
-          <p className="border-t-2 border-gray-200 pt-2 text-gray-500">
+          <p
+            className={`border-t-2 ${
+              isPromoted ? 'border-primary-600' : 'border-gray-200'
+            } pt-2 text-gray-500`}
+          >
             {category.name}
           </p>
         ) : null}
