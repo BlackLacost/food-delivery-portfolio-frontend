@@ -24,9 +24,13 @@ export const RestaurantCard = ({ restaurant }: Props) => {
   )
   return (
     <Link to={`/restaurant/${id}`}>
-      <article>
+      <article className="group">
         <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
-          <img className="object-cover" src={coverImage} alt={category?.name} />
+          <img
+            className="object-cover duration-1000 group-hover:scale-110"
+            src={coverImage}
+            alt={category?.name}
+          />
         </div>
         <h2 className="py-2 text-xl">{name}</h2>
         {category?.name ? (

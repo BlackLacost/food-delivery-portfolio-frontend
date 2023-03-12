@@ -18,7 +18,11 @@ export const DishCardImage: FC<Props> = (props) => {
 
   return (
     <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
-      <img className="object-cover" src={dish.photo} alt={dish?.name} />
+      <img
+        className="object-cover duration-1000 group-hover:scale-125"
+        src={dish.photo}
+        alt={dish?.name}
+      />
     </div>
   )
 }
