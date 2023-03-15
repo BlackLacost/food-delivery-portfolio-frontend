@@ -19,11 +19,11 @@ const OwnerCard_OrderFragment = graphql(`
       email
     }
     items {
+      options {
+        name
+      }
       dish {
         name
-        options {
-          name
-        }
       }
     }
   }
@@ -77,8 +77,8 @@ export const OrderOwnerCard = (props: Props) => {
             {[
               ...order.items.map((item) => {
                 return `Блюдо: ${item.dish.name} ${
-                  item.dish.options && item.dish.options.length > 0
-                    ? `с ${item.dish.options.map((o) => o.name).join(', ')}`
+                  item.options && item.options.length > 0
+                    ? `с ${item.options.map((o) => o.name).join(', ')}`
                     : ''
                 }`
               }),
