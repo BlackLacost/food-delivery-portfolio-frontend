@@ -32,7 +32,10 @@ export const searchTermSchema = yup.object({
 export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 
 export const createRestaurantSchema = yup.object({
-  name: yup.string().min(3).required(),
+  name: yup
+    .string()
+    .min(3, 'название должно быть как минимум из 3 символов')
+    .required(),
   categoryName: yup.string().min(3).required(),
   image: yup
     .mixed()

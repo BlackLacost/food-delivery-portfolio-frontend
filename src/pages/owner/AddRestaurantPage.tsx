@@ -50,7 +50,7 @@ export const AddRestaurantPage = () => {
     watch,
     formState: { errors, isValid },
   } = useForm<CreateRestaurantForm>({
-    mode: 'onChange',
+    // mode: 'onChange',
     resolver: yupResolver(createRestaurantSchema),
   })
 
@@ -124,7 +124,10 @@ export const AddRestaurantPage = () => {
           position={restaurantPosition}
           setPosition={setRestaurantPosition}
         />
-        <input className="input" {...register('name')} placeholder="Name" />
+        <input className="input" {...register('name')} placeholder="Название" />
+        {errors.name?.message && (
+          <FormError>{errors.name.message.toString()}</FormError>
+        )}
         <select className="input" {...register('categoryName')}>
           {categories.map((category) => (
             <option key={category.id} value={category.name}>
@@ -148,9 +151,7 @@ export const AddRestaurantPage = () => {
         {errors.image?.message && (
           <FormError>{errors.image.message.toString()}</FormError>
         )}
-        <Button canClick={isValid} loading={uploading}>
-          Create Restaurant
-        </Button>
+        <Button loading={uploading}>Добавить ресторан</Button>
         {/* {data?.createRestaurant.error && (
           <FormError>{data.createRestaurant.error.message}</FormError>
         )} */}
