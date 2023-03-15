@@ -23,9 +23,9 @@ export const DishCardOwner: React.FC<Props> = (props) => {
 
   return (
     <DishCardContainer>
-      <DishCardTitle dish={dish} />
       <DishCardImage dish={dish} />
       <DishCardPrice>{dish.price}</DishCardPrice>
+      <DishCardTitle dish={dish} />
     </DishCardContainer>
   )
 }
