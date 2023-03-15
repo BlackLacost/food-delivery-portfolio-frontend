@@ -2,7 +2,7 @@ import { BiDish } from 'react-icons/bi'
 import { FaUserAlt } from 'react-icons/fa'
 import { IoLogOut } from 'react-icons/io5'
 import { Link, useNavigate } from 'react-router-dom'
-import { authTokenVar, isLoggedInVar } from '../apollo'
+import { authTokenVar, client, isLoggedInVar } from '../apollo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { UserRole } from '../gql/graphql'
 import { useMe } from '../hooks/useMe'
@@ -13,6 +13,7 @@ export const Header = () => {
   const navigate = useNavigate()
 
   const logout = () => {
+    client.clearStore()
     localStorage.removeItem(LOCALSTORAGE_TOKEN)
     authTokenVar(null)
     isLoggedInVar(false)
