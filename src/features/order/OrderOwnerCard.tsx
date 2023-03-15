@@ -64,15 +64,15 @@ export const OrderOwnerCard = (props: Props) => {
   }
 
   return (
-    <article className="my-10 mx-auto max-w-screen-sm border border-gray-800">
+    <article className="my-10 mx-auto flex max-w-screen-sm flex-col border border-gray-800">
       <H1 className="bg-gray-800 py-4 text-center text-white">
         Заказ № {order.id}
       </H1>
-      <div className="px-5">
+      <div className="flex flex-grow flex-col px-5">
         <p className="py-10 text-center text-3xl">
           {order.total} <Rub />
         </p>
-        <table className="w-full border-collapse">
+        <table className="mb-auto w-full border-collapse">
           <tbody>
             {[
               ...order.items.map((item) => {
