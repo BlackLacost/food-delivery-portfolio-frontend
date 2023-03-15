@@ -169,7 +169,7 @@ export const Dashboard = () => {
                   // balloonContentHeader: `Order #${orderId}`,
                   balloonContentHeader: `${restaurant?.name}`,
                   balloonContentBody: `
-                    <p class='font-bold mb-2'>Order #${orderId}</p>
+                    <p class='font-bold select-none mb-2'>Order #${orderId}</p>
                     <p>Address: ${restaurant?.address}</p>
                   `,
                   balloonContentFooter: `
