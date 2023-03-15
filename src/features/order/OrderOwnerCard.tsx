@@ -64,7 +64,7 @@ export const OrderOwnerCard = (props: Props) => {
   }
 
   return (
-    <article className="mx-5 my-10 max-w-screen-sm border border-gray-800 sm:mx-auto">
+    <article className="my-10 mx-auto max-w-screen-sm border border-gray-800">
       <H1 className="bg-gray-800 py-4 text-center text-white">
         Заказ № {order.id}
       </H1>

@@ -126,9 +126,11 @@ export const OwnerOrdersPage = () => {
       <Helmet>
         <title>Restaurant Orders | Доставка Еды</title>
       </Helmet>
-      {orders?.map((order) => (
-        <OrderOwnerCard key={order.id} order={order} />
-      ))}
+      <div className="mx-5">
+        {orders?.map((order) => (
+          <OrderOwnerCard key={order.id} order={order} />
+        ))}
+      </div>
     </>
   )
 }
