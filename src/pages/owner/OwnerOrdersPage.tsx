@@ -126,7 +126,7 @@ export const OwnerOrdersPage = () => {
       <Helmet>
         <title>Restaurant Orders | Доставка Еды</title>
       </Helmet>
-      <div className="mx-5">
+      <div className="mx-5 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {orders?.map((order) => (
           <OrderOwnerCard key={order.id} order={order} />
         ))}
