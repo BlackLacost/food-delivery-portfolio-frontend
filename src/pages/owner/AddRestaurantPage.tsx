@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
 import { H1 } from '../../components/H1'
+import { Input } from '../../components/Input'
 import { GetAddress, Position } from '../../features/yandex-map/GetAddress'
 import {
   CreateRestaurantForm,
@@ -125,14 +126,11 @@ export const AddRestaurantPage = () => {
             position={restaurantPosition}
             setPosition={setRestaurantPosition}
           />
-          <input
-            className="input"
-            {...register('name')}
+          <Input
+            registerProps={register('name')}
+            error={errors.name}
             placeholder="Название"
           />
-          {errors.name?.message && (
-            <FormError>{errors.name.message.toString()}</FormError>
-          )}
           <select className="input" {...register('categoryName')}>
             {categories.map((category) => (
               <option key={category.id} value={category.name}>

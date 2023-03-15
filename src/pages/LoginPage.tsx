@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/Button'
-import { FormError } from '../components/FormError'
+import { Input } from '../components/Input'
 import { Logo } from '../components/Logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { LoginForm, loginSchema } from '../form.schemas'
@@ -65,27 +65,18 @@ export const LoginPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="m-5 grid w-full gap-3 text-left"
         >
-          <input
-            {...register('email')}
+          <Input
+            registerProps={register('email')}
             type="email"
+            error={errors.email}
             placeholder="Почта"
-            className="input"
           />
-          {errors.email?.message && (
-            <FormError>{errors.email.message}</FormError>
-          )}
-          <input
-            {...register('password')}
+          <Input
+            registerProps={register('password')}
             type="password"
+            error={errors.password}
             placeholder="Пароль"
-            className="input"
           />
-          {errors.password?.message && (
-            <FormError>{errors.password.message}</FormError>
-          )}
-          {errors.password?.type === 'minLength' && (
-            <FormError>Password must be more than 2 chars</FormError>
-          )}
 
           <Button canClick={isValid} loading={loading}>
             Войти

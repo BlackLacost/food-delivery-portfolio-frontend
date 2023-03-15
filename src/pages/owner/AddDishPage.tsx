@@ -1,11 +1,12 @@
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
 import { FormError } from '../../components/FormError'
+import { Input } from '../../components/Input'
 import { AddDishForm, addDishSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
 import { CreateDishDocument, MyRestaurantDocument } from '../../gql/graphql'
@@ -33,10 +34,12 @@ export const AddDishPage = () => {
     register,
     handleSubmit,
     control,
-    formState: { isValid, errors },
+    formState: { errors },
     watch,
   } = useForm<AddDishForm>({
-    mode: 'onChange',
+    defaultValues: {
+      price: 0,
+    },
     resolver: yupResolver(addDishSchema),
   })
   const { fields, remove, prepend } = useFieldArray({
@@ -93,11 +96,15 @@ export const AddDishPage = () => {
         className="mx-auto my-5 grid w-full max-w-screen-sm gap-3"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <input className="input" {...register('name')} placeholder="Название" />
-        <input
-          className="input"
-          {...register('description')}
+        <Input
+          registerProps={register('name')}
+          placeholder="Название"
+          error={errors.name}
+        />
+        <Input
+          registerProps={register('description')}
           placeholder="Описание"
+          error={errors.description}
         />
         <input
           className="hidden"
@@ -117,11 +124,11 @@ export const AddDishPage = () => {
         {errors.image?.message && (
           <FormError>{errors.image.message.toString()}</FormError>
         )}
-        <input
-          className="input"
-          {...register('price')}
+        <Input
+          registerProps={register('price')}
           type="number"
           min={0}
+          error={errors.price}
           placeholder="Рублей"
         />
         <div className="my-10">
@@ -135,33 +142,34 @@ export const AddDishPage = () => {
           </button>
           <div className="grid gap-3">
             {fields.map((field, index) => (
-              <section className="flex space-x-3" key={field.id}>
-                <input
-                  className="flex-1 border-2 px-4 py-2 focus:border-gray-600 focus:outline-none"
-                  {...register(`options.${index}.name`)}
-                  placeholder="Название"
-                />
-                <input
-                  className="border-2 px-4 py-2 focus:border-gray-600 focus:outline-none"
-                  {...register(`options.${index}.extra`)}
-                  type="number"
-                  min={0}
-                  placeholder="Цена"
-                />
-                <button
-                  className="bg-red-500 px-4 py-1 font-semibold text-white"
-                  onClick={() => remove(index)}
-                  type="button"
-                >
-                  Удалить опцию
-                </button>
-              </section>
+              <Fragment key={field.id}>
+                <div>{JSON.stringify(console.log({ errors }))}</div>
+                <section className="flex space-x-3" key={field.id}>
+                  <Input
+                    className="py-2"
+                    registerProps={register(`options.${index}.name`)}
+                    placeholder="Название"
+                  />
+                  <Input
+                    className="py-2"
+                    registerProps={register(`options.${index}.extra`)}
+                    type="number"
+                    min={0}
+                    placeholder="Цена"
+                  />
+                  <button
+                    className="bg-red-500 px-4 py-1 font-semibold text-white"
+                    onClick={() => remove(index)}
+                    type="button"
+                  >
+                    Удалить опцию
+                  </button>
+                </section>
+              </Fragment>
             ))}
           </div>
         </div>
-        <Button canClick={isValid} loading={loading}>
-          Добавить блюдо
-        </Button>
+        <Button loading={loading}>Добавить блюдо</Button>
       </form>
     </div>
   )

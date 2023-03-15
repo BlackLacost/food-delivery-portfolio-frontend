@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/Button'
-import { FormError } from '../components/FormError'
+import { Input } from '../components/Input'
 import { Logo } from '../components/Logo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { GetAddress, Position } from '../features/yandex-map/GetAddress'
@@ -40,9 +40,8 @@ export const CreateAccountPage = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<CreateAccountForm>({
-    mode: 'onChange',
     defaultValues: { role: UserRole.Client },
     resolver: yupResolver(createAccountSchema),
   })
@@ -115,27 +114,18 @@ export const CreateAccountPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="m-5 grid w-full gap-3 text-left"
         >
-          <input
-            {...register('email')}
+          <Input
+            registerProps={register('email')}
             type="email"
+            error={errors.email}
             placeholder="Почта"
-            className="input"
           />
-          {errors.email?.message && (
-            <FormError>{errors.email.message}</FormError>
-          )}
-          {errors.email?.type === 'pattern' && (
-            <FormError>Please enter a valid email</FormError>
-          )}
-          <input
-            {...register('password')}
+          <Input
+            registerProps={register('password')}
             type="password"
+            error={errors.password}
             placeholder="Пароль"
-            className="input"
           />
-          {errors.password?.message && (
-            <FormError>{errors.password.message}</FormError>
-          )}
           <select {...register('role')} className="input">
             {Object.keys(UserRole).map((role) => (
               <option key={role} value={role}>
@@ -144,9 +134,7 @@ export const CreateAccountPage = () => {
             ))}
           </select>
 
-          <Button canClick={isValid} loading={loading}>
-            Создать аккаунт
-          </Button>
+          <Button loading={loading}>Создать аккаунт</Button>
         </form>
         <div>
           Уже есть аккаунт?{' '}

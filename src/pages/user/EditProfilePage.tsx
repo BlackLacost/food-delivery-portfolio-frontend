@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Button } from '../../components/Button'
 import { H1 } from '../../components/H1'
+import { Input } from '../../components/Input'
 import { EditProfileForm, editProfileSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
 import { useMe } from '../../hooks/useMe'
@@ -30,9 +31,8 @@ export const EditProfilePage = () => {
     watch,
     setValue,
     getValues,
-    formState: { isValid },
+    formState: { errors },
   } = useForm<EditProfileForm>({
-    mode: 'onChange',
     defaultValues: { email: userData?.me.email, password: null },
     resolver: yupResolver(editProfileSchema),
   })
@@ -95,21 +95,19 @@ export const EditProfilePage = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-5 grid w-full max-w-screen-sm gap-3"
       >
-        <input
-          {...register('email')}
+        <Input
+          registerProps={register('email')}
           type="email"
           placeholder="Почта"
-          className="input"
+          error={errors.email}
         />
-        <input
-          {...register('password')}
+        <Input
+          registerProps={register('password')}
           type="password"
           placeholder="Пароль"
-          className="input"
+          error={errors.password}
         />
-        <Button canClick={isValid} loading={loading}>
-          Сохранить
-        </Button>
+        <Button loading={loading}>Сохранить</Button>
       </form>
     </div>
   )

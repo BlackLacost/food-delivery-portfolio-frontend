@@ -34,21 +34,21 @@ export type SearchTermForm = yup.InferType<typeof searchTermSchema>
 export const createRestaurantSchema = yup.object({
   name: yup
     .string()
-    .min(3, 'название должно быть как минимум из 3 символов')
+    .min(3, 'Название должно быть как минимум из 3 символов')
     .required(),
   categoryName: yup.string().min(3).required(),
   image: yup
     .mixed()
     .test({
-      message: 'картинка обязательна',
+      message: 'Картинка обязательна',
       test: (files: FileList) => files?.length > 0,
     })
     .test({
-      message: 'добавьте только одну картинку',
+      message: 'Добавьте только одну картинку',
       test: (files: FileList) => files?.length === 1,
     })
     .test({
-      message: 'размер картинки не больше 5MB',
+      message: 'Размер картинки не больше 5MB',
       test: (files: FileList) => {
         return files?.length > 0 && files[0].size <= 5 * 1024 * 1024
       },
@@ -61,9 +61,16 @@ export type CreateRestaurantForm = {
 }
 
 export const addDishSchema = yup.object({
-  name: yup.string().min(5).required(),
-  description: yup.string().min(5).max(500).required(),
-  price: yup.number().positive().required(),
+  name: yup
+    .string()
+    .min(5, 'Название должно быть минимум 5 символов')
+    .required(),
+  description: yup
+    .string()
+    .min(5, 'Описание должно быть минимум 5 символов')
+    .max(500, 'Описание должно быть максимум 500 символов')
+    .required(),
+  price: yup.number().positive('Цена должна быть > 0').required(),
   image: yup
     .mixed()
     .test({
