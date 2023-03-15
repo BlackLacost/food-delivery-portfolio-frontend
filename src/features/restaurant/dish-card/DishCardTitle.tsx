@@ -14,9 +14,5 @@ type Props = {
 
 export const DishCardTitle = ({ dish }: Props) => {
   const { name } = useFragment(DishCardTitleFragmentDoc, dish)
-  return (
-    <h2 className="w-full text-center text-lg font-semibold text-gray-500">
-      {name}
-    </h2>
-  )
+  return <h2 className="w-full px-4 font-semibold text-gray-500">{name}</h2>
 }

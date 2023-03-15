@@ -63,10 +63,10 @@ export const DishCardClient: React.FC<Props> = ({
 
   return (
     <DishCardContainer isSelected={isSelected}>
+      <DishCardImage dish={dish} />
       <div className="flex items-start justify-between">
-        <DishCardTitle dish={dish} />
         {orderStarted && (
-          <div className="absolute right-0 top-[-14px]">
+          <div className="absolute right-0 top-[-6px]">
             {isSelected ? (
               <button
                 type="button"
@@ -85,8 +85,8 @@ export const DishCardClient: React.FC<Props> = ({
           </div>
         )}
       </div>
-      <DishCardImage dish={dish} />
       <DishCardPrice>{dish.price}</DishCardPrice>
+      <DishCardTitle dish={dish} />
 
       {orderStarted && isSelected && dish.options?.length !== 0 && (
         <div className="my-4">

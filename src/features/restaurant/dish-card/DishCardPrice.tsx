@@ -5,7 +5,7 @@ type Props = HTMLAttributes<HTMLParagraphElement>
 
 export const DishCardPrice: React.FC<Props> = ({ children }) => {
   return (
-    <p className="text-center text-2xl font-semibold text-primary-600">
+    <p className="px-4 text-xl font-semibold text-primary-600">
       {children} <Rub />
     </p>
   )
