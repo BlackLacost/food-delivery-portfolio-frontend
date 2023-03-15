@@ -40,15 +40,15 @@ export const createRestaurantSchema = yup.object({
   image: yup
     .mixed()
     .test({
-      message: 'Image Required',
+      message: 'картинка обязательна',
       test: (files: FileList) => files?.length > 0,
     })
     .test({
-      message: 'Only one Image',
+      message: 'добавьте только одну картинку',
       test: (files: FileList) => files?.length === 1,
     })
     .test({
-      message: 'Max size is 5 Mb',
+      message: 'размер картинки не больше 5MB',
       test: (files: FileList) => {
         return files?.length > 0 && files[0].size <= 5 * 1024 * 1024
       },

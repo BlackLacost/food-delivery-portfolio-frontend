@@ -118,44 +118,50 @@ export const AddRestaurantPage = () => {
       <Helmet>
         <title>Добавить ресторан | Доставка Еды</title>
       </Helmet>
-      <H1>Добавить ресторан</H1>
-      <form className="grid gap-3 pb-10" onSubmit={handleSubmit(onSubmit)}>
-        <GetAddress
-          position={restaurantPosition}
-          setPosition={setRestaurantPosition}
-        />
-        <input className="input" {...register('name')} placeholder="Название" />
-        {errors.name?.message && (
-          <FormError>{errors.name.message.toString()}</FormError>
-        )}
-        <select className="input" {...register('categoryName')}>
-          {categories.map((category) => (
-            <option key={category.id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
+      <div className="px-4 md:px-0">
+        <H1>Добавить ресторан</H1>
+        <form className="grid gap-3 pb-10" onSubmit={handleSubmit(onSubmit)}>
+          <GetAddress
+            position={restaurantPosition}
+            setPosition={setRestaurantPosition}
+          />
+          <input
+            className="input"
+            {...register('name')}
+            placeholder="Название"
+          />
+          {errors.name?.message && (
+            <FormError>{errors.name.message.toString()}</FormError>
+          )}
+          <select className="input" {...register('categoryName')}>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
 
-        <input
-          className="hidden"
-          {...register('image')}
-          accept="image/*"
-          type="file"
-          id="coverImage"
-        />
-        <label htmlFor="coverImage" className="input cursor-pointer">
-          {watch('image') && watch('image').length > 0
-            ? watch('image')[0].name
-            : 'Выберете картинку ресторана...'}
-        </label>
-        {errors.image?.message && (
-          <FormError>{errors.image.message.toString()}</FormError>
-        )}
-        <Button loading={uploading}>Добавить ресторан</Button>
-        {/* {data?.createRestaurant.error && (
+          <input
+            className="hidden"
+            {...register('image')}
+            accept="image/*"
+            type="file"
+            id="coverImage"
+          />
+          <label htmlFor="coverImage" className="input cursor-pointer">
+            {watch('image') && watch('image').length > 0
+              ? watch('image')[0].name
+              : 'Выберете картинку ресторана...'}
+          </label>
+          {errors.image?.message && (
+            <FormError>{errors.image.message.toString()}</FormError>
+          )}
+          <Button loading={uploading}>Добавить ресторан</Button>
+          {/* {data?.createRestaurant.error && (
           <FormError>{data.createRestaurant.error.message}</FormError>
         )} */}
-      </form>
+        </form>
+      </div>
     </div>
   )
 }
