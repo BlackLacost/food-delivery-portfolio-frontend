@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Button } from '../../components/Button'
 import { H1 } from '../../components/H1'
 import { Input } from '../../components/Input'
@@ -42,7 +42,6 @@ export const EditProfilePage = () => {
       const error = data?.editProfile.error
 
       if (!error && userData) {
-        // await refetchMe()
         const {
           me: { id, email: prevEmail },
         } = userData
@@ -74,7 +73,7 @@ export const EditProfilePage = () => {
     setValue('password', null, { shouldValidate: true })
   }
 
-  const onSubmit: SubmitHandler<EditProfileForm> = ({ email, password }) => {
+  const onSubmit = handleSubmit(({ email, password }) => {
     editProfile({
       variables: {
         input: {
@@ -83,7 +82,7 @@ export const EditProfilePage = () => {
         },
       },
     })
-  }
+  })
 
   return (
     <div className="mt-52 flex flex-col items-center justify-center px-5">
@@ -92,17 +91,17 @@ export const EditProfilePage = () => {
       </Helmet>
       <H1 className="">Редактирование Профиля</H1>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
         className="mt-5 grid w-full max-w-screen-sm gap-3"
       >
         <Input
-          registerProps={register('email')}
+          {...register('email')}
           type="email"
           placeholder="Почта"
           error={errors.email}
         />
         <Input
-          registerProps={register('password')}
+          {...register('password')}
           type="password"
           placeholder="Пароль"
           error={errors.password}

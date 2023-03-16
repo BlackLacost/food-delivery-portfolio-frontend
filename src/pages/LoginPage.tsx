@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/Button'
@@ -29,9 +29,8 @@ export const LoginPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<LoginForm>({
-    mode: 'onChange',
     resolver: yupResolver(loginSchema),
   })
 
@@ -49,11 +48,12 @@ export const LoginPage = () => {
     },
   })
 
-  const onSubmit: SubmitHandler<LoginForm> = (data) => {
+  const onSubmit = handleSubmit((data) => {
     if (!loading) {
       loginMutation({ variables: { loginInput: data } })
     }
-  }
+  })
+
   return (
     <div className="mt-10 flex h-screen flex-col items-center lg:mt-28">
       <Helmet>
@@ -62,25 +62,24 @@ export const LoginPage = () => {
       <div className="flex w-full max-w-screen-sm flex-col items-center px-5">
         <Logo className="mb-10 w-60" />
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={onSubmit}
           className="m-5 grid w-full gap-3 text-left"
+          noValidate
         >
           <Input
-            registerProps={register('email')}
+            {...register('email')}
             type="email"
             error={errors.email}
             placeholder="Почта"
           />
           <Input
-            registerProps={register('password')}
+            {...register('password')}
             type="password"
             error={errors.password}
             placeholder="Пароль"
           />
 
-          <Button canClick={isValid} loading={loading}>
-            Войти
-          </Button>
+          <Button loading={loading}>Войти</Button>
         </form>
         <div>
           Еще нет аккаунта?{' '}

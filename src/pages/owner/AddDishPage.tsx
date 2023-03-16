@@ -2,10 +2,9 @@ import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Fragment, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/Button'
-import { FormError } from '../../components/FormError'
 import { Input } from '../../components/Input'
 import { AddDishForm, addDishSchema } from '../../form.schemas'
 import { graphql } from '../../gql'
@@ -61,28 +60,24 @@ export const AddDishPage = () => {
     ],
   })
 
-  const onSubmit: SubmitHandler<AddDishForm> = async ({
-    name,
-    description,
-    price,
-    options,
-    image,
-  }) => {
-    // console.log(rest)
-    try {
-      setUploading(true)
-      const photo = await uploadImage(image[0])
-      setUploading(false)
+  const onSubmit = handleSubmit(
+    async ({ name, description, price, options, image }) => {
+      // console.log(rest)
+      try {
+        setUploading(true)
+        const photo = await uploadImage(image[0])
+        setUploading(false)
 
-      addDish({
-        variables: {
-          input: { name, description, price, restaurantId, options, photo },
-        },
-      })
-    } catch (error) {
-      console.log(error)
+        addDish({
+          variables: {
+            input: { name, description, price, restaurantId, options, photo },
+          },
+        })
+      } catch (error) {
+        console.log(error)
+      }
     }
-  }
+  )
 
   const onAddOptionClick = () => prepend({ name: '' })
 
@@ -94,40 +89,32 @@ export const AddDishPage = () => {
       <h1 className="mb-8 mt-28 text-2xl">Добавить блюдо</h1>
       <form
         className="mx-auto my-5 grid w-full max-w-screen-sm gap-3"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onSubmit}
       >
         <Input
-          registerProps={register('name')}
+          {...register('name')}
           placeholder="Название"
           error={errors.name}
         />
         <Input
-          registerProps={register('description')}
+          {...register('description')}
           placeholder="Описание"
           error={errors.description}
         />
-        <input
+        <Input
           className="hidden"
           {...register('image')}
           accept="image/*"
           type="file"
           id="coverImage"
-        />
-        <label
-          htmlFor="coverImage"
-          className="input cursor-pointer text-gray-400"
         >
           {watch('image') && watch('image').length > 0
             ? watch('image')[0].name
             : 'Выберете картинку'}
-        </label>
-        {errors.image?.message && (
-          <FormError>{errors.image.message.toString()}</FormError>
-        )}
+        </Input>
         <Input
-          registerProps={register('price')}
+          {...register('price', { min: 0 })}
           type="number"
-          min={0}
           error={errors.price}
           placeholder="Рублей"
         />
@@ -146,15 +133,14 @@ export const AddDishPage = () => {
                 <div>{JSON.stringify(console.log({ errors }))}</div>
                 <section className="flex space-x-3" key={field.id}>
                   <Input
-                    className="py-2"
-                    registerProps={register(`options.${index}.name`)}
+                    {...register(`options.${index}.name`)}
                     placeholder="Название"
+                    size="small"
                   />
                   <Input
-                    className="py-2"
-                    registerProps={register(`options.${index}.extra`)}
+                    {...register(`options.${index}.extra`, { min: 0 })}
                     type="number"
-                    min={0}
+                    size="small"
                     placeholder="Цена"
                   />
                   <button

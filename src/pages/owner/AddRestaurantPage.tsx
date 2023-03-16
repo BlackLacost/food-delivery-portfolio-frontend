@@ -2,10 +2,9 @@ import { useMutation, useQuery } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/Button'
-import { FormError } from '../../components/FormError'
 import { H1 } from '../../components/H1'
 import { Input } from '../../components/Input'
 import { GetAddress, Position } from '../../features/yandex-map/GetAddress'
@@ -84,11 +83,7 @@ export const AddRestaurantPage = () => {
 
   const categories = categoriesData.allCategories.categories ?? []
 
-  const onSubmit: SubmitHandler<CreateRestaurantForm> = async ({
-    name,
-    categoryName,
-    image,
-  }) => {
+  const onSubmit = handleSubmit(async ({ name, categoryName, image }) => {
     try {
       setUploading(true)
       const coverImage = await uploadImage(image[0])
@@ -112,7 +107,7 @@ export const AddRestaurantPage = () => {
     } catch (error) {
       console.log(error)
     }
-  }
+  })
 
   return (
     <div className="mx-auto flex w-full max-w-screen-sm flex-col space-y-4">
@@ -121,13 +116,13 @@ export const AddRestaurantPage = () => {
       </Helmet>
       <div className="px-4 md:px-0">
         <H1>Добавить ресторан</H1>
-        <form className="grid gap-3 pb-10" onSubmit={handleSubmit(onSubmit)}>
+        <form className="grid gap-3 pb-10" onSubmit={onSubmit}>
           <GetAddress
             position={restaurantPosition}
             setPosition={setRestaurantPosition}
           />
           <Input
-            registerProps={register('name')}
+            {...register('name')}
             error={errors.name}
             placeholder="Название"
           />
@@ -139,21 +134,16 @@ export const AddRestaurantPage = () => {
             ))}
           </select>
 
-          <input
-            className="hidden"
+          <Input
             {...register('image')}
             accept="image/*"
             type="file"
             id="coverImage"
-          />
-          <label htmlFor="coverImage" className="input cursor-pointer">
+          >
             {watch('image') && watch('image').length > 0
               ? watch('image')[0].name
               : 'Выберете картинку ресторана...'}
-          </label>
-          {errors.image?.message && (
-            <FormError>{errors.image.message.toString()}</FormError>
-          )}
+          </Input>
           <Button loading={uploading}>Добавить ресторан</Button>
           {/* {data?.createRestaurant.error && (
           <FormError>{data.createRestaurant.error.message}</FormError>

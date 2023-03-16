@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { authTokenVar, isLoggedInVar } from '../apollo'
 import { Button } from '../components/Button'
@@ -64,11 +64,7 @@ export const CreateAccountPage = () => {
 
   const userRole = watch('role')
 
-  const onSubmit: SubmitHandler<CreateAccountForm> = ({
-    email,
-    password,
-    role,
-  }) => {
+  const onSubmit = handleSubmit(({ email, password, role }) => {
     if (!loading) {
       createAccountMutation({
         variables: {
@@ -86,7 +82,7 @@ export const CreateAccountPage = () => {
         },
       })
     }
-  }
+  })
 
   const [clientPosition, setClientPosition] = useState<Position>({})
 
@@ -110,18 +106,15 @@ export const CreateAccountPage = () => {
           </>
         )}
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="m-5 grid w-full gap-3 text-left"
-        >
+        <form onSubmit={onSubmit} className="m-5 grid w-full gap-3 text-left">
           <Input
-            registerProps={register('email')}
+            {...register('email')}
             type="email"
             error={errors.email}
             placeholder="Почта"
           />
           <Input
-            registerProps={register('password')}
+            {...register('password')}
             type="password"
             error={errors.password}
             placeholder="Пароль"
