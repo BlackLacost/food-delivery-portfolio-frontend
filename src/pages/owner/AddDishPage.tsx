@@ -120,13 +120,14 @@ export const AddDishPage = () => {
         />
         <div className="my-10">
           <p className="mb-5 text-lg">Доп. опции</p>
-          <button
-            className="mb-5 bg-gray-900 px-4 py-2 font-semibold text-white"
+          <Button
+            color="secondary"
+            size="small"
             onClick={onAddOptionClick}
             type="button"
           >
             Добавить опцию
-          </button>
+          </Button>
           <div className="grid gap-3">
             {fields.map((field, index) => (
               <Fragment key={field.id}>
@@ -143,13 +144,14 @@ export const AddDishPage = () => {
                     size="small"
                     placeholder="Цена"
                   />
-                  <button
-                    className="bg-red-500 px-4 py-1 font-semibold text-white"
+                  <Button
+                    color="warning"
+                    size="small"
                     onClick={() => remove(index)}
                     type="button"
                   >
                     Удалить опцию
-                  </button>
+                  </Button>
                 </section>
               </Fragment>
             ))}

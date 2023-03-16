@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link, useParams } from 'react-router-dom'
+import { Button } from '../../components/Button'
 import { Payment } from '../../components/Payment'
 import { DishCards } from '../../features/restaurant/dish-card/DishCards'
 import { RestaurantImageDescription } from '../../features/restaurant/RestaurantImageDescription'
@@ -44,24 +45,24 @@ export const MyRestaurantPage = () => {
       <div className="container mt-10">
         <div className="mb-8 flex flex-wrap justify-end gap-4">
           <Link
-            className="bg-gray-800 p-3 text-white"
+            className="bg-gray-800 py-1 px-6 text-white"
             to={`/restaurant/${restaurantId}/add-dish`}
           >
             Добавить товар &rarr;
           </Link>
           <Link
-            className="bg-gray-800 p-3 text-white"
+            className="bg-gray-800 py-1 px-6 text-white"
             to={`/restaurant/${restaurantId}/orders`}
           >
             Заказы &rarr;
           </Link>
-          <button
-            className="bg-primary-600 p-3 text-white focus:outline-none focus:ring-1 focus:ring-gray-800 disabled:text-gray-800"
+          <Button
+            size="small"
             onClick={() => setIsOpenPayment(true)}
             type="button"
           >
             Реклама &rarr;
-          </button>
+          </Button>
         </div>
 
         {data && <DishCards query={data} />}

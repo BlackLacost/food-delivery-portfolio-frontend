@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client'
+import { Button } from '../../components/Button'
 import { H1 } from '../../components/H1'
 import { Rub } from '../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../gql'
 import { OrderStatus, RestaurantOrderStatus } from '../../gql/graphql'
 import { notify } from '../../toast'
-import { OrderButton } from './OrderButton'
 import { OrderStatusView } from './OrderStatus'
 
 const OwnerCard_OrderFragment = graphql(`
@@ -95,20 +95,28 @@ export const OrderOwnerCard = (props: Props) => {
             ))}
           </tbody>
         </table>
-        {order.status === OrderStatus.Pending && (
-          <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooking)}>
-            Принять заказ
-          </OrderButton>
-        )}
-        {order.status === OrderStatus.Cooking && (
-          <OrderButton onClick={() => onClick(RestaurantOrderStatus.Cooked)}>
-            Заказ приготовлен
-          </OrderButton>
-        )}
-        {(order.status === OrderStatus.Cooked ||
-          order.status === OrderStatus.Accepted) && (
-          <OrderStatusView status={order.status} />
-        )}
+        <div className="my-4">
+          {order.status === OrderStatus.Pending && (
+            <Button
+              className="w-full"
+              onClick={() => onClick(RestaurantOrderStatus.Cooking)}
+            >
+              Принять заказ
+            </Button>
+          )}
+          {order.status === OrderStatus.Cooking && (
+            <Button
+              className="w-full"
+              onClick={() => onClick(RestaurantOrderStatus.Cooked)}
+            >
+              Заказ приготовлен
+            </Button>
+          )}
+          {(order.status === OrderStatus.Cooked ||
+            order.status === OrderStatus.Accepted) && (
+            <OrderStatusView status={order.status} />
+          )}
+        </div>
       </div>
     </article>
   )

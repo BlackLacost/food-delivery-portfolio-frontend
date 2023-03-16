@@ -1,11 +1,11 @@
 import { BiDish } from 'react-icons/bi'
 import { FaUserAlt } from 'react-icons/fa'
-import { IoLogOut } from 'react-icons/io5'
 import { Link, useNavigate } from 'react-router-dom'
 import { authTokenVar, client, isLoggedInVar } from '../apollo'
 import { LOCALSTORAGE_TOKEN } from '../constants'
 import { UserRole } from '../gql/graphql'
 import { useMe } from '../hooks/useMe'
+import { IconButton } from './IconButton'
 import { Logo } from './Logo'
 
 export const Header = () => {
@@ -41,9 +41,7 @@ export const Header = () => {
             <Link to="/edit-profile">
               <FaUserAlt size={30} />
             </Link>
-            <button type="button" onClick={logout}>
-              <IoLogOut size={43} />
-            </button>
+            <IconButton icon="logout" type="button" onClick={logout} />
           </div>
         </div>
       </header>

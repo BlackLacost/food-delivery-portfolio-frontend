@@ -1,5 +1,5 @@
 import React from 'react'
-import { AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
+import { IconButton } from '../../../components/IconButton'
 import { Rub } from '../../../components/Rub'
 import { FragmentType, graphql, useFragment } from '../../../gql'
 import {
@@ -68,19 +68,17 @@ export const DishCardClient: React.FC<Props> = ({
         {orderStarted && (
           <div className="absolute right-0 top-[-6px]">
             {isSelected ? (
-              <button
+              <IconButton
+                icon="minus"
                 type="button"
                 onClick={() => removeDishFromOrder(dish.id)}
-              >
-                <AiFillMinusCircle className="h-10 w-10 text-danger-600" />
-              </button>
+              />
             ) : (
-              <button
+              <IconButton
+                icon="plus"
                 type="button"
                 onClick={() => addDishToOrder({ dishId: dish.id })}
-              >
-                <AiFillPlusCircle className="h-10 w-10 text-primary-600" />
-              </button>
+              />
             )}
           </div>
         )}

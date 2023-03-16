@@ -92,25 +92,29 @@ export const OrderDriverCard = (props: Props) => {
               ))}
             </tbody>
           </table>
-          {order.status === OrderStatus.Accepted && (
-            <Button
-              className="my-2 w-full py-1 text-base"
-              onClick={() => {
-                onClick(DriverOrderStatus.PickedUp)
-                toggleIsOpen()
-              }}
-            >
-              Забрал
-            </Button>
-          )}
-          {order.status === OrderStatus.PickedUp && (
-            <Button
-              className="my-2 w-full py-1 text-base"
-              onClick={() => onClick(DriverOrderStatus.Delivered)}
-            >
-              Доствален
-            </Button>
-          )}
+          <div className="my-2">
+            {order.status === OrderStatus.Accepted && (
+              <Button
+                className="w-full"
+                size="small"
+                onClick={() => {
+                  onClick(DriverOrderStatus.PickedUp)
+                  toggleIsOpen()
+                }}
+              >
+                Забрал
+              </Button>
+            )}
+            {order.status === OrderStatus.PickedUp && (
+              <Button
+                className="w-full"
+                size="small"
+                onClick={() => onClick(DriverOrderStatus.Delivered)}
+              >
+                Доствален
+              </Button>
+            )}
+          </div>
         </div>
       )}
     </article>
