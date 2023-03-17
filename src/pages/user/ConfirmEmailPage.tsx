@@ -22,9 +22,9 @@ export const ConfirmEmailPage = () => {
   const navigate = useNavigate()
   const [verifyEmail] = useMutation(VerifyEmail, {
     update: async (cache, { data }) => {
+      console.log({ data })
       const error = data?.verifyEmail.error
       if (!error && userData) {
-        // await refetchMe()
         cache.writeFragment({
           id: `User:${userData.me.id}`,
           fragment: gql`
@@ -53,11 +53,11 @@ export const ConfirmEmailPage = () => {
   return (
     <div className="mt-52 flex flex-col items-center">
       <Helmet>
-        <title>Verify Email | Доставка Еды</title>
+        <title>Проверка почты | Доставка Еды</title>
       </Helmet>
-      <h1 className="mb-2 text-lg font-semibold">Confirming email...</h1>
+      <h1 className="mb-2 text-lg font-semibold">Подтверждение почты...</h1>
       <p className="text-sm text-gray-700">
-        Please wait, don't close this page.
+        Подождите немного и не закрывайте страницу.
       </p>
     </div>
   )
